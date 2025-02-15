@@ -98,7 +98,7 @@ function activateEasteregg() {
     state.isEastereggActive = true;
     eastereggOverlay.style.display = 'flex';
     
-    playAudio('./audio/puerta.MP3').then(() => {
+    playAudio('./audio/portazo.mp3').then(() => {
         requestAnimationFrame(() => {
             discoBall.style.animation = 'dropDiscoBall 1s forwards';
             setTimeout(() => {
