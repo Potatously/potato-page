@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /images/
+Disallow: /css/
+Disallow: /js/
+Disallow: /video/
+Disallow: /audio/
+
+Sitemap: https://potatously.github.io/potato/sitemap.xml
