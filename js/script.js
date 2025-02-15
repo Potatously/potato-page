@@ -13,9 +13,9 @@ function initializeTheme() {
 
 // Función unificada de actualización de tema
 function updateTheme(theme) {
-    themeIcon.src = theme === 'dark-mode' ? '../images/luna.png' : '../images/sol.png';
-    logoImage.src = theme === 'light-mode' ? '../images/papa-negra.png' : '../images/papa-blanca.png';
-    socialIcon.src = theme === 'light-mode' ? '../images/linktree-black-icon.svg' : '../images/linktree-white-icon.svg';
+    themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
+    logoImage.src = theme === 'light-mode' ? './images/papa-negra.png' : './images/papa-blanca.png';
+    socialIcon.src = theme === 'light-mode' ? './images/linktree-black-icon.svg' : './images/linktree-white-icon.svg';
     updateParticlesColor(theme);
 }
 
@@ -98,7 +98,7 @@ function activateEasteregg() {
     state.isEastereggActive = true;
     eastereggOverlay.style.display = 'flex';
     
-    playAudio('../audio/puerta.mp3').then(() => {
+    playAudio('./audio/puerta.mp3').then(() => {
         requestAnimationFrame(() => {
             discoBall.style.animation = 'dropDiscoBall 1s forwards';
             setTimeout(() => {
@@ -178,7 +178,7 @@ document.getElementById('closeSecondButton').addEventListener('click', () => {
 // Audio Easter Egg
 function activateGAudio() {
     state.isGAudioPlaying = true;
-    playAudio('../audio/pichon.mp3').then(() => {
+    playAudio('./audio/pichon.mp3').then(() => {
         setTimeout(() => {
             state.isGAudioPlaying = false;
             state.gAudioCooldown = true;
