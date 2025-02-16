@@ -1,8 +1,53 @@
-// Minimal GA4 Script - Version 2.0.0
+// Combined Analytics Scripts
+
+// 1. GoatCounter Analytics
+(function() {
+    const script = document.createElement('script');
+    script.src = '//gc.zgo.at/count.js';
+    script.async = true;
+    script.dataset.goatcounter = 'https://2808.goatcounter.com/count';
+    document.head.appendChild(script);
+})();
+
+// 2. Bisml Analytics
+(function() {
+    const script = document.createElement('script');
+    script.src = 'https://biasml.com/js/script.js';
+    script.async = true;
+    script.defer = true;
+    script.id = 'ZwSg9rf6GA';
+    script.dataset.host = 'https://biasml.com';
+    script.dataset.dnt = 'false';
+    document.head.appendChild(script);
+})();
+
+// 3. Amplitude Analytics
+(function() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.amplitude.com/script/debb0f817e1317d6d87aa89b200c03a2.js';
+    script.onload = function() {
+        window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+        window.amplitude.init('debb0f817e1317d6d87aa89b200c03a2', {
+            "fetchRemoteConfig": true,
+            "autocapture": true
+        });
+    };
+    document.head.appendChild(script);
+})();
+
+// 4. Umami Analytics
+(function() {
+    const script = document.createElement('script');
+    script.src = 'https://cloud.umami.is/script.js';
+    script.defer = true;
+    script.dataset.websiteId = '83596513-8393-4bcb-b2ec-00fbe8354576';
+    document.head.appendChild(script);
+})();
+
+// 5. Minimal GA4
 const MinimalGA4 = {
-    trackingId: 'G-27Z6B3Q2J5', // Set your GA4 Measurement ID here
+    trackingId: 'G-27Z6B3Q2J5',
     
-    // Core constants
     storage: {
         local: localStorage,
         session: sessionStorage
@@ -12,13 +57,10 @@ const MinimalGA4 = {
     nav: navigator,
     screen: screen,
     
-    // File download tracking configuration
     downloadExtensions: ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'txt', 'rtf', 'csv', 'exe', 'key', 'pps', 'ppt', 'pptx', '7z', 'pkg', 'rar', 'gz', 'zip', 'avi', 'mov', 'mp4', 'mpe', 'mpeg', 'wmv', 'mid', 'midi', 'mp3', 'wav', 'wma'],
     
-    // Search parameters to track
     searchParams: ['q', 's', 'search', 'query', 'keyword'],
     
-    // Helper functions
     generateId: () => Math.floor(Math.random() * 1000000000) + 1,
     generateTimestamp: () => Math.floor(Date.now() / 1000),
     
@@ -64,7 +106,6 @@ const MinimalGA4 = {
         return undefined;
     },
     
-    // Main tracking function
     send(eventData = {}) {
         const defaultData = {
             v: 2,
@@ -101,7 +142,6 @@ const MinimalGA4 = {
         }
     },
     
-    // Event tracking functions
     trackPageView() {
         const searchTerm = this.getSearchTerm();
         this.send({
@@ -153,7 +193,6 @@ const MinimalGA4 = {
         }, { passive: true });
     },
     
-    // Initialization
     init() {
         this.trackPageView();
         this.trackScroll();
@@ -161,5 +200,5 @@ const MinimalGA4 = {
     }
 };
 
-// Initialize tracking
+// Initialize Minimal GA4
 MinimalGA4.init();
