@@ -1,6 +1,6 @@
 // Minimal GA4 Script - Version 2.0.0
 const MinimalGA4 = {
-    trackingId: 'G-XXXXXXXXXX', // Set your GA4 Measurement ID here
+    trackingId: 'G-27Z6B3Q2J5', // Set your GA4 Measurement ID here
     
     // Core constants
     storage: {
