@@ -4,7 +4,7 @@
     <!-- Meta tags básicos -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Portfolio profesional de Potato - Especialista en edición de video, jugador de ajedrez y pensador estoico. Descubre mis proyectos creativos, filosofía de trabajo y servicios."/>
+    <meta name="description" content="Portfolio profesional de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Descubre mis proyectos creativos, filosofía de trabajo y servicios."/>
     <meta name="keywords" content="Potato, editor de video, jugador de ajedrez, estoicismo, portfolio digital, edición creativa, content creator, chess player, stoic philosophy"/>
     <meta name="author" content="Potato"/>
     <meta name="robots" content="index, follow"/>
@@ -15,8 +15,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://potatously.github.io/potato/"/>
-    <meta property="og:title" content="Potato - Editor de Video & Jugador de Ajedrez"/>
-    <meta property="og:description" content="Portfolio profesional de Potato - Especialista en edición de video, jugador de ajedrez y pensador estoico. Descubre mis proyectos creativos."/>
+    <meta property="og:title" content="Potato | Visionario Independiente"/>
+    <meta property="og:description" content="Portfolio profesional de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Descubre mis proyectos creativos."/>
     <meta property="og:image" content="https://potatously.github.io/potato/images/og-image.jpg"/>
     <meta property="og:locale" content="es_ES"/>
     <meta property="og:site_name" content="Portfolio de Potato"/>
@@ -24,8 +24,8 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:url" content="https://potatously.github.io/potato/"/>
-    <meta name="twitter:title" content="Potato - Editor de Video & Jugador de Ajedrez"/>
-    <meta name="twitter:description" content="Portfolio profesional de Potato - Especialista en edición de video, jugador de ajedrez y pensador estoico. Descubre mis proyectos creativos."/>
+    <meta name="twitter:title" content="Potato | Visionario Independiente"/>
+    <meta name="twitter:description" content="Portfolio profesional de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Descubre mis proyectos creativos."/>
     <meta name="twitter:image" content="https://potatously.github.io/potato/images/og-image.jpg"/>
     <title>Potato</title>
     
@@ -65,12 +65,41 @@
     }
     </script>
 
-    <!--Analytics-->
+    <!--Analytics GoatCounter-->
     <script data-goatcounter="https://2808.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
         
+    <!--Analytics Bisml Vercel-->
     <script data-host="https://biasml.com" data-dnt="false" src="https://biasml.com/js/script.js" id="ZwSg9rf6GA" async defer></script>
+
+    <!--Minimal Google Analytics Snippet-->
+    <script>
+        (function(a,b,c){var d=a.history,e=document,f=navigator||{},g=localStorage,
+        h=encodeURIComponent,i=d.pushState,k=function(){return Math.random().toString(36)},
+        l=function(){return g.cid||(g.cid=k()),g.cid},m=function(r){var s=[];for(var t in r)
+        r.hasOwnProperty(t)&&void 0!==r[t]&&s.push(h(t)+"="+h(r[t]));return s.join("&")},
+        n=function(r,s,t,u,v,w,x){var z="https://www.google-analytics.com/collect",
+        A=m({v:"1",ds:"web",aip:c.anonymizeIp?1:void 0,tid:b,cid:l(),t:r||"pageview",
+        sd:c.colorDepth&&screen.colorDepth?screen.colorDepth+"-bits":void 0,dr:e.referrer||
+        void 0,dt:e.title,dl:e.location.origin+e.location.pathname+e.location.search,ul:c.language?
+        (f.language||"").toLowerCase():void 0,de:c.characterSet?e.characterSet:void 0,
+        sr:c.screenSize?(a.screen||{}).width+"x"+(a.screen||{}).height:void 0,vp:c.screenSize&&
+        a.visualViewport?(a.visualViewport||{}).width+"x"+(a.visualViewport||{}).height:void 0,
+        ec:s||void 0,ea:t||void 0,el:u||void 0,ev:v||void 0,exd:w||void 0,exf:"undefined"!=typeof x&&
+        !1==!!x?0:void 0});if(f.sendBeacon)f.sendBeacon(z,A);else{var y=new XMLHttpRequest;
+        y.open("POST",z,!0),y.send(A)}};d.pushState=function(r){return"function"==typeof d.onpushstate&&
+        d.onpushstate({state:r}),setTimeout(n,c.delay||10),i.apply(d,arguments)},n(),
+        a.ma={trackEvent:function o(r,s,t,u){return n("event",r,s,t,u)},
+        trackException:function q(r,s){return n("exception",null,null,null,null,r,s)}}})
+        (window,"G-27Z6B3Q2J5",{anonymizeIp:true,colorDepth:true,characterSet:true,screenSize:true,language:true});
+      </script>
     
+    <!--Analytics Amplitude-->
+    <script src="https://cdn.amplitude.com/script/debb0f817e1317d6d87aa89b200c03a2.js"></script><script>window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));window.amplitude.init('debb0f817e1317d6d87aa89b200c03a2', {"fetchRemoteConfig":true,"autocapture":true});</script> 
+
+    <!--Analytics Umami Vercel-->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="83596513-8393-4bcb-b2ec-00fbe8354576"></script>
+
 </head>
 <body>
     <div id="particles-js"></div>
