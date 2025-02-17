@@ -1,6 +1,6 @@
 // Combined Analytics Scripts
 
-// 1. GoatCounter Analytics
+// 1. GoatCounter Analytics - GITHUB
 (function() {
     const script = document.createElement('script');
     script.src = '//gc.zgo.at/count.js';
@@ -9,7 +9,7 @@
     document.head.appendChild(script);
 })();
 
-// 2. Bisml Analytics
+// 2. BiasML Analytics - VERCEL
 (function() {
     const script = document.createElement('script');
     script.src = 'https://biasml.com/js/script.js';
@@ -21,7 +21,7 @@
     document.head.appendChild(script);
 })();
 
-// 3. Amplitude Analytics
+// 3. Amplitude Analytics - GITHUB y VERCEL
 (function() {
     const script = document.createElement('script');
     script.src = 'https://cdn.amplitude.com/script/debb0f817e1317d6d87aa89b200c03a2.js';
@@ -35,7 +35,7 @@
     document.head.appendChild(script);
 })();
 
-// 4. Umami Analytics
+// 4. Umami Analytics GITHUB y Vercel
 (function() {
     const script = document.createElement('script');
     script.src = 'https://cloud.umami.is/script.js';
@@ -44,7 +44,7 @@
     document.head.appendChild(script);
 })();
 
-// 5. Minimal GA4
+// 5. Minimal GA4 - GITHUB
 const MinimalGA4 = {
     trackingId: 'G-27Z6B3Q2J5',
     
