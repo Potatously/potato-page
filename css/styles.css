@@ -292,7 +292,7 @@ main {
 }
 
 .theme-toggle {
-    position: fixed;
+    position: absolute;
     bottom: 22px;
     right: 22px;
     padding: 10px;
