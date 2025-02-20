@@ -21,21 +21,7 @@
     document.head.appendChild(script);
 })();
 
-// 3. Amplitude Analytics - GITHUB y VERCEL
-(function() {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.amplitude.com/script/debb0f817e1317d6d87aa89b200c03a2.js';
-    script.onload = function() {
-        window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
-        window.amplitude.init('debb0f817e1317d6d87aa89b200c03a2', {
-            "fetchRemoteConfig": true,
-            "autocapture": true
-        });
-    };
-    document.head.appendChild(script);
-})();
-
-// 4. Umami Analytics GITHUB y Vercel
+// 3. Umami Analytics GITHUB y Vercel
 (function() {
     const script = document.createElement('script');
     script.src = 'https://cloud.umami.is/script.js';
@@ -44,7 +30,7 @@
     document.head.appendChild(script);
 })();
 
-// 5. Minimal GA4 - GITHUB
+// 4. Minimal GA4 - GITHUB
 const MinimalGA4 = {
     trackingId: 'G-27Z6B3Q2J5',
     
