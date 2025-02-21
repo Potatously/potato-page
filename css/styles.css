@@ -78,7 +78,6 @@ body {
     width: 100%;
     overflow: hidden;
     position: relative;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 /* Header styles */
@@ -110,7 +109,6 @@ header {
     width: 40px;
     height: 40px;
     cursor: pointer;
-    transition: filter var(--transition-speed), opacity var(--transition-speed);
 }
 
 .logo-text {
@@ -118,7 +116,6 @@ header {
     font-weight: bold;
     text-decoration: none;
     color: inherit;
-    transition: color var(--transition-speed);
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.4s;
 }
@@ -143,7 +140,6 @@ header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: padding-left var(--transition-speed), color var(--transition-speed);
     white-space: nowrap;
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.4s;
@@ -164,7 +160,6 @@ header {
 .social-icon {
     width: 24px;
     height: 24px;
-    transition: filter var(--transition-speed), transform var(--transition-speed);
     animation: fadeInUp 0.6s ease forwards;
 }
 
@@ -173,7 +168,6 @@ header {
     width: 2px;
     background-color: var(--primary-text);
     margin-left: 18px;
-    transition: background-color var(--transition-speed);
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.2s;
 }
@@ -192,8 +186,8 @@ header {
     content: '>';
     position: absolute;
     left: 0;
-    opacity: 0;
     transition: opacity var(--transition-speed);
+    opacity: 0;
     color: var(--primary-text);
     font-weight: bold;
     font-size: 20px;
@@ -225,7 +219,6 @@ main {
     width: min(100px, 20vw);
     height: auto;
     margin-bottom: 1rem;
-    transition: filter var(--transition-speed), opacity var(--transition-speed);
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.6s;
     order: 1;
@@ -245,7 +238,6 @@ main {
     margin-bottom: 0.25rem;
     line-height: 1.1;
     width: 100%;
-    transition: color var(--transition-speed);
     text-shadow: 0 0 4px var(--primary-text-transparent),
      0 0 8px var(--primary-text-transparent),
      0 0 12px var(--primary-text-transparent),
@@ -262,7 +254,6 @@ main {
     font-style: italic;
     line-height: 3;
     width: 100%;
-    transition: color var(--transition-speed);
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 1s;
     font-weight: normal;
@@ -302,7 +293,6 @@ main {
     color: var(--primary-bg);
     cursor: pointer;
     font-size: 16px;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -314,7 +304,6 @@ main {
 .theme-toggle img {
     width: 18px;
     height: 18px;
-    transition: opacity var(--transition-speed);
 }
 
 .theme-toggle::before {
@@ -351,7 +340,6 @@ main {
 .footer a {
     color: var(--secondary-text);
     text-decoration: underline;
-    transition: opacity var(--transition-speed);
 }
 
 .footer a:hover {
