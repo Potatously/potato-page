@@ -9,19 +9,7 @@
     document.head.appendChild(script);
 })();
 
-// 2. BiasML Analytics - VERCEL
-(function() {
-    const script = document.createElement('script');
-    script.src = 'https://biasml.com/js/script.js';
-    script.async = true;
-    script.defer = true;
-    script.id = 'ZwSg9rf6GA';
-    script.dataset.host = 'https://biasml.com';
-    script.dataset.dnt = 'false';
-    document.head.appendChild(script);
-})();
-
-// 3. Umami Analytics GITHUB y Vercel
+// 2. Umami Analytics GITHUB y Vercel
 (function() {
     const script = document.createElement('script');
     script.src = 'https://cloud.umami.is/script.js';
@@ -30,7 +18,7 @@
     document.head.appendChild(script);
 })();
 
-// 4. Minimal GA4 - GITHUB
+// 3. Minimal GA4 - GITHUB
 const MinimalGA4 = {
     trackingId: 'G-27Z6B3Q2J5',
     
