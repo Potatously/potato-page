@@ -21,12 +21,33 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
+    -webkit-touch-callout: none; /* Evita el menú contextual en iOS */
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Permite selección en campos de texto y contenido editable */
+input,
+textarea,
+[contenteditable] {
+    user-select: auto !important;
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
 }
 
 @keyframes fadeInUp {
@@ -51,8 +72,14 @@
     to { opacity: 1; }
 }
 
-.animate-in { animation: fadeInUp 0.6s ease forwards; }
-.shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both !important; }
+.animate-in {
+    animation: fadeInUp 0.6s ease forwards;
+    will-change: transform, opacity;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both !important;
+}
 
 img {
     -webkit-touch-callout: none;
@@ -68,17 +95,7 @@ html {
     width: 100%;
 }
 
-body {
-    font-family: 'JetBrains Mono', monospace;
-    background-color: var(--primary-bg);
-    color: var(--primary-text);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-}
+
 
 /* Header styles */
 header {

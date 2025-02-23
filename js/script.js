@@ -12,14 +12,22 @@ if (logoImage) {
         }
     });
 }
+
 const socialIcon = document.querySelector('.social-icon');
+if (socialIcon) {
+    // Código que dependa de socialIcon (si lo hay aquí)
+}
+
 const themeIcon = document.getElementById('theme-icon');
 
 // Inicialización del tema
 function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark-mode';
-    document.documentElement.classList.add(savedTheme);
-    updateTheme(savedTheme);
+    const savedTheme = localStorage.getItem('theme');
+    const validThemes = ['dark-mode', 'light-mode'];
+    const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode';
+    
+    document.documentElement.classList.add(theme);
+    updateTheme(theme);
 }
 
 // Consola Potato logo
@@ -66,9 +74,18 @@ console.log(`
 
 // Función unificada de actualización de tema
 function updateTheme(theme) {
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');  
+    if (themeColorMeta) {  
+        themeColorMeta.setAttribute('content', theme === 'light-mode' ? '#ffffff' : '#0a0a0b');  
+    }
+
     themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
-    logoImage.src = theme === 'light-mode' ? './images/papa-negra.png' : './images/papa-blanca.png';
-    socialIcon.src = theme === 'light-mode' ? './images/linktree-black-icon.svg' : './images/linktree-white-icon.svg';
+    if (logoImage) {
+        logoImage.src = theme === 'light-mode' ? './images/papa-negra.png' : './images/papa-blanca.png';
+    }
+    if (socialIcon) {
+        socialIcon.src = theme === 'light-mode' ? './images/linktree-black-icon.svg' : './images/linktree-white-icon.svg';
+    }
     updateParticlesColor(theme);
 }
 
@@ -82,14 +99,16 @@ themeToggle.addEventListener('click', () => {
 });
 
 // Gestión de animaciones del logo
-logoImage.classList.add('animate-in');
-logoImage.addEventListener('animationend', (e) => {
-    if (e.animationName === 'fadeInUp') {
-        logoImage.classList.remove('animate-in');
-    } else if (e.animationName === 'shake') {
-        logoImage.classList.remove('shake');
-    }
-});
+if (logoImage) {
+    logoImage.classList.add('animate-in');
+    logoImage.addEventListener('animationend', (e) => {
+        if (e.animationName === 'fadeInUp') {
+            logoImage.classList.remove('animate-in');
+        } else if (e.animationName === 'shake') {
+            logoImage.classList.remove('shake');
+        }
+    });
+}
 
 // Easter Eggs
 const eastereggOverlay = document.getElementById('eastereggOverlay');
@@ -105,7 +124,8 @@ let state = {
     isEastereggActive: false,
     isSecondEastereggActive: false,
     isGAudioPlaying: false,
-    gAudioCooldown: false
+    gAudioCooldown: false,
+    MAX_COUNTER: 10
 };
 
 let timers = {
@@ -116,6 +136,7 @@ let timers = {
 
 // Manejador de Easter Egg "P"
 document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     if (e.key.toLowerCase() === 'p' && canActivateEasterEgg()) {
         handleKeyPress('p');
     } else if (e.key.toLowerCase() === 'g' && !state.isGAudioPlaying && !state.gAudioCooldown && canActivateEasterEgg()) {
@@ -131,7 +152,8 @@ function handleKeyPress(key) {
     const timeout = isP ? 5000 : 4000;
 
     state[countProperty]++;
-    
+
+    state[countProperty] = Math.min(state[countProperty], state.MAX_COUNTER);
     if (state[countProperty] === 1) {
         clearTimeout(timers[timerProperty]);
         timers[timerProperty] = setTimeout(() => state[countProperty] = 0, timeout);
@@ -163,23 +185,26 @@ function activateEasteregg() {
 }
 
 // Easter Egg Secundario (Logo)
-logoImage.addEventListener('click', () => {
-    if (canActivateEasterEgg()) {
-        logoImage.classList.remove('shake');
-        void logoImage.offsetWidth;
-        logoImage.classList.add('shake');
-        
-        state.clickCount++;
-        if (state.clickCount === 1) {
-            clearTimeout(timers.click);
-            timers.click = setTimeout(() => state.clickCount = 0, 1000);
-        } else if (state.clickCount >= 8) {
-            clearTimeout(timers.click);
-            state.clickCount = 0;
-            activateSecondEasteregg();
+if (logoImage) {
+    logoImage.addEventListener('click', () => {
+        if (canActivateEasterEgg()) {
+            logoImage.classList.remove('shake');
+            void logoImage.offsetWidth; // Forzar reflow para reiniciar la animación
+            logoImage.classList.add('shake');
+
+            // Lógica del contador de clics
+            state.clickCount++;
+            if (state.clickCount === 1) {
+                clearTimeout(timers.click);
+                timers.click = setTimeout(() => state.clickCount = 0, 1000);
+            } else if (state.clickCount >= 8) {
+                clearTimeout(timers.click);
+                state.clickCount = 0;
+                activateSecondEasteregg();
+            }
         }
-    }
-});
+    });
+}
 
 function activateSecondEasteregg() {
     state.isSecondEastereggActive = true;
@@ -191,29 +216,28 @@ function activateSecondEasteregg() {
 }
 
 // Utilidades para media
-async function playAudio(src) {
-    try {
-        const audio = new Audio(src);
-        await audio.play();
-        return true;
-    } catch (err) {
-        console.error('Error playing audio:', err);
-        return false;
-    }
-}
-
-async function playVideo(video) {
-    if (!video) return false;
-    try {
-        video.currentTime = 0;
-        video.muted = false;
-        await video.play();
-        return true;
-    } catch (err) {
-        console.error('Error playing video:', err);
-        return false;
-    }
-}
+async function playAudio(src) {  
+    try {  
+      const audio = new Audio(src);  
+      audio.addEventListener('error', (e) => {  
+        console.error('Error al cargar el audio:', e.target.error);  
+      });  
+      await audio.play();  
+    } catch (err) {  
+      console.error('Error al reproducir el audio:', err);  
+    }  
+  }  
+  
+  async function playVideo(video) {  
+    try {  
+      video.addEventListener('error', (e) => {  
+        console.error('Error al cargar el video:', e.target.error);  
+      });  
+      await video.play();  
+    } catch (err) {  
+      console.error('Error al reproducir el video:', err);  
+    }  
+  }
 
 // Manejadores de cierre
 document.getElementById('closeButton').addEventListener('click', () => {
@@ -252,10 +276,10 @@ function initializeParticles() {
     particlesJS('particles-js', {
         particles: {
             number: { 
-                value: isMobile ? 50 : 120, 
+                value: isMobile ? 40 : 120, 
                 density: { 
-                    enable: true, 
-                    value_area: isMobile ? 800 : 600 
+                    enable: true,
+                    value_area: isMobile ? 400 : 800 
                 } 
             },
             color: { 
@@ -299,6 +323,7 @@ function initializeParticles() {
 }
 
 function updateParticlesColor(theme) {
+    if (!window.pJSDom || !window.pJSDom[0]) return;
     const pJSDom = window.pJSDom;
     if (!pJSDom || !Array.isArray(pJSDom) || !pJSDom[0] || !pJSDom[0].pJS) {
         console.warn('Particles.js no está inicializado correctamente');
