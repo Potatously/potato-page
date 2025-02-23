@@ -1,6 +1,17 @@
 // Gestión del tema
 const themeToggle = document.getElementById('theme-toggle');
 const logoImage = document.getElementById('logo-image');
+if (logoImage) {
+    logoImage.classList.add('animate-in');
+    logoImage.addEventListener('animationend', (e) => {
+        if (!logoImage) return;
+        if (e.animationName === 'fadeInUp') {
+            logoImage.classList.remove('animate-in');
+        } else if (e.animationName === 'shake') {
+            logoImage.classList.remove('shake');
+        }
+    });
+}
 const socialIcon = document.querySelector('.social-icon');
 const themeIcon = document.getElementById('theme-icon');
 
@@ -184,18 +195,23 @@ async function playAudio(src) {
     try {
         const audio = new Audio(src);
         await audio.play();
+        return true;
     } catch (err) {
-        console.log('Auto-play prevented by browser');
+        console.error('Error playing audio:', err);
+        return false;
     }
 }
 
 async function playVideo(video) {
+    if (!video) return false;
     try {
         video.currentTime = 0;
         video.muted = false;
         await video.play();
+        return true;
     } catch (err) {
-        console.log('Video auto-play prevented by browser');
+        console.error('Error playing video:', err);
+        return false;
     }
 }
 
@@ -283,21 +299,34 @@ function initializeParticles() {
 }
 
 function updateParticlesColor(theme) {
-    if (!window.pJSDom?.[0]) return;
+    const pJSDom = window.pJSDom;
+    if (!pJSDom || !Array.isArray(pJSDom) || !pJSDom[0] || !pJSDom[0].pJS) {
+        console.warn('Particles.js no está inicializado correctamente');
+        return;
+    }
     
     const color = theme === 'light-mode' ? '#000000' : '#ffffff';
     const rgb = theme === 'light-mode' ? {r: 0, g: 0, b: 0} : {r: 255, g: 255, b: 255};
     
-    const pJS = window.pJSDom[0].pJS;
-    pJS.particles.array.forEach(particle => {
-        particle.color.value = color;
-        particle.color.rgb = rgb;
-    });
+    const pJS = pJSDom[0].pJS;
     
-    pJS.particles.line_linked.color = color;
-    pJS.particles.line_linked.color_rgb_line = rgb;
-    
-    pJS.fn.particlesRefresh();
+    if (pJS.particles && Array.isArray(pJS.particles.array)) {
+        pJS.particles.array.forEach(particle => {
+            if (particle && particle.color) {
+                particle.color.value = color;
+                particle.color.rgb = rgb;
+            }
+        });
+        
+        if (pJS.particles.line_linked) {
+            pJS.particles.line_linked.color = color;
+            pJS.particles.line_linked.color_rgb_line = rgb;
+        }
+        
+        if (typeof pJS.fn.particlesRefresh === 'function') {
+            pJS.fn.particlesRefresh();
+        }
+    }
 }
 
 // Añadir listener para actualizar partículas en resize
