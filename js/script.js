@@ -134,6 +134,11 @@ let timers = {
     click: null
 };
 
+let userInteracted = false;
+document.addEventListener('click', () => {
+    userInteracted = true;
+});
+
 // Manejador de Easter Egg "P"
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -209,6 +214,8 @@ if (logoImage) {
 function activateSecondEasteregg() {
     state.isSecondEastereggActive = true;
     secondEastereggOverlay.style.display = 'flex';
+    secondVideo.muted = false;
+    secondVideo.currentTime = 0;
     requestAnimationFrame(() => {
         secondVideo.style.animation = 'fadeIn 2s forwards';
         playVideo(secondVideo);
@@ -216,7 +223,8 @@ function activateSecondEasteregg() {
 }
 
 // Utilidades para media
-async function playAudio(src) {  
+async function playAudio(src) {
+    if (!userInteracted) return; // No reproducir sin interacción
     try {  
       const audio = new Audio(src);  
       audio.addEventListener('error', (e) => {  
@@ -228,7 +236,8 @@ async function playAudio(src) {
     }  
   }  
   
-  async function playVideo(video) {  
+  async function playVideo(video) {
+    if (!userInteracted) return; // No reproducir sin interacción
     try {  
       video.addEventListener('error', (e) => {  
         console.error('Error al cargar el video:', e.target.error);  
@@ -254,7 +263,7 @@ document.getElementById('closeSecondButton').addEventListener('click', () => {
     secondEastereggOverlay.style.display = 'none';
     secondVideo.style.animation = '';
     secondVideo.pause();
-    secondVideo.muted = true;
+    secondVideo.currentTime = 0;
 });
 
 // Audio Easter Egg
@@ -271,12 +280,12 @@ function activateGAudio() {
 
 // Función mejorada de inicialización de partículas
 function initializeParticles() {
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 768 || window.devicePixelRatio >= 2; // Considera alta densidad
     
     particlesJS('particles-js', {
         particles: {
             number: { 
-                value: isMobile ? 40 : 120, 
+                value: isMobile ? 60 : 120, 
                 density: { 
                     enable: true,
                     value_area: isMobile ? 400 : 800 
