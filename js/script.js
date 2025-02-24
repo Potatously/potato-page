@@ -367,3 +367,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Prevenir selección de texto
 document.addEventListener('selectstart', (e) => e.preventDefault());
+
+// Modificar el event listener existente
+window.addEventListener("load", () => {
+    // Esperar 1 frame más para asegurar la renderización
+    requestAnimationFrame(() => {
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+        document.body.style.height = 'auto';
+    });
+});
