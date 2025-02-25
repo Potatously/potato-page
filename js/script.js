@@ -282,12 +282,12 @@ function activateGAudio() {
 function destroyParticles() {
     if (window.pJSDom && Array.isArray(window.pJSDom)) {
         window.pJSDom.forEach((pJSInstance, index) => {
-            if (pJSInstance?.pJS?.fn?.vendors?.destroy) {
-                pJSInstance.pJS.fn.vendors.destroy(); // Destruir canvas
+            if (pJSInstance.pJS && typeof pJSInstance.pJS.fn.vendors.destroy === 'function') {
+                pJSInstance.pJS.fn.vendors.destroy(); // Limpia canvas y listeners
                 window.pJSDom[index] = null;
             }
         });
-        window.pJSDom = [];
+        window.pJSDom = []; // Resetear el array global
     }
 }
 
@@ -380,7 +380,7 @@ window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
         initializeParticles();
-    }, 250); // 250ms de espera
+    }, 150); // Esperar 250ms después del último evento resize
 });
 
 // Initialize theme and particles in correct order
