@@ -29,10 +29,10 @@
 }
 
 html, body {
-    user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    user-select: none;
     -webkit-touch-callout: none; /* Evita el menú contextual en iOS */
     font-family: 'JetBrains Mono', monospace;
     background-color: var(--primary-bg);
@@ -42,17 +42,18 @@ html, body {
     min-height: 100vh;
     width: 100%;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Permite selección en campos de texto y contenido editable */
 input,
 textarea,
 [contenteditable] {
-    user-select: auto !important;
     -webkit-user-select: auto !important;
     -moz-user-select: auto !important;
     -ms-user-select: auto !important;
+    user-select: auto !important;
 }
 
 @keyframes fadeInUp {
@@ -212,7 +213,7 @@ header {
     opacity: 0;
     color: var(--primary-text);
     font-weight: bold;
-    font-size: 20px;
+    font-size: 1.25rem; /* Equivalente a 20px si el root es 16px */
 }
 
 .hoverable:hover {

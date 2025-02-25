@@ -173,23 +173,29 @@ function canActivateEasterEgg() {
     return !state.isEastereggActive && !state.isSecondEastereggActive && !state.isGAudioPlaying;
 }
 
-// Easter Egg Principal
+// Easter Egg Homero
 function activateEasteregg() {
+    homeroVideo.currentTime = 0;
     state.isEastereggActive = true;
     eastereggOverlay.style.display = 'flex';
-    
+    homeroVideo.pause(); // Pausar inicialmente el video
+
+    // 1. Reproducir solo el audio primero
     playAudio('./audio/puertazo.mp3').then(() => {
+        // 2. Iniciar animación de la bola disco junto al audio
         requestAnimationFrame(() => {
             discoBall.style.animation = 'dropDiscoBall 1s forwards';
+            
+            // 3. Iniciar video después de 0.8s (cuando la bola está cerca de terminar su caída)
             setTimeout(() => {
                 homeroVideo.style.animation = 'fadeIn 2s forwards';
-                playVideo(homeroVideo);
-            }, 1000);
+                homeroVideo.play().catch(err => console.error(err)); // Iniciar video con el fadeIn
+            }, 800); 
         });
     });
 }
 
-// Easter Egg Secundario (Logo)
+// Easter Egg Logo Patata
 if (logoImage) {
     logoImage.addEventListener('click', () => {
         if (canActivateEasterEgg()) {
@@ -255,7 +261,8 @@ document.getElementById('closeButton').addEventListener('click', () => {
     discoBall.style.animation = '';
     homeroVideo.style.animation = '';
     homeroVideo.pause();
-    homeroVideo.muted = true;
+    homeroVideo.muted = false;
+    homeroVideo.currentTime = 0;
 });
 
 document.getElementById('closeSecondButton').addEventListener('click', () => {
@@ -380,7 +387,7 @@ window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
         initializeParticles();
-    }, 150); // Esperar 250ms después del último evento resize
+    }, 150); // Esperar después del último evento resize
 });
 
 // Initialize theme and particles in correct order
