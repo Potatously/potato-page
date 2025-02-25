@@ -278,8 +278,22 @@ function activateGAudio() {
     });
 }
 
+// Destruir partículas al cambiar de página
+function destroyParticles() {
+    if (window.pJSDom && Array.isArray(window.pJSDom)) {
+        window.pJSDom.forEach((pJSInstance, index) => {
+            if (pJSInstance?.pJS?.fn?.vendors?.destroy) {
+                pJSInstance.pJS.fn.vendors.destroy(); // Destruir canvas
+                window.pJSDom[index] = null;
+            }
+        });
+        window.pJSDom = [];
+    }
+}
+
 // Función mejorada de inicialización de partículas
 function initializeParticles() {
+    destroyParticles();
     const isMobile = window.innerWidth <= 768 || window.devicePixelRatio >= 2; // Considera alta densidad
     
     particlesJS('particles-js', {
@@ -332,40 +346,41 @@ function initializeParticles() {
 }
 
 function updateParticlesColor(theme) {
-    if (!window.pJSDom || !window.pJSDom[0]) return;
-    const pJSDom = window.pJSDom;
-    if (!pJSDom || !Array.isArray(pJSDom) || !pJSDom[0] || !pJSDom[0].pJS) {
-        console.warn('Particles.js no está inicializado correctamente');
-        return;
-    }
-    
+    // ===== Validaciones actualizadas =====
+    if (!window.pJSDom || window.pJSDom.length === 0) return;
+    if (!window.pJSDom[0]?.pJS?.particles?.array) return;
+
     const color = theme === 'light-mode' ? '#000000' : '#ffffff';
-    const rgb = theme === 'light-mode' ? {r: 0, g: 0, b: 0} : {r: 255, g: 255, b: 255};
-    
-    const pJS = pJSDom[0].pJS;
-    
-    if (pJS.particles && Array.isArray(pJS.particles.array)) {
-        pJS.particles.array.forEach(particle => {
-            if (particle && particle.color) {
-                particle.color.value = color;
-                particle.color.rgb = rgb;
-            }
-        });
-        
-        if (pJS.particles.line_linked) {
-            pJS.particles.line_linked.color = color;
-            pJS.particles.line_linked.color_rgb_line = rgb;
+    const rgb = theme === 'light-mode' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 };
+    const pJS = window.pJSDom[0].pJS; // <--- Acceso directo y seguro
+
+    // Actualizar partículas
+    pJS.particles.array.forEach(particle => {
+        if (particle?.color) {
+            particle.color.value = color;
+            particle.color.rgb = rgb;
         }
-        
-        if (typeof pJS.fn.particlesRefresh === 'function') {
-            pJS.fn.particlesRefresh();
-        }
+    });
+
+    // Actualizar líneas conectadas
+    if (pJS.particles.line_linked) {
+        pJS.particles.line_linked.color = color;
+        pJS.particles.line_linked.color_rgb_line = rgb;
+    }
+
+    // Forzar actualización visual
+    if (typeof pJS.fn.particlesRefresh === 'function') {
+        pJS.fn.particlesRefresh();
     }
 }
 
-// Añadir listener para actualizar partículas en resize
+// Debounce para resize
+let resizeTimeout;
 window.addEventListener('resize', () => {
-    initializeParticles();
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        initializeParticles();
+    }, 250); // 250ms de espera
 });
 
 // Initialize theme and particles in correct order
