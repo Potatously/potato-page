@@ -4,12 +4,7 @@ const logoImage = document.getElementById('logo-image');
 if (logoImage) {
     logoImage.classList.add('animate-in');
     logoImage.addEventListener('animationend', (e) => {
-        if (!logoImage) return;
-        if (e.animationName === 'fadeInUp') {
-            logoImage.classList.remove('animate-in');
-        } else if (e.animationName === 'shake') {
-            logoImage.classList.remove('shake');
-        }
+        logoImage.classList.remove(e.animationName === 'fadeInUp' ? 'animate-in' : 'shake');  // <-- Limpiar cualquier animación
     });
 }
 
@@ -140,6 +135,17 @@ let timers = {
 };
 
 let userInteracted = false;
+
+// Función handleAudioError
+function handleAudioError(e) {
+    const error = e.target.error;
+    console.error('Error de audio:', {
+        code: error.code,
+        message: error.message,
+        tipo: error instanceof MediaError ? 'MediaError' : 'Error general'
+    });
+}
+
 document.addEventListener('click', () => {
     userInteracted = true;
 });
@@ -243,15 +249,15 @@ async function playAudio(src) {
         return;
     }
     try {
-      const audio = new Audio(src);  
-      audio.addEventListener('error', (e) => {  
-        console.error('Error al cargar el audio:', e.target.error);  
-      });  
-      await audio.play();  
-    } catch (err) {  
-      console.error('Error al reproducir el audio:', err);  
-    }  
-  }  
+        const audio = new Audio(src);
+        audio.preload = 'auto';  // <-- Agregar pre-carga
+        audio.addEventListener('error', handleAudioError);
+        await audio.play();
+    } catch (err) {
+        console.error('Error:', err);
+        throw err;  // <-- Propagar error
+    }
+}
   
   async function playVideo(video) {
     if (!video) {
@@ -262,15 +268,16 @@ async function playAudio(src) {
         console.warn('Reproducción bloqueada: el usuario no ha interactuado');
         return;
     }
-    try { 
-      video.addEventListener('error', (e) => {  
-        console.error('Error al cargar el video:', e.target.error);  
-      });  
-      await video.play();  
-    } catch (err) {  
-      console.error('Error al reproducir el video:', err);  
-    }  
-  }
+    try {
+        video.muted = true;  // <-- Forzar muted inicial para autoplay
+        await video.play();
+        video.muted = false;
+    } catch (err) {
+        console.error('Error:', err);
+        video.muted = false;
+        throw err;
+    }
+}
 
 // Manejadores de cierre
 const closeButton = document.getElementById('closeButton'); // 🠖 Guardar en variable
@@ -411,7 +418,7 @@ function updateParticlesColor(theme) {
     });
 
     // Actualizar líneas conectadas
-    if (pJS.particles.line_linked) {
+    if (pJS.particles.line_linked) {  // <-- Validación
         pJS.particles.line_linked.color = color;
         pJS.particles.line_linked.color_rgb_line = rgb;
     }
