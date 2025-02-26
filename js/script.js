@@ -20,8 +20,8 @@ const themeIcon = document.getElementById('theme-icon');
 // Inicialización del tema
 function initializeTheme() {
     const savedTheme = localStorage.getItem('theme');
-    const validThemes = ['light-mode', 'dark-mode']; // Orden consistente
-    const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode';
+    const validThemes = ['light-mode', 'dark-mode'];
+    const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode'; // <-- Tema predeterminado explícito
     
     document.documentElement.classList.remove(...validThemes);
     document.documentElement.classList.add(theme);
@@ -102,24 +102,14 @@ function updateTheme(theme) {
     updateParticlesColor(theme);
 }
 
-themeToggle.addEventListener('click', () => {
-    const root = document.documentElement;
-    const newTheme = root.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
-    root.classList.remove('light-mode', 'dark-mode');
-    root.classList.add(newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateTheme(newTheme);
-});
-
-// Gestión de animaciones del logo
-if (logoImage) {
-    logoImage.classList.add('animate-in');
-    logoImage.addEventListener('animationend', (e) => {
-        if (e.animationName === 'fadeInUp') {
-            logoImage.classList.remove('animate-in');
-        } else if (e.animationName === 'shake') {
-            logoImage.classList.remove('shake');
-        }
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const root = document.documentElement;
+        const newTheme = root.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
+        root.classList.remove('light-mode', 'dark-mode');
+        root.classList.add(newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateTheme(newTheme);
     });
 }
 
@@ -138,6 +128,8 @@ let state = {
     isSecondEastereggActive: false,
     isGAudioPlaying: false,
     gAudioCooldown: false,
+    gAudioTimer1: null,
+    gAudioTimer2: null,
     MAX_COUNTER: 10
 };
 
@@ -188,6 +180,7 @@ function canActivateEasterEgg() {
 
 // Easter Egg Homero
 function activateEasteregg() {
+    if (!homeroVideo) return;
     homeroVideo.currentTime = 0;
     state.isEastereggActive = true;
     eastereggOverlay.style.display = 'flex';
@@ -214,8 +207,9 @@ if (logoImage) {
     logoImage.addEventListener('click', () => {
         if (canActivateEasterEgg()) {
             logoImage.classList.remove('shake');
-            void logoImage.offsetWidth; // Forzar reflow para reiniciar la animación
-            logoImage.classList.add('shake');
+            setTimeout(() => { // <-- Retraso añadido
+                logoImage.classList.add('shake');
+            }, 10);
 
             // Lógica del contador de clics
             state.clickCount++;
@@ -244,8 +238,11 @@ function activateSecondEasteregg() {
 
 // Utilidades para media
 async function playAudio(src) {
-    if (!userInteracted) return; // No reproducir sin interacción
-    try {  
+    if (!userInteracted) {
+        console.warn('Reproducción bloqueada: el usuario no ha interactuado');
+        return;
+    }
+    try {
       const audio = new Audio(src);  
       audio.addEventListener('error', (e) => {  
         console.error('Error al cargar el audio:', e.target.error);  
@@ -257,8 +254,15 @@ async function playAudio(src) {
   }  
   
   async function playVideo(video) {
-    if (!userInteracted) return; // No reproducir sin interacción
-    try {  
+    if (!video) {
+        console.error('Elemento video no encontrado');
+        return;
+    }
+    if (!userInteracted) {
+        console.warn('Reproducción bloqueada: el usuario no ha interactuado');
+        return;
+    }
+    try { 
       video.addEventListener('error', (e) => {  
         console.error('Error al cargar el video:', e.target.error);  
       });  
@@ -282,6 +286,8 @@ if (closeButton) { // 🠖 Solo si el elemento existe
         homeroVideo.pause();
         homeroVideo.muted = false;
         homeroVideo.currentTime = 0;
+        if (state.gAudioTimer1) clearTimeout(state.gAudioTimer1);
+        if (state.gAudioTimer2) clearTimeout(state.gAudioTimer2);
     });
 }
 
@@ -298,12 +304,22 @@ if (closeSecondButton) { // 🠖 Solo si el elemento existe
 
 // Audio Easter Egg
 function activateGAudio() {
+    // Limpiar temporizadores previos (si existen)
+    if (state.gAudioTimer1) clearTimeout(state.gAudioTimer1);
+    if (state.gAudioTimer2) clearTimeout(state.gAudioTimer2);
+
     state.isGAudioPlaying = true;
     playAudio('./audio/pichon.mp3').then(() => {
-        setTimeout(() => {
+        
+        // Primer temporizador: desactiva isGAudioPlaying después de 2 segundos
+        state.gAudioTimer1 = setTimeout(() => {
             state.isGAudioPlaying = false;
             state.gAudioCooldown = true;
-            setTimeout(() => state.gAudioCooldown = false, 2000);
+
+            // Segundo temporizador: desactiva gAudioCooldown después de otros 2 segundos
+            state.gAudioTimer2 = setTimeout(() => {
+                state.gAudioCooldown = false;
+            }, 2000);
         }, 2000);
     });
 }
