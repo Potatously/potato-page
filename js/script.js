@@ -20,9 +20,10 @@ const themeIcon = document.getElementById('theme-icon');
 // Inicialización del tema
 function initializeTheme() {
     const savedTheme = localStorage.getItem('theme');
-    const validThemes = ['dark-mode', 'light-mode'];
+    const validThemes = ['light-mode', 'dark-mode']; // Orden consistente
     const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode';
     
+    document.documentElement.classList.remove(...validThemes);
     document.documentElement.classList.add(theme);
     themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
 
@@ -79,17 +80,17 @@ console.log(`
   ╚═╝      ╚═════╝    ╚═╝   ╚═╝  ╚═╝   ╚═╝    ╚═════╝    | Mienta
 `)
 
-// Función unificada de actualización de tema
+// Función updateTheme
 function updateTheme(theme) {
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');  
     if (themeColorMeta) {  
         themeColorMeta.setAttribute('content', theme === 'light-mode' ? '#ffffff' : '#0a0a0b');  
     }
 
-    themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
     if (logoImage) {
         logoImage.src = theme === 'light-mode' ? './images/papa-negra.png' : './images/papa-blanca.png';
     }
+
     if (socialIcons.length > 0) {
         socialIcons.forEach(icon => {
             icon.src = theme === 'light-mode' 
@@ -268,23 +269,32 @@ async function playAudio(src) {
   }
 
 // Manejadores de cierre
-document.getElementById('closeButton').addEventListener('click', () => {
-    state.isEastereggActive = false;
-    eastereggOverlay.style.display = 'none';
-    discoBall.style.animation = '';
-    homeroVideo.style.animation = '';
-    homeroVideo.pause();
-    homeroVideo.muted = false;
-    homeroVideo.currentTime = 0;
-});
+const closeButton = document.getElementById('closeButton'); // 🠖 Guardar en variable
+const closeSecondButton = document.getElementById('closeSecondButton'); // 🠖 Guardar en variable
 
-document.getElementById('closeSecondButton').addEventListener('click', () => {
-    state.isSecondEastereggActive = false;
-    secondEastereggOverlay.style.display = 'none';
-    secondVideo.style.animation = '';
-    secondVideo.pause();
-    secondVideo.currentTime = 0;
-});
+// Validar closeButton
+if (closeButton) { // 🠖 Solo si el elemento existe
+    closeButton.addEventListener('click', () => {
+        state.isEastereggActive = false;
+        eastereggOverlay.style.display = 'none';
+        discoBall.style.animation = '';
+        homeroVideo.style.animation = '';
+        homeroVideo.pause();
+        homeroVideo.muted = false;
+        homeroVideo.currentTime = 0;
+    });
+}
+
+// Validar closeSecondButton
+if (closeSecondButton) { // 🠖 Solo si el elemento existe
+    closeSecondButton.addEventListener('click', () => {
+        state.isSecondEastereggActive = false;
+        secondEastereggOverlay.style.display = 'none';
+        secondVideo.style.animation = '';
+        secondVideo.pause();
+        secondVideo.currentTime = 0;
+    });
+}
 
 // Audio Easter Egg
 function activateGAudio() {
