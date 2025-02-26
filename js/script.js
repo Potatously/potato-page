@@ -22,7 +22,7 @@ function initializeTheme() {
     document.documentElement.classList.add(theme);
     themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
 
-    if (socialIcons.length > 0) {
+    if (socialIcons && socialIcons.length > 0) { // <-- Verificación explícita
         socialIcons.forEach(icon => {
             icon.src = theme === 'light-mode' 
                 ? './images/linktree-black-icon.svg' 
@@ -249,13 +249,15 @@ async function playAudio(src) {
         return;
     }
     try {
-        const audio = new Audio(src);
-        audio.preload = 'auto';  // <-- Agregar pre-carga
+        const audio = new Audio(src); // <-- Usar el parámetro "src"
+        audio.preload = 'auto';
         audio.addEventListener('error', handleAudioError);
-        await audio.play();
+        await audio.play(); // <-- Reproducir el audio correctamente
     } catch (err) {
-        console.error('Error:', err);
-        throw err;  // <-- Propagar error
+        console.error('Error al activar Easter egg:', err);
+        state.isEastereggActive = false;
+        eastereggOverlay.style.display = 'none';
+        throw err; // <-- Propagar el error para manejo externo
     }
 }
   
@@ -328,6 +330,14 @@ function activateGAudio() {
                 state.gAudioCooldown = false;
             }, 2000);
         }, 2000);
+
+    // Limpiar temporizadores
+    }).catch((err) => {
+        console.error('Error en audio "G":', err);
+        clearTimeout(state.gAudioTimer1); // <-- Limpiar temporizadores
+        clearTimeout(state.gAudioTimer2);
+        state.isGAudioPlaying = false;
+        state.gAudioCooldown = false;
     });
 }
 
@@ -401,13 +411,26 @@ function initializeParticles() {
 }
 
 function updateParticlesColor(theme) {
-    // ===== Validaciones actualizadas =====
-    if (!window.pJSDom || window.pJSDom.length === 0 || !window.pJSDom[0]?.pJS) return;
-    if (!window.pJSDom[0]?.pJS?.particles?.array) return;
+    // Validaciones
+    if (!window.pJSDom || 
+        !Array.isArray(window.pJSDom) || 
+        window.pJSDom.length === 0 || 
+        !window.pJSDom[0]?.pJS || 
+        !window.pJSDom[0].pJS.particles?.array
+    ) {
+        return; // <-- Salir si no hay partículas inicializadas
+    }
 
+    const pJS = window.pJSDom[0].pJS;
+    if (
+        !pJS.particles.line_linked ||  // <-- Verificar si "line_linked" existe
+        !pJS.fn?.particlesRefresh       // <-- Verificar si la función de actualización existe
+    ) {
+        return; // Salir si falta alguna propiedad crítica
+    }
+    
     const color = theme === 'light-mode' ? '#000000' : '#ffffff';
     const rgb = theme === 'light-mode' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 };
-    const pJS = window.pJSDom[0].pJS; // <--- Acceso directo y seguro
 
     // Actualizar partículas
     pJS.particles.array.forEach(particle => {
