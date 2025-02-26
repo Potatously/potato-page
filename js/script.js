@@ -13,10 +13,7 @@ if (logoImage) {
     });
 }
 
-const socialIcon = document.querySelector('.social-icon');
-if (socialIcon) {
-    // Código que dependa de socialIcon (si lo hay aquí)
-}
+const socialIcons = document.querySelectorAll('.social-links .social-icon'); // Plural + querySelectorAll
 
 const themeIcon = document.getElementById('theme-icon');
 
@@ -27,6 +24,16 @@ function initializeTheme() {
     const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode';
     
     document.documentElement.classList.add(theme);
+    themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
+
+    if (socialIcons.length > 0) {
+        socialIcons.forEach(icon => {
+            icon.src = theme === 'light-mode' 
+                ? './images/linktree-black-icon.svg' 
+                : './images/linktree-white-icon.svg';
+        });
+    }
+
     updateTheme(theme);
 }
 
@@ -83,9 +90,14 @@ function updateTheme(theme) {
     if (logoImage) {
         logoImage.src = theme === 'light-mode' ? './images/papa-negra.png' : './images/papa-blanca.png';
     }
-    if (socialIcon) {
-        socialIcon.src = theme === 'light-mode' ? './images/linktree-black-icon.svg' : './images/linktree-white-icon.svg';
+    if (socialIcons.length > 0) {
+        socialIcons.forEach(icon => {
+            icon.src = theme === 'light-mode' 
+                ? './images/linktree-black-icon.svg' 
+                : './images/linktree-white-icon.svg';
+        });
     }
+    
     updateParticlesColor(theme);
 }
 
@@ -184,8 +196,9 @@ function activateEasteregg() {
     playAudio('./audio/puertazo.mp3').then(() => {
         // 2. Iniciar animación de la bola disco junto al audio
         requestAnimationFrame(() => {
-            discoBall.style.animation = 'dropDiscoBall 1s forwards';
-            
+            if (discoBall) {
+                discoBall.style.animation = 'dropDiscoBall 1s forwards';
+            }            
             // 3. Iniciar video después de 0.8s (cuando la bola está cerca de terminar su caída)
             setTimeout(() => {
                 homeroVideo.style.animation = 'fadeIn 2s forwards';
@@ -300,6 +313,8 @@ function destroyParticles() {
 
 // Función mejorada de inicialización de partículas
 function initializeParticles() {
+    console.log('particlesJS disponible?', !!window.particlesJS); // Debug
+    if (!window.particlesJS) return; // Si particles.min.js no cargó, salir
     destroyParticles();
     const isMobile = window.innerWidth <= 768 || window.devicePixelRatio >= 2; // Considera alta densidad
     
@@ -354,7 +369,7 @@ function initializeParticles() {
 
 function updateParticlesColor(theme) {
     // ===== Validaciones actualizadas =====
-    if (!window.pJSDom || window.pJSDom.length === 0) return;
+    if (!window.pJSDom || window.pJSDom.length === 0 || !window.pJSDom[0]?.pJS) return;
     if (!window.pJSDom[0]?.pJS?.particles?.array) return;
 
     const color = theme === 'light-mode' ? '#000000' : '#ffffff';
