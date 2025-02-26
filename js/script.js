@@ -147,7 +147,7 @@ function handleAudioError(e) {
 }
 
 document.addEventListener('click', () => {
-    userInteracted = true;
+    if (!userInteracted) userInteracted = true;
 });
 
 // Manejador de Easter Egg "P"
@@ -244,6 +244,9 @@ function activateSecondEasteregg() {
 
 // Utilidades para media
 async function playAudio(src) {
+    if (!src || !src.startsWith('./audio/')) {
+        throw new Error('Ruta de audio inválida');
+    }
     if (!userInteracted) {
         console.warn('Reproducción bloqueada: el usuario no ha interactuado');
         return;
@@ -276,7 +279,6 @@ async function playAudio(src) {
         video.muted = false;
     } catch (err) {
         console.error('Error:', err);
-        video.muted = false;
         throw err;
     }
 }
@@ -288,6 +290,8 @@ const closeSecondButton = document.getElementById('closeSecondButton'); // 🠖 
 // Validar closeButton
 if (closeButton) { // 🠖 Solo si el elemento existe
     closeButton.addEventListener('click', () => {
+        discoBall.style.removeProperty('animation');
+        discoBall.style.top = '-100px'; // Resetear posición inicial
         state.isEastereggActive = false;
         eastereggOverlay.style.display = 'none';
         discoBall.style.animation = '';
@@ -356,8 +360,11 @@ function destroyParticles() {
 
 // Función mejorada de inicialización de partículas
 function initializeParticles() {
+    if (!window.particlesJS) {
+        console.error("Error crítico: particles.min.js no se cargó correctamente.");
+        return;
+    }
     console.log('particlesJS disponible?', !!window.particlesJS); // Debug
-    if (!window.particlesJS) return; // Si particles.min.js no cargó, salir
     destroyParticles();
     const isMobile = window.innerWidth <= 768 || window.devicePixelRatio >= 2; // Considera alta densidad
     
@@ -428,7 +435,7 @@ function updateParticlesColor(theme) {
     ) {
         return; // Salir si falta alguna propiedad crítica
     }
-    
+
     const color = theme === 'light-mode' ? '#000000' : '#ffffff';
     const rgb = theme === 'light-mode' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 };
 
@@ -465,6 +472,19 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     initializeParticles();
+
+    // Simular interacción "fantasma" solo si no hay una real
+    const simulateInteraction = () => {
+        if (!userInteracted) {
+            document.documentElement.dispatchEvent(new Event('click', { bubbles: true }));
+            userInteracted = true;
+        }
+    };
+
+    // Intentar activar en eventos pasivos
+    document.addEventListener('mousemove', simulateInteraction, { once: true });
+    document.addEventListener('keydown', simulateInteraction, { once: true });
+    document.addEventListener('touchstart', simulateInteraction, { once: true });
 });
 
 // Prevenir selección de texto

@@ -11,6 +11,12 @@
     --main-padding-mobile: 1rem;
 }
 
+:root.dark-mode {
+    --primary-bg: #0a0a0b;
+    --primary-text: #ffffff;
+    --primary-text-transparent: rgba(255, 255, 255, 0.2);
+}
+
 :root.light-mode {
     --primary-bg: #ffffff;
     --primary-text: #000000;
