@@ -16,10 +16,10 @@ const themeIcon = document.getElementById('theme-icon');
 function initializeTheme() {
     const savedTheme = localStorage.getItem('theme');
     const validThemes = ['light-mode', 'dark-mode'];
-    const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode'; // <-- Tema predeterminado explícito
-    
+    const theme = validThemes.includes(savedTheme) ? savedTheme : 'dark-mode';
+    document.documentElement.classList.add(theme); // Forzar tema válido        
     document.documentElement.classList.remove(...validThemes);
-    document.documentElement.classList.add(theme);
+
     themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
 
     if (socialIcons && socialIcons.length > 0) { // <-- Verificación explícita
@@ -86,7 +86,15 @@ function updateTheme(theme) {
         logoImage.src = theme === 'light-mode' ? './images/papa-negra.png' : './images/papa-blanca.png';
     }
 
-    if (socialIcons.length > 0) {
+    if (themeIcon) {
+        themeIcon.style.animation = 'none'; // <-- Resetear animación
+        setTimeout(() => { // Forzar reflow
+            themeIcon.style.animation = '';
+        }, 10);
+        themeIcon.src = theme === 'dark-mode' ? './images/luna.png' : './images/sol.png';
+    }
+
+    if (socialIcons && socialIcons.length > 0) { // Verificar existencia primero
         socialIcons.forEach(icon => {
             icon.src = theme === 'light-mode' 
                 ? './images/linktree-black-icon.svg' 
@@ -147,7 +155,13 @@ function handleAudioError(e) {
 }
 
 document.addEventListener('click', () => {
-    if (!userInteracted) userInteracted = true;
+    if (!userInteracted) {
+        userInteracted = true;
+        // Quitar mute de todos los videos
+        document.querySelectorAll('video').forEach(video => {
+            video.muted = false;
+        });
+    }
 });
 
 // Manejador de Easter Egg "P"
@@ -202,6 +216,7 @@ function activateEasteregg() {
             // 3. Iniciar video después de 0.8s (cuando la bola está cerca de terminar su caída)
             setTimeout(() => {
                 homeroVideo.style.animation = 'fadeIn 2s forwards';
+                homeroVideo.muted = !userInteracted; // Aplicar mute según interacción
                 homeroVideo.play().catch(err => console.error(err)); // Iniciar video con el fadeIn
             }, 800); 
         });
@@ -234,7 +249,7 @@ if (logoImage) {
 function activateSecondEasteregg() {
     state.isSecondEastereggActive = true;
     secondEastereggOverlay.style.display = 'flex';
-    secondVideo.muted = false;
+    secondVideo.muted = !userInteracted;
     secondVideo.currentTime = 0;
     requestAnimationFrame(() => {
         secondVideo.style.animation = 'fadeIn 2s forwards';
@@ -264,7 +279,7 @@ async function playAudio(src) {
     }
 }
   
-  async function playVideo(video) {
+async function playVideo(video) {
     if (!video) {
         console.error('Elemento video no encontrado');
         return;
@@ -274,9 +289,9 @@ async function playAudio(src) {
         return;
     }
     try {
-        video.muted = true;  // <-- Forzar muted inicial para autoplay
+        // Actualizar muted basado en la interacción actual
+        video.muted = !userInteracted; // <-- Forzar actualización
         await video.play();
-        video.muted = false;
     } catch (err) {
         console.error('Error:', err);
         throw err;
@@ -288,7 +303,7 @@ const closeButton = document.getElementById('closeButton'); // 🠖 Guardar en v
 const closeSecondButton = document.getElementById('closeSecondButton'); // 🠖 Guardar en variable
 
 // Validar closeButton
-if (closeButton) { // 🠖 Solo si el elemento existe
+if (closeButton && closeButton instanceof HTMLElement) { // Verificación estricta
     closeButton.addEventListener('click', () => {
         discoBall.style.removeProperty('animation');
         discoBall.style.top = '-100px'; // Resetear posición inicial
@@ -297,7 +312,7 @@ if (closeButton) { // 🠖 Solo si el elemento existe
         discoBall.style.animation = '';
         homeroVideo.style.animation = '';
         homeroVideo.pause();
-        homeroVideo.muted = false;
+        homeroVideo.muted = true;
         homeroVideo.currentTime = 0;
         if (state.gAudioTimer1) clearTimeout(state.gAudioTimer1);
         if (state.gAudioTimer2) clearTimeout(state.gAudioTimer2);
@@ -305,7 +320,7 @@ if (closeButton) { // 🠖 Solo si el elemento existe
 }
 
 // Validar closeSecondButton
-if (closeSecondButton) { // 🠖 Solo si el elemento existe
+if (closeSecondButton instanceof HTMLElement) {
     closeSecondButton.addEventListener('click', () => {
         state.isSecondEastereggActive = false;
         secondEastereggOverlay.style.display = 'none';
@@ -448,7 +463,7 @@ function updateParticlesColor(theme) {
     });
 
     // Actualizar líneas conectadas
-    if (pJS.particles.line_linked) {  // <-- Validación
+    if (pJS.particles.line_linked) {  // Validar existencia
         pJS.particles.line_linked.color = color;
         pJS.particles.line_linked.color_rgb_line = rgb;
     }
@@ -472,19 +487,6 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     initializeParticles();
-
-    // Simular interacción "fantasma" solo si no hay una real
-    const simulateInteraction = () => {
-        if (!userInteracted) {
-            document.documentElement.dispatchEvent(new Event('click', { bubbles: true }));
-            userInteracted = true;
-        }
-    };
-
-    // Intentar activar en eventos pasivos
-    document.addEventListener('mousemove', simulateInteraction, { once: true });
-    document.addEventListener('keydown', simulateInteraction, { once: true });
-    document.addEventListener('touchstart', simulateInteraction, { once: true });
 });
 
 // Prevenir selección de texto
