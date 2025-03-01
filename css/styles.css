@@ -1,46 +1,52 @@
+/* Variables globales para temas */
 :root {
     --primary-bg: #0a0a0b;
     --primary-text: #ffffff;
     --secondary-text: #666666;
     --transition-speed: 0.3s;
     --primary-text-transparent: rgba(255, 255, 255, 0.2);
-    
+  
     /* Variables para tamaños responsivos */
     --header-height-mobile: 60px;
     --nav-spacing-mobile: 0.75rem;
     --main-padding-mobile: 1rem;
-}
-
-:root.dark-mode {
+  }
+  
+  /* Configuración de temas claro y oscuro */
+  :root.dark-mode {
     --primary-bg: #0a0a0b;
     --primary-text: #ffffff;
     --primary-text-transparent: rgba(255, 255, 255, 0.2);
-}
-
-:root.light-mode {
+  }
+  
+  :root.light-mode {
     --primary-bg: #ffffff;
     --primary-text: #000000;
     --primary-text-transparent: rgba(0, 0, 0, 0.2);
-}
-
-* {
+  }
+  
+  /* Reseteo básico y configuración global */
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-*::-webkit-scrollbar {
+  }
+  
+  /* Ocultar barras de desplazamiento en todos los navegadores */
+  *::-webkit-scrollbar {
     display: none !important; /* Chrome/Safari/Edge */
-}
-
-html, body {
+  }
+  
+  /* Estilos base para HTML y body */
+  html,
+  body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     -webkit-touch-callout: none; /* Evita el menú contextual en iOS */
     scrollbar-width: none !important;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "JetBrains Mono", monospace;
     background-color: var(--primary-bg);
     color: var(--primary-text);
     display: flex;
@@ -48,69 +54,121 @@ html, body {
     min-height: 100vh;
     width: 100%;
     position: relative;
-    overflow-x: hidden;
     overflow-y: auto;
-}
-
-/* Permite selección en campos de texto y contenido editable */
-input,
-textarea,
-[contenteditable] {
-    -webkit-user-select: auto !important;
-    -moz-user-select: auto !important;
-    -ms-user-select: auto !important;
-    user-select: auto !important;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes shake {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    20%, 80% { transform: translate3d(2px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
-}
-
-@keyframes dropDiscoBall {
-    from { top: -100px; }
-    to { top: 20px; }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.animate-in {
+    font-size: 16px;
+  }
+  
+  /* Configuración de z-index para elementos principales */
+  header,
+  main,
+  .theme-toggle {
+    position: relative;
+    z-index: 1;
+    pointer-events: none; /* Permite hacer clic a través de ellos */
+  }
+  
+  header *,
+  main *,
+  .theme-toggle * {
+    pointer-events: auto; /* Restaura interactividad en elementos hijos */
+  }
+  
+  /* Fondo para el body */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+  
+  /* Animaciones */
+  @-webkit-keyframes fadeInUp {
+    /* Prefijo para Safari */
+    from {
+      opacity: 0;
+      -webkit-transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+  
+  @keyframes dropDiscoBall {
+    from {
+      top: -100px;
+    }
+    to {
+      top: 20px;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Clases de animación reutilizables */
+  .animate-in {
+    -webkit-animation: fadeInUp 0.6s ease forwards;
     animation: fadeInUp 0.6s ease forwards;
-    will-change: transform, opacity;
-}
-
-.shake {
-    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both !important;
-}
-
-img {
+  }
+  
+  .shake {
+    -webkit-animation: shake 0.5s both !important;
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+  }
+  
+  /* Prevenir arrastre de imágenes */
+  img {
     -webkit-touch-callout: none;
     -webkit-user-drag: none;
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
-}
-
-html {
-    font-size: 16px;
-    overflow-x: hidden;
-    width: 100%;
-}
-
-
-
-/* Header styles */
-header {
+  }
+  
+  /* Estilos del encabezado */
+  header {
     position: relative;
     z-index: 1;
     display: flex;
@@ -118,50 +176,51 @@ header {
     align-items: center;
     padding: 1rem;
     width: 100%;
-}
-
-.logo {
+  }
+  
+  /* Estilos del logo */
+  .logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     flex-shrink: 0;
-}
-
-.brand-header {
+  }
+  
+  .brand-header {
     margin: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-.logo img {
+  }
+  
+  .logo img {
     width: 40px;
     height: 40px;
     cursor: pointer;
-}
-
-.logo-text {
+  }
+  
+  .logo-text {
     font-size: 1.5rem;
     font-weight: bold;
     text-decoration: none;
     color: inherit;
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.4s;
-}
-
-/* Navigation styles */
-.nav-right {
+  }
+  
+  /* Estilos de navegación */
+  .nav-right {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-}
-
-.nav-links {
+  }
+  
+  .nav-links {
     display: flex;
     gap: 1.5rem;
-}
-
-.nav-links a {
+  }
+  
+  .nav-links a {
     text-decoration: none;
     color: inherit;
     font-size: 20px;
@@ -173,46 +232,50 @@ header {
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.4s;
     cursor: pointer;
-}
-
-.social-links {
+  }
+  
+  /* Enlaces sociales */
+  .social-links {
     display: flex;
     align-items: center;
-}
-
-.social-links .hoverable {
+  }
+  
+  .social-links .hoverable {
     padding-left: 20px;
     display: flex;
     align-items: center;
-}
-
-.social-icon {
+  }
+  
+  .social-icon {
     width: 24px;
     height: 24px;
     animation: fadeInUp 0.6s ease forwards;
-}
-
-.separator {
+  }
+  
+  /* Separador visual en la navegación */
+  .separator {
     height: 28px;
     width: 2px;
     background-color: var(--primary-text);
     margin-left: 18px;
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.2s;
-}
-
-:root.light-mode .social-icon {
+  }
+  
+  /* Ajuste de iconos sociales en modo claro */
+  :root.light-mode .social-icon {
     filter: brightness(0);
-}
-
-.hoverable {
+  }
+  
+  /* Efecto hover para enlaces */
+  .hoverable {
     position: relative;
     padding-left: 20px;
     transition: padding-left var(--transition-speed);
-}
-
-.hoverable::before {
-    content: '>';
+  }
+  
+  .hoverable::before {
+    content: ">";
     position: absolute;
     left: 0;
     transition: opacity var(--transition-speed);
@@ -220,18 +283,18 @@ header {
     color: var(--primary-text);
     font-weight: bold;
     font-size: 1.25rem; /* Equivalente a 20px si el root es 16px */
-}
-
-.hoverable:hover {
+  }
+  
+  .hoverable:hover {
     padding-left: 25px;
-}
-
-.hoverable:hover::before {
+  }
+  
+  .hoverable:hover::before {
     opacity: 1;
-}
-
-/* Main content styles */
-main {
+  }
+  
+  /* Estilos del contenido principal */
+  main {
     position: relative;
     z-index: 1;
     flex: 1;
@@ -243,43 +306,44 @@ main {
     text-align: center;
     width: 100%;
     padding-bottom: 2rem;
-}
-
-.potato-icon {
+  }
+  
+  /* Icono de patata */
+  .potato-icon {
     width: min(100px, 20vw);
     height: auto;
     margin-bottom: 1rem;
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.6s;
     order: 1;
-}
-
-.hero-section {
+  }
+  
+  /* Sección hero */
+  .hero-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-}
-
-.main-title {
-    font-family: 'Atkinson Hyperlegible', sans-serif;
+  }
+  
+  /* Título principal */
+  .main-title {
+    font-family: "Atkinson Hyperlegible", sans-serif;
     font-size: clamp(2rem, 10vw, 5.625rem);
     text-align: center;
     margin-bottom: 0.25rem;
     line-height: 1.1;
     width: 100%;
-    text-shadow: 0 0 4px var(--primary-text-transparent),
-     0 0 8px var(--primary-text-transparent),
-     0 0 12px var(--primary-text-transparent),
-     0 0 16px rgba(217, 217, 217, 0.18),
-     0 0 20px rgba(217, 217, 217, 0.18);
+    text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+      var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
     opacity: 0;
     animation: fadeInUp 0.6s ease forwards 0.8s;
     order: 2;
-}
-
-.subtitle {
-    font-family: 'Atkinson Hyperlegible', sans-serif;
+  }
+  
+  /* Subtítulo */
+  .subtitle {
+    font-family: "Atkinson Hyperlegible", sans-serif;
     font-size: clamp(1rem, 3vw, 1.5rem);
     font-style: italic;
     line-height: 3;
@@ -288,9 +352,10 @@ main {
     animation: fadeInUp 0.6s ease forwards 1s;
     font-weight: normal;
     order: 3;
-}
-
-.visually-hidden {
+  }
+  
+  /* Clase para ocultar elementos visualmente pero mantenerlos accesibles */
+  .visually-hidden {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -300,21 +365,10 @@ main {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
-}
-
-/* Theme toggle and particles */
-#particles-js {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.theme-toggle {
+  }
+  
+  /* Botón de cambio de tema */
+  .theme-toggle {
     position: absolute;
     bottom: 22px;
     right: 22px;
@@ -331,15 +385,15 @@ main {
     opacity: 0;
     animation: fadeInUp 0.8s ease forwards 1.2s;
     z-index: 2;
-}
-
-.theme-toggle img {
+  }
+  
+  .theme-toggle img {
     width: 18px;
     height: 18px;
-}
-
-.theme-toggle::before {
-    content: '>';
+  }
+  
+  .theme-toggle::before {
+    content: ">";
     position: absolute;
     left: -24px;
     opacity: 0;
@@ -347,15 +401,15 @@ main {
     color: var(--primary-text);
     font-weight: bold;
     font-size: 20px;
-}
-
-.theme-toggle:hover::before {
+  }
+  
+  .theme-toggle:hover::before {
     opacity: 1;
-}
-
-/* Footer */
-.footer {
-    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Pie de página */
+  .footer {
+    font-family: "Roboto", sans-serif;
     font-size: 12px;
     color: var(--secondary-text);
     text-align: center;
@@ -368,19 +422,19 @@ main {
     opacity: 0;
     animation: fadeInUp 0.8s ease forwards 1.2s;
     z-index: 1;
-}
-
-.footer a {
+  }
+  
+  .footer a {
     color: var(--secondary-text);
     text-decoration: underline;
-}
-
-.footer a:hover {
+  }
+  
+  .footer a:hover {
     opacity: 1;
-}
-
-/* Easter egg styles */
-.easteregg-overlay {
+  }
+  
+  /* Estilos para Easter eggs */
+  .easteregg-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -391,9 +445,9 @@ main {
     display: none;
     justify-content: center;
     align-items: center;
-}
-
-.close-button {
+  }
+  
+  .close-button {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -406,9 +460,9 @@ main {
     font-size: 20px;
     cursor: pointer;
     z-index: 1003;
-}
-
-.disco-ball {
+  }
+  
+  .disco-ball {
     position: absolute;
     top: -100px;
     left: 50%;
@@ -416,223 +470,227 @@ main {
     width: 150px;
     height: 150px;
     z-index: 1002;
-}
-
-.homero-video,
-.second-video {
+  }
+  
+  .homero-video,
+  .second-video {
     position: relative;
     z-index: 1001;
     width: 60%;
     max-width: 800px;
     opacity: 0;
-}
-
-/* Tablets (768px - 1024px) */
-@media (max-width: 1024px) {
+  }
+  
+  /* Media queries para diseño responsivo */
+  /* Tablets (768px - 1024px) */
+  @media (max-width: 1024px) {
     .main-title {
-        font-size: clamp(2.5rem, 8vw, 4rem);
-        margin-bottom: 0.5rem;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      margin-bottom: 0.5rem;
     }
-
+  
     .subtitle {
-        font-size: clamp(1rem, 2.5vw, 1.25rem);
-        line-height: 2.5;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      line-height: 2.5;
     }
-
+  
     .nav-links a {
-        font-size: 18px;
+      font-size: 18px;
     }
-}
-
-/* Tablets pequeñas y móviles grandes (481px - 767px) */
-@media (max-width: 768px) {
+  }
+  
+  /* Tablets pequeñas y móviles grandes (481px - 767px) */
+  @media (max-width: 768px) {
     header {
-        flex-direction: column;
-        gap: 1rem;
-        padding: var(--nav-spacing-mobile);
-        position: relative;
+      flex-direction: column;
+      gap: 1rem;
+      padding: var(--nav-spacing-mobile);
+      position: relative;
     }
-
+  
     .logo {
-        width: 100%;
-        justify-content: center;
+      width: 100%;
+      justify-content: center;
     }
-
+  
     .logo img {
-        width: 35px;
-        height: 35px;
+      width: 35px;
+      height: 35px;
     }
-
+  
     .nav-right {
-        flex-direction: column;
-        gap: 0.75rem;
-        width: 100%;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
     }
-
+  
     .social-links {
-        justify-content: center;
+      justify-content: center;
     }
-
+  
     .nav-links {
-        justify-content: space-around;
-        width: 100%;
-        gap: 0.75rem;
+      justify-content: space-around;
+      width: 100%;
+      gap: 0.75rem;
     }
-
+  
     .nav-links a {
-        font-size: 16px;
-        padding: 0.5rem;
+      font-size: 16px;
+      padding: 0.5rem;
     }
-
+  
     .separator {
-        display: none;
+      display: none;
     }
-
+  
     main {
-        padding: var(--main-padding-mobile);
-        margin-top: 1rem;
+      padding: var(--main-padding-mobile);
+      margin-top: 1rem;
     }
-
+  
     .potato-icon {
-        width: 80px;
-        margin-bottom: 1.5rem;
+      width: 80px;
+      margin-bottom: 1.5rem;
     }
-
-    #particles-js {
-        opacity: 0.5;
-    }
-
+  
     .theme-toggle {
-        bottom: 15px;
-        right: 15px;
-        padding: 8px;
+      bottom: 15px;
+      right: 15px;
+      padding: 8px;
     }
-
+  
     .theme-toggle img {
-        width: 18px;
-        height: 18px;
+      width: 18px;
+      height: 18px;
     }
-}
-
-/* Móviles (hasta 480px) */
-@media (max-width: 480px) {
+  }
+  
+  /* Móviles (hasta 480px) */
+  @media (max-width: 480px) {
     header {
-        padding: 0.5rem;
+      padding: 0.5rem;
     }
-
+  
     main {
-        padding-bottom: 100px; /* Espacio mínimo para el footer */
+      padding-bottom: 100px; /* Espacio mínimo para el footer */
     }
-
+  
     .footer {
-        padding: 20px 0 30px; /* Padding inferior aumentado */
+      padding: 20px 0 30px; /* Padding inferior aumentado */
     }
-
+  
     .logo-text {
-        font-size: 1.25rem;
+      font-size: 1.25rem;
     }
-
+  
     .nav-links {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
-
+  
     .nav-links a {
-        width: 100%;
-        justify-content: center;
-        font-size: 15px;
-        padding: 0.75rem;
-        background-color: var(--primary-bg);
-        border: 1px solid var(--primary-text-transparent);
-        border-radius: 4px;
+      width: 100%;
+      justify-content: center;
+      font-size: 15px;
+      padding: 0.75rem;
+      background-color: var(--primary-bg);
+      border: 1px solid var(--primary-text-transparent);
+      border-radius: 4px;
     }
-
+  
     .main-title {
-        font-size: clamp(2rem, 7vw, 2.5rem);
-        margin-bottom: 0.25rem;
+      font-size: clamp(2rem, 7vw, 2.5rem);
+      margin-bottom: 0.25rem;
     }
-
+  
     .subtitle {
-        font-size: 1rem;
-        line-height: 2;
+      font-size: 1rem;
+      line-height: 2;
     }
-
+  
     .homero-video,
     .second-video {
-        width: 90%;
+      width: 90%;
     }
-
+  
     .disco-ball {
-        width: 100px;
-        height: 100px;
+      width: 100px;
+      height: 100px;
     }
-
+  
     .close-button {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
-        top: 10px;
-        right: 10px;
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      top: 10px;
+      right: 10px;
     }
-}
-
-/* Efecto neón menos brilloso para dispositivos */
-@media only screen and (max-width: 768px) and (hover: none) and (pointer: coarse) {
+  }
+  
+  /* Efecto neón menos brilloso para dispositivos táctiles */
+  @media only screen and (max-width: 768px) and (hover: none) and (pointer: coarse) {
     .main-title {
-        text-shadow: 0 0 1px var(--primary-text-transparent),
-         0 0 2px var(--primary-text-transparent),
-         0 0 4px var(--primary-text-transparent),
-         0 0 6px rgba(217, 217, 217, 0.1),
-         0 0 8px rgba(217, 217, 217, 0.1);
+      text-shadow: 0 0 1px var(--primary-text-transparent), 0 0 2px var(--primary-text-transparent), 0 0 4px
+        var(--primary-text-transparent), 0 0 6px rgba(217, 217, 217, 0.1), 0 0 8px rgba(217, 217, 217, 0.1);
     }
-}
-
-/* Dispositivos muy pequeños */
-@media (max-width: 320px) {
+  }
+  
+  /* Dispositivos muy pequeños */
+  @media (max-width: 320px) {
     .logo img {
-        width: 30px;
-        height: 30px;
+      width: 30px;
+      height: 30px;
     }
-
+  
     .logo-text {
-        font-size: 1.1rem;
+      font-size: 1.1rem;
     }
-
+  
     .nav-links a {
-        font-size: 14px;
-        padding: 0.5rem;
+      font-size: 14px;
+      padding: 0.5rem;
     }
-
+  
     .main-title {
-        font-size: 1.75rem;
+      font-size: 1.75rem;
     }
-
+  
     .subtitle {
-        font-size: 0.9rem;
+      font-size: 0.9rem;
     }
-}
-
-/* Orientación landscape en móviles */
-@media (max-height: 480px) and (orientation: landscape) {
+  }
+  
+  /* Orientación landscape en móviles */
+  @media (max-height: 480px) and (orientation: landscape) {
     header {
-        padding: 0.5rem;
+      padding: 0.5rem;
     }
-
+  
     main {
-        padding: 0.5rem;
+      padding: 0.5rem;
     }
-
+  
     .potato-icon {
-        width: 60px;
-        margin-bottom: 0.75rem;
+      width: 60px;
+      margin-bottom: 0.75rem;
     }
-
+  
     .main-title {
-        font-size: clamp(1.5rem, 5vw, 2rem);
+      font-size: clamp(1.5rem, 5vw, 2rem);
     }
-
+  
     .subtitle {
-        line-height: 1.5;
+      line-height: 1.5;
     }
-}
+  }
+  
+  /* Permitir selección en campos de texto */
+  input,
+  textarea,
+  [contenteditable] {
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+  }
