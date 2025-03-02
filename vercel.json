@@ -1,3 +1,10 @@
 {
-  "middleware": "middleware.js"
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "https://potatously.vercel.app, http://localhost:3000" }
+      ]
+    }
+  ]
 }
