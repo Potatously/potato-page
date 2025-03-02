@@ -44,8 +44,8 @@ console.log(`
 ;(() => {
   // Inicialización de caché de audio para mejor rendimiento
   const audioCache = {
-    puertazo: new Audio("./audio/puertazo.mp3"),
-    pichon: new Audio("./audio/pichon.mp3"),
+    puertazo: new Audio("./assets/audio/puertazo.mp3"),
+    pichon: new Audio("./assets/audio/pichon.mp3"),
   }
 
   // Función para precargar archivos de audio
@@ -177,7 +177,7 @@ console.log(`
 
     // Secuencia de activación:
     // 1. Reproducir audio
-    playAudio("./audio/puertazo.mp3").then(() => {
+    playAudio("./assets/audio/puertazo.mp3").then(() => {
       // 2. Animar bola disco
       requestAnimationFrame(() => {
         if (discoBall) {
@@ -233,7 +233,7 @@ console.log(`
   // Función para reproducir audio de forma segura
   async function playAudio(src) {
     // Validación de seguridad
-    if (!src || !src.startsWith("./audio/")) {
+    if (!src || !src.startsWith("./assets/audio/")) {
       throw new Error("Ruta de audio inválida")
     }
 
@@ -327,7 +327,7 @@ console.log(`
 
     state.isGAudioPlaying = true
 
-    playAudio("./audio/pichon.mp3")
+    playAudio("./assets/audio/pichon.mp3")
       .then(() => {
         // Gestionar estados con temporizadores
         state.gAudioTimer1 = setTimeout(() => {
