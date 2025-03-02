@@ -1,696 +1,988 @@
 /* Variables globales para temas */
 :root {
-    --primary-bg: #0a0a0b;
-    --primary-text: #ffffff;
-    --secondary-text: #666666;
-    --transition-speed: 0.3s;
-    --primary-text-transparent: rgba(255, 255, 255, 0.2);
-  
-    /* Variables para tamaños responsivos */
-    --header-height-mobile: 60px;
-    --nav-spacing-mobile: 0.75rem;
-    --main-padding-mobile: 1rem;
-  }
-  
-  /* Configuración de temas claro y oscuro */
-  :root.dark-mode {
-    --primary-bg: #0a0a0b;
-    --primary-text: #ffffff;
-    --primary-text-transparent: rgba(255, 255, 255, 0.2);
-  }
-  
-  :root.light-mode {
-    --primary-bg: #ffffff;
-    --primary-text: #000000;
-    --primary-text-transparent: rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Reseteo básico y configuración global */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Ocultar barras de desplazamiento en todos los navegadores */
-  *::-webkit-scrollbar {
-    display: none !important; /* Chrome/Safari/Edge */
-  }
-  
-  /* Estilos base para HTML y body */
-  html,
-  body {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none; /* Evita el menú contextual en iOS */
-    scrollbar-width: none !important;
-    font-family: "JetBrains Mono", monospace;
-    background-color: var(--primary-bg);
-    color: var(--primary-text);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100%;
-    position: relative;
-    overflow-y: auto;
-    font-size: 16px;
-  }
-  
-  /* Configuración de z-index para elementos principales */
-  header,
-  main,
-  .theme-toggle {
-    position: relative;
-    z-index: 1;
-    pointer-events: none; /* Permite hacer clic a través de ellos */
-  }
-  
-  header *,
-  main *,
-  .theme-toggle * {
-    pointer-events: auto; /* Restaura interactividad en elementos hijos */
-  }
-  
-  /* Fondo para el body */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-  }
-  
-  /* Animaciones */
-  @-webkit-keyframes fadeInUp {
-    /* Prefijo para Safari */
-    from {
-      opacity: 0;
-      -webkit-transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes shake {
-    10%,
-    90% {
-      transform: translate3d(-1px, 0, 0);
-    }
-    20%,
-    80% {
-      transform: translate3d(2px, 0, 0);
-    }
-    30%,
-    50%,
-    70% {
-      transform: translate3d(-4px, 0, 0);
-    }
-    40%,
-    60% {
-      transform: translate3d(4px, 0, 0);
-    }
-  }
-  
-  @keyframes dropDiscoBall {
-    from {
-      top: -100px;
-    }
-    to {
-      top: 20px;
-    }
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* Clases de animación reutilizables */
-  .animate-in {
-    -webkit-animation: fadeInUp 0.6s ease forwards;
-    animation: fadeInUp 0.6s ease forwards;
-  }
-  
-  .shake {
-    -webkit-animation: shake 0.5s both !important;
-    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
-  }
-  
-  /* Prevenir arrastre de imágenes */
-  img {
-    -webkit-touch-callout: none;
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-  }
-  
-  /* Estilos del encabezado */
-  header {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    width: 100%;
-  }
-  
-  /* Estilos del logo */
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-shrink: 0;
-  }
-  
-  .brand-header {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .logo img {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-  }
-  
-  .logo-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
+  --primary-bg: #0a0a0b;
+  --primary-text: #ffffff;
+  --secondary-text: #666666;
+  --transition-speed: 0.3s;
+  --primary-text-transparent: rgba(255, 255, 255, 0.2);
+  --separator-margin: 15px;
+
+  /* Variables para tamaños responsivos */
+  --header-height-mobile: 60px;
+  --nav-spacing-mobile: 0.75rem;
+  --main-padding-mobile: 1rem;
+}
+
+/* Configuración de temas claro y oscuro */
+:root.dark-mode {
+  --primary-bg: #0a0a0b;
+  --primary-text: #ffffff;
+  --primary-text-transparent: rgba(255, 255, 255, 0.2);
+  --theme-button-bg: #ffffff;
+  --theme-button-text: #000000;
+}
+
+:root.light-mode {
+  --primary-bg: #ffffff;
+  --primary-text: #000000;
+  --primary-text-transparent: rgba(0, 0, 0, 0.2);
+  --theme-button-bg: #000000;
+  --theme-button-text: #ffffff;
+}
+
+/* Reseteo básico y configuración global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ocultar barras de desplazamiento en todos los navegadores */
+*::-webkit-scrollbar {
+  display: none !important; /* Chrome/Safari/Edge */
+}
+
+/* Estilos base para HTML y body */
+html,
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none; /* Evita el menú contextual en iOS */
+  scrollbar-width: none !important;
+  font-family: "Playfair Display", serif;
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-y: auto;
+  font-size: 16px;
+}
+
+/* Configuración de z-index para elementos principales */
+header,
+main {
+  position: relative;
+  z-index: 1;
+  pointer-events: none; /* Permite hacer clic a través de ellos */
+}
+
+header *,
+main * {
+  pointer-events: auto; /* Restaura interactividad en elementos hijos */
+}
+
+/* Fondo para el body */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Animaciones */
+@-webkit-keyframes fadeInUp {
+  /* Prefijo para Safari */
+  from {
     opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.4s;
+    -webkit-transform: translateY(20px);
   }
-  
-  /* Estilos de navegación */
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .nav-links a {
-    text-decoration: none;
-    color: inherit;
-    font-size: 20px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.4s;
-    cursor: pointer;
-  }
-  
-  /* Enlaces sociales */
-  .social-links {
-    display: flex;
-    align-items: center;
-  }
-  
-  .social-links .hoverable {
-    padding-left: 20px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .social-icon {
-    width: 24px;
-    height: 24px;
-    animation: fadeInUp 0.6s ease forwards;
-  }
-  
-  /* Separador visual en la navegación */
-  .separator {
-    height: 28px;
-    width: 2px;
-    background-color: var(--primary-text);
-    margin-left: 18px;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.2s;
-  }
-  
-  /* Ajuste de iconos sociales en modo claro */
-  :root.light-mode .social-icon {
-    filter: brightness(0);
-  }
-  
-  /* Efecto hover para enlaces */
-  .hoverable {
-    position: relative;
-    padding-left: 20px;
-    transition: padding-left var(--transition-speed);
-  }
-  
-  .hoverable::before {
-    content: ">";
-    position: absolute;
-    left: 0;
-    transition: opacity var(--transition-speed);
-    opacity: 0;
-    color: var(--primary-text);
-    font-weight: bold;
-    font-size: 1.25rem; /* Equivalente a 20px si el root es 16px */
-  }
-  
-  .hoverable:hover {
-    padding-left: 25px;
-  }
-  
-  .hoverable:hover::before {
+  to {
     opacity: 1;
+    -webkit-transform: translateY(0);
   }
-  
-  /* Estilos del contenido principal */
-  main {
-    position: relative;
-    z-index: 1;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    text-align: center;
-    width: 100%;
-    padding-bottom: 2rem;
-  }
-  
-  /* Icono de patata */
-  .potato-icon {
-    width: min(100px, 20vw);
-    height: auto;
-    margin-bottom: 1rem;
+}
+
+@keyframes fadeInUp {
+  from {
     opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.6s;
-    order: 1;
+    transform: translateY(20px);
   }
-  
-  /* Sección hero */
-  .hero-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  /* Título principal */
-  .main-title {
-    font-family: "Atkinson Hyperlegible", sans-serif;
-    font-size: clamp(2rem, 10vw, 5.625rem);
-    text-align: center;
-    margin-bottom: 0.25rem;
-    line-height: 1.1;
-    width: 100%;
-    text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
-      var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.8s;
-    order: 2;
-  }
-  
-  /* Subtítulo */
-  .subtitle {
-    font-family: "Atkinson Hyperlegible", sans-serif;
-    font-size: clamp(1rem, 3vw, 1.5rem);
-    font-style: italic;
-    line-height: 3;
-    width: 100%;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 1s;
-    font-weight: normal;
-    order: 3;
-  }
-  
-  /* Clase para ocultar elementos visualmente pero mantenerlos accesibles */
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  
-  /* Botón de cambio de tema */
-  .theme-toggle {
-    position: absolute;
-    bottom: 22px;
-    right: 22px;
-    padding: 10px;
-    border: none;
-    border-radius: 50%;
-    background-color: var(--primary-text);
-    color: var(--primary-bg);
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease forwards 1.2s;
-    z-index: 2;
-  }
-  
-  .theme-toggle img {
-    width: 18px;
-    height: 18px;
-  }
-  
-  .theme-toggle::before {
-    content: ">";
-    position: absolute;
-    left: -24px;
-    opacity: 0;
-    transition: opacity var(--transition-speed);
-    color: var(--primary-text);
-    font-weight: bold;
-    font-size: 20px;
-  }
-  
-  .theme-toggle:hover::before {
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Pie de página */
-  .footer {
-    font-family: "Roboto", sans-serif;
-    font-size: 12px;
-    color: var(--secondary-text);
-    text-align: center;
-    padding: 20px 0;
-    width: 100%;
-    position: static;
-    margin-top: auto; /* Empujar al fondo */
-    bottom: 0;
-    left: 0;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease forwards 1.2s;
-    z-index: 1;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
   }
-  
-  .footer a {
-    color: var(--secondary-text);
-    text-decoration: underline;
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
   }
-  
-  .footer a:hover {
-    opacity: 1;
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
   }
-  
-  /* Estilos para Easter eggs */
-  .easteregg-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
-    z-index: 1000;
-    display: none;
-    justify-content: center;
-    align-items: center;
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
   }
-  
-  .close-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 1003;
-  }
-  
-  .disco-ball {
-    position: absolute;
+}
+
+@keyframes dropDiscoBall {
+  from {
     top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 150px;
-    height: 150px;
-    z-index: 1002;
   }
-  
+  to {
+    top: 20px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Modify the textFade animation to be smoother and more elegant */
+@keyframes textFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 0.3;
+    transform: translateY(-3px) scale(0.98);
+  }
+  50% {
+    opacity: 0.1;
+    transform: translateY(-5px) scale(0.97);
+  }
+  75% {
+    opacity: 0.7;
+    transform: translateY(2px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Añadir después de las animaciones existentes */
+@keyframes multicolorText {
+  0% {
+    color: #ff5252;
+  }
+  20% {
+    color: #ffeb3b;
+  }
+  40% {
+    color: #69f0ae;
+  }
+  60% {
+    color: #40c4ff;
+  }
+  80% {
+    color: #e040fb;
+  }
+  100% {
+    color: #ff5252;
+  }
+}
+
+@keyframes multicolorBorder {
+  0% {
+    background-color: #ff5252;
+  }
+  20% {
+    background-color: #ffeb3b;
+  }
+  40% {
+    background-color: #69f0ae;
+  }
+  60% {
+    background-color: #40c4ff;
+  }
+  80% {
+    background-color: #e040fb;
+  }
+  100% {
+    background-color: #ff5252;
+  }
+}
+
+/* Clases de animación reutilizables */
+.animate-in {
+  -webkit-animation: fadeInUp 0.6s ease forwards;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.shake {
+  -webkit-animation: shake 0.5s both !important;
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+}
+
+/* Prevenir arrastre de imágenes */
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+/* Estilos del encabezado */
+header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Estilos del logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.brand-header {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.4s;
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
+}
+
+/* Separadores horizontales */
+.top-separator,
+.bottom-separator {
+  width: 100%;
+  height: 1px;
+  background-color: var(--primary-text);
+  margin: 0 auto;
+}
+
+.top-separator {
+  margin-top: 20px;
+}
+
+/* Fix the bottom separator to be exactly 1px */
+/* Investigando el problema, parece que hay un problema de renderizado o un borde adicional */
+.bottom-separator {
+  height: 0 !important; /* Cambiar a 0 para compensar el pixel extra */
+  border: none;
+  border-top: 1px solid var(--primary-text); /* Usar border-top en lugar de background-color */
+  margin-bottom: 20px;
+  background: none; /* Eliminar cualquier fondo que pueda estar causando el problema */
+}
+
+/* Estilos de navegación */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Menú desplegable */
+.menu-container {
+  position: relative;
+  z-index: 100;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  color: var(--primary-text);
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.4s;
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
+  position: relative; /* Añadido para posicionar el pseudo-elemento */
+  display: inline-block; /* Asegura que el elemento tenga dimensiones propias */
+}
+
+/* Corregir el efecto de subrayado en hover del menú */
+#menu-text {
+  position: relative; /* Añadido para posicionar el pseudo-elemento */
+  display: inline-block; /* Asegura que el elemento tenga dimensiones propias */
+}
+
+#menu-text::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-text);
+  transition: width var(--transition-speed) ease;
+}
+
+.menu-button:hover #menu-text::after {
+  width: 100%;
+}
+
+/* Modify the menu-text-fade class for a more refined transition */
+.menu-text-fade {
+  animation: textFade 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.nav-links {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--primary-bg);
+  border: 1px solid var(--primary-text-transparent);
+  border-radius: 4px;
+  padding: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform-origin: top right;
+}
+
+.nav-main-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nav-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--primary-text-transparent);
+}
+
+/* Modificar el estilo del social-link */
+.social-link {
+  color: var(--primary-text);
+  text-decoration: none;
+  font-size: 16px;
+  position: relative;
+  animation: multicolorText 8s infinite linear;
+  text-shadow: none;
+}
+
+/* Añadir el efecto de subrayado al social-link */
+.social-link::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  transition: width var(--transition-speed) ease;
+  /* Preparar para la animación cuando se active el hover */
+  background-color: currentColor;
+}
+
+.social-link:hover::before {
+  width: 100%;
+  /* Usar la misma animación y sincronizarla con el texto */
+  background-color: currentColor;
+}
+
+.nav-links.active {
+  display: flex;
+  animation: menuOpen 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.nav-links.closing {
+  display: flex;
+  animation: menuClose 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes menuOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes menuClose {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  padding: 0.5rem;
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
+}
+
+/* Update the theme-toggle-button to have no fill, just border, and more rounded corners */
+.theme-toggle-button {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: transparent !important;
+  color: var(--primary-text) !important;
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  border: 1px solid var(--primary-text) !important;
+  border-radius: 8px !important;
+  transition: none !important;
+  /* Agregar efecto neón similar a otros textos */
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
+}
+
+/* Remove all transition animations from the theme toggle button */
+:root.dark-mode .theme-toggle-button,
+:root.light-mode .theme-toggle-button {
+  transition: none !important;
+}
+
+/* Enlaces sociales */
+.social-links {
+  display: flex;
+  align-items: center;
+}
+
+/* Separador visual en la navegación */
+.separator {
+  height: 28px;
+  width: 2px;
+  background-color: var(--primary-text);
+  margin-left: 18px;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.2s;
+}
+
+/* Efecto hover para enlaces */
+.hoverable {
+  position: relative;
+}
+
+.hoverable::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-text);
+  transition: width var(--transition-speed) ease;
+}
+
+.hoverable:hover::before {
+  width: 100%;
+}
+
+/* Estilos del contenido principal */
+main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+/* Sección hero */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60vh;
+}
+
+/* Título principal */
+.main-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(3.5rem, 18vw, 10rem);
+  text-align: center;
+  line-height: 1.1;
+  width: 100%;
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.8s;
+}
+
+/* Clase para ocultar elementos visualmente pero mantenerlos accesibles */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Pie de página */
+.footer {
+  font-family: "Playfair Display", serif;
+  font-size: 14px;
+  color: var(--primary-text);
+  text-align: center;
+  padding: 15px 0;
+  width: 100%;
+  position: static;
+  margin-top: auto;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards 1.2s;
+  z-index: 1;
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent);
+}
+
+.copyright-text {
+  display: inline-block;
+}
+
+.footer-link {
+  color: var(--primary-text);
+  text-decoration: none;
+  text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent);
+  position: relative;
+}
+
+.footer-link::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--primary-text);
+  transition: width var(--transition-speed) ease;
+}
+
+.footer-link:hover::before {
+  width: 100%;
+}
+
+/* Estilos para Easter eggs */
+.easteregg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Close button for Easter eggs */
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  color: var(--primary-text);
+  border: 1px solid var(--primary-text);
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: var(--primary-text);
+  color: var(--primary-bg);
+}
+
+.disco-ball {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 150px;
+  z-index: 1002;
+}
+
+.homero-video,
+.second-video {
+  position: relative;
+  z-index: 1001;
+  width: 60%;
+  max-width: 800px;
+  opacity: 0;
+}
+
+/* Media queries para diseño responsivo */
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+  .main-title {
+    font-size: clamp(3.5rem, 15vw, 8rem);
+  }
+
+  .nav-links a {
+    font-size: 18px;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes (481px - 767px) */
+@media (max-width: 768px) {
+  header {
+    flex-direction: row; /* Mantener en fila para mejor uso del espacio */
+    justify-content: space-between;
+    gap: 1rem;
+    padding: var(--nav-spacing-mobile);
+    position: relative;
+  }
+
+  .logo {
+    width: auto; /* Cambiar de 100% a auto */
+    justify-content: flex-start; /* Alinear a la izquierda */
+  }
+
+  .logo img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .nav-right {
+    flex-direction: row; /* Mantener en fila */
+    gap: 0.75rem;
+    width: auto; /* Cambiar de 100% a auto */
+    align-items: center;
+    justify-content: flex-end; /* Alinear a la derecha */
+  }
+
+  .social-links {
+    justify-content: flex-end; /* Alinear a la derecha */
+  }
+
+  .menu-container {
+    width: auto; /* Cambiar de 100% a auto */
+    display: flex;
+    justify-content: flex-end; /* Alinear a la derecha */
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    right: 0; /* Alinear a la derecha */
+    left: auto; /* Quitar alineación izquierda */
+    transform: none; /* Quitar transformación */
+    width: 250px; /* Ancho fijo */
+    max-width: 90vw; /* Máximo 90% del viewport */
+  }
+
+  .separator {
+    display: none;
+  }
+
+  main {
+    padding: var(--main-padding-mobile);
+    margin-top: 1rem;
+  }
+
+  /* Asegurar que los videos de Easter Egg sean responsivos */
   .homero-video,
   .second-video {
-    position: relative;
-    z-index: 1001;
-    width: 60%;
-    max-width: 800px;
-    opacity: 0;
+    width: 90%;
+    max-width: 90vw;
   }
-  
-  /* Media queries para diseño responsivo */
-  /* Tablets (768px - 1024px) */
-  @media (max-width: 1024px) {
-    .main-title {
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      margin-bottom: 0.5rem;
-    }
-  
-    .subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      line-height: 2.5;
-    }
-  
-    .nav-links a {
-      font-size: 18px;
-    }
+}
+
+/* Móviles (hasta 480px) */
+@media (max-width: 480px) {
+  header {
+    padding: 0.5rem;
   }
-  
-  /* Tablets pequeñas y móviles grandes (481px - 767px) */
-  @media (max-width: 768px) {
-    header {
-      flex-direction: column;
-      gap: 1rem;
-      padding: var(--nav-spacing-mobile);
-      position: relative;
-    }
-  
-    .logo {
-      width: 100%;
-      justify-content: center;
-    }
-  
-    .logo img {
-      width: 35px;
-      height: 35px;
-    }
-  
-    .nav-right {
-      flex-direction: column;
-      gap: 0.75rem;
-      width: 100%;
-    }
-  
-    .social-links {
-      justify-content: center;
-    }
-  
-    .nav-links {
-      justify-content: space-around;
-      width: 100%;
-      gap: 0.75rem;
-    }
-  
-    .nav-links a {
-      font-size: 16px;
-      padding: 0.5rem;
-    }
-  
-    .separator {
-      display: none;
-    }
-  
-    main {
-      padding: var(--main-padding-mobile);
-      margin-top: 1rem;
-    }
-  
-    .potato-icon {
-      width: 80px;
-      margin-bottom: 1.5rem;
-    }
-  
-    .theme-toggle {
-      bottom: 15px;
-      right: 15px;
-      padding: 8px;
-    }
-  
-    .theme-toggle img {
-      width: 18px;
-      height: 18px;
-    }
+
+  main {
+    padding-bottom: 100px; /* Espacio mínimo para el footer */
   }
-  
-  /* Móviles (hasta 480px) */
-  @media (max-width: 480px) {
-    header {
-      padding: 0.5rem;
-    }
-  
-    main {
-      padding-bottom: 100px; /* Espacio mínimo para el footer */
-    }
-  
-    .footer {
-      padding: 20px 0 30px; /* Padding inferior aumentado */
-    }
-  
-    .logo-text {
-      font-size: 1.25rem;
-    }
-  
-    .nav-links {
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-  
-    .nav-links a {
-      width: 100%;
-      justify-content: center;
-      font-size: 15px;
-      padding: 0.75rem;
-      background-color: var(--primary-bg);
-      border: 1px solid var(--primary-text-transparent);
-      border-radius: 4px;
-    }
-  
-    .main-title {
-      font-size: clamp(2rem, 7vw, 2.5rem);
-      margin-bottom: 0.25rem;
-    }
-  
-    .subtitle {
-      font-size: 1rem;
-      line-height: 2;
-    }
-  
-    .homero-video,
-    .second-video {
-      width: 90%;
-    }
-  
-    .disco-ball {
-      width: 100px;
-      height: 100px;
-    }
-  
-    .close-button {
-      width: 32px;
-      height: 32px;
-      font-size: 16px;
-      top: 10px;
-      right: 10px;
-    }
+
+  .footer {
+    padding: 15px 0 25px; /* Padding inferior aumentado */
   }
-  
-  /* Efecto neón menos brilloso para dispositivos táctiles */
-  @media only screen and (max-width: 768px) and (hover: none) and (pointer: coarse) {
-    .main-title {
-      text-shadow: 0 0 1px var(--primary-text-transparent), 0 0 2px var(--primary-text-transparent), 0 0 4px
-        var(--primary-text-transparent), 0 0 6px rgba(217, 217, 217, 0.1), 0 0 8px rgba(217, 217, 217, 0.1);
-    }
+
+  .logo-text {
+    font-size: 1.25rem;
   }
-  
-  /* Dispositivos muy pequeños */
-  @media (max-width: 320px) {
-    .logo img {
-      width: 30px;
-      height: 30px;
-    }
-  
-    .logo-text {
-      font-size: 1.1rem;
-    }
-  
-    .nav-links a {
-      font-size: 14px;
-      padding: 0.5rem;
-    }
-  
-    .main-title {
-      font-size: 1.75rem;
-    }
-  
-    .subtitle {
-      font-size: 0.9rem;
-    }
+
+  .main-title {
+    font-size: clamp(3rem, 12vw, 6rem);
   }
-  
-  /* Orientación landscape en móviles */
-  @media (max-height: 480px) and (orientation: landscape) {
-    header {
-      padding: 0.5rem;
-    }
-  
-    main {
-      padding: 0.5rem;
-    }
-  
-    .potato-icon {
-      width: 60px;
-      margin-bottom: 0.75rem;
-    }
-  
-    .main-title {
-      font-size: clamp(1.5rem, 5vw, 2rem);
-    }
-  
-    .subtitle {
-      line-height: 1.5;
-    }
+
+  .homero-video,
+  .second-video {
+    width: 90%;
   }
-  
-  /* Permitir selección en campos de texto */
-  input,
-  textarea,
-  [contenteditable] {
-    -webkit-user-select: auto !important;
-    -moz-user-select: auto !important;
-    -ms-user-select: auto !important;
-    user-select: auto !important;
+
+  .disco-ball {
+    width: 100px;
+    height: 100px;
   }
+
+  .close-button {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    top: 10px;
+    right: 10px;
+  }
+
+  /* Mejorar la navegación en móviles */
+  .menu-button {
+    font-size: 20px; /* Reducir tamaño para mejor ajuste */
+    padding: 0.4rem 0.8rem; /* Reducir padding */
+  }
+
+  /* Asegurar que el menú desplegable sea usable en pantallas pequeñas */
+  .nav-links {
+    width: 200px; /* Reducir ancho */
+    padding: 0.75rem; /* Reducir padding */
+  }
+
+  .nav-links a {
+    font-size: 16px; /* Reducir tamaño de fuente */
+    padding: 0.4rem; /* Reducir padding */
+  }
+}
+
+/* Efecto neón menos brilloso para dispositivos táctiles */
+@media only screen and (max-width: 768px) and (hover: none) and (pointer: coarse) {
+  .main-title,
+  .nav-links a,
+  .logo-text,
+  .menu-button,
+  .footer,
+  .footer a {
+    text-shadow: 0 0 1px var(--primary-text-transparent), 0 0 2px var(--primary-text-transparent), 0 0 4px
+      var(--primary-text-transparent), 0 0 6px rgba(217, 217, 217, 0.1), 0 0 8px rgba(217, 217, 217, 0.1);
+  }
+}
+
+/* Dispositivos muy pequeños */
+@media (max-width: 320px) {
+  .logo img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
+  }
+
+  .menu-button {
+    font-size: 16px;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  /* Ajustes adicionales para dispositivos muy pequeños */
+  header {
+    padding: 0.4rem; /* Reducir padding */
+  }
+
+  .nav-links {
+    width: 180px; /* Reducir ancho aún más */
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-height: 480px) and (orientation: landscape) {
+  header {
+    padding: 0.5rem;
+  }
+
+  main {
+    padding: 0.5rem;
+  }
+
+  .main-title {
+    font-size: clamp(2.5rem, 10vw, 5rem);
+  }
+
+  .hero-section {
+    height: 40vh;
+  }
+
+  /* Mejorar visualización en landscape */
+  .homero-video,
+  .second-video {
+    width: 70%; /* Reducir ancho para mejor visualización */
+    max-height: 70vh; /* Limitar altura */
+  }
+
+  .disco-ball {
+    width: 80px; /* Reducir tamaño */
+    height: 80px;
+  }
+}
+
+/* Permitir selección en campos de texto */
+input,
+textarea,
+[contenteditable] {
+  -webkit-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}
+
+/* Añadir soporte para pantallas grandes */
+@media (min-width: 1440px) {
+  .main-title {
+    font-size: clamp(5rem, 20vw, 12rem); /* Aumentar tamaño para pantallas grandes */
+  }
+
+  .logo img {
+    width: 45px; /* Aumentar tamaño */
+    height: 45px;
+  }
+
+  .logo-text {
+    font-size: 1.75rem; /* Aumentar tamaño */
+  }
+
+  .menu-button {
+    font-size: 28px; /* Aumentar tamaño */
+  }
+
+  .nav-links {
+    min-width: 250px; /* Aumentar ancho mínimo */
+  }
+
+  .nav-links a {
+    font-size: 20px; /* Aumentar tamaño */
+  }
+}
+
+/* Añadir soporte para pantallas extra grandes */
+@media (min-width: 2560px) {
+  body {
+    font-size: 18px; /* Aumentar tamaño base de fuente */
+  }
+
+  .main-title {
+    font-size: clamp(6rem, 22vw, 14rem); /* Aumentar tamaño para pantallas extra grandes */
+  }
+
+  .logo img {
+    width: 50px; /* Aumentar tamaño */
+    height: 50px;
+  }
+
+  .logo-text {
+    font-size: 2rem; /* Aumentar tamaño */
+  }
+
+  .menu-button {
+    font-size: 32px; /* Aumentar tamaño */
+  }
+
+  header {
+    padding: 1.5rem; /* Aumentar padding */
+  }
+
+  .nav-links {
+    min-width: 300px; /* Aumentar ancho mínimo */
+  }
+
+  .nav-links a {
+    font-size: 22px; /* Aumentar tamaño */
+    padding: 0.75rem; /* Aumentar padding */
+  }
+}
+

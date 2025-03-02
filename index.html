@@ -4,7 +4,7 @@
     <!-- Metadatos básicos -->
     <title>Potato</title>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="description" content="Portfolio profesional de Potato - Emprendedor, editor de video, jugador experimentado de ajedrez y pensador de la filosofía estoica. Descubre mis proyectos creativos, filosofía de trabajo y servicios."/>
     <meta name="keywords" content="Potato, editor de video profesional, edición creativa, jugador de ajedrez profesional, filosofía estoica, mentoría de ajedrez, content creator, video editing expert, chess coaching, stoic philosophy, portfolio digital, edición audiovisual, creative content, digital storytelling"/>
     <meta name="author" content="Potato"/>
@@ -33,7 +33,7 @@
     <link rel="canonical" href="https://potatously.github.io/potato/"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=JetBrains+Mono:wght@400;700&family=Roboto&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet"/>
 
     <!-- Favicons para diferentes dispositivos -->
     <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-touch-icon.png"/>
@@ -85,48 +85,51 @@
         <div class="logo">
             <h3 class="brand-header">
                 <img id="logo-image" src="./images/papa-blanca.png" alt="Logo de Potato - Papa estilizada en blanco"/>
-                <a class="logo-text" href="./index.html">Potato</a>
+                <a class="logo-text hoverable" href="javascript:void(0)">Potato</a>
             </h3>
         </div>
         <div class="nav-right">
-            <div class="social-links">
-                <h4 class="visually-hidden">Enlaces Sociales</h4>
-                <a class="hoverable" href="https://linktr.ee/potatously" target="_blank" rel="noopener">
-                    <img class="social-icon" src="./images/linktree-white-icon.svg" alt="Linktree"/>
-                </a>
+            <div class="menu-container">
+                <button id="menu-button" class="menu-button">
+                    <span id="menu-text">Menú</span>
+                </button>
+                <nav class="nav-links" id="nav-links">
+                    <h4 class="visually-hidden">Navegación Principal</h4>
+                    <div class="nav-main-links">
+                        <a class="hoverable" href="./html/about.html">Sobre mí</a>
+                        <a class="hoverable" href="./html/projects.html">Proyectos</a>
+                        <a class="hoverable" href="./html/contact.html">Contacto</a>
+                        <a class="hoverable" href="./html/gallery.html">Galería</a>
+                    </div>
+                    <div class="nav-secondary">
+                        <a href="https://linktr.ee/potatously" target="_blank" rel="noopener" class="social-link">Linktree</a>
+                        <button id="theme-toggle" class="theme-toggle-button">Cambiar tema</button>
+                    </div>
+                </nav>
             </div>
-            <div class="separator"></div>
-            <nav class="nav-links">
-                <h4 class="visually-hidden">Navegación Principal</h4>
-                <a class="hoverable" href="./html/about.html">Sobre mí</a>
-                <a class="hoverable" href="./html/projects.html">Proyectos</a>
-                <a class="hoverable" href="./html/contact.html">Contacto</a>
-            </nav>
         </div>
     </header>
 
+    <div class="top-separator"></div>
+
     <main>
         <section class="hero-section">
-            <h1 class="main-title">Hola, soy Potato</h1>
-            <img class="potato-icon" src="./images/patata.png" alt="Ícono principal de Potato - Papa estilizada representando la marca"/>
-            <h2 class="subtitle">Estoico, editor de video, y jugador de ajedrez.</h2>
+            <h1 class="main-title">POTATO</h1>
         </section>
     </main>
 
+    <div class="bottom-separator"></div>
+
     <footer class="footer">
         <h4 class="visually-hidden">Información de Copyright</h4>
-        © Potato, 2025. <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" target="_blank">CC BY-NC 4.0</a>.
+        <span class="copyright-text">© Potato, 2025.</span> <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" target="_blank" class="footer-link">CC BY-NC 4.0</a>
     </footer>
-
-    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
-        <img id="theme-icon" src="./images/luna.png" alt="Modo oscuro"/>
-    </button>
 
     <!-- Contenedor para Easter Egg de Homero -->
     <div id="eastereggOverlay" class="easteregg-overlay">
-        <button id="closeButton" class="close-button" aria-label="Cerrar">X</button>
+        <button id="closeButton" class="close-button" aria-label="Cerrar">×</button>
         <img id="discoBall" class="disco-ball" src="./images/bola-disco.gif" alt="Disco Ball"/>
-        <video id="homeroVideo" class="homero-video" loop controls>
+        <video id="homeroVideo" class="homero-video" loop>
             <source src="./video/homero.mp4" type="video/mp4"/>
             Tu navegador no soporta el elemento de video.
         </video>
@@ -134,8 +137,8 @@
 
     <!-- Contenedor para Easter Egg secundario -->
     <div id="secondEastereggOverlay" class="easteregg-overlay">
-        <button id="closeSecondButton" class="close-button" aria-label="Cerrar">X</button>
-        <video id="secondVideo" class="second-video" loop controls>
+        <button id="closeSecondButton" class="close-button" aria-label="Cerrar">×</button>
+        <video id="secondVideo" class="second-video" loop>
             <source src="./video/dracukeo.mp4" type="video/mp4"/>
             Tu navegador no soporta el elemento de video.
         </video>
@@ -145,3 +148,4 @@
     <script type="module" src="./js/script.js"></script>
 </body>
 </html>
+
