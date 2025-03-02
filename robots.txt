@@ -1,9 +1,9 @@
 User-agent: *
 Allow: /
-Disallow: /images/
+Disallow: /assets/images/
+Disallow: /assets/video/
+Disallow: /assets/audio/
 Disallow: /css/
 Disallow: /js/
-Disallow: /video/
-Disallow: /audio/
 
 Sitemap: https://potatously.vercel.app/sitemap.xml
