@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://potatously.github.io/potato/</loc>
+    <loc>https://potatously.vercel.app</loc>
     <lastmod>2025-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://potatously.github.io/potato/html/about.html</loc>
+    <loc>https://potatously.vercel.app/html/about.html</loc>
     <lastmod>2025-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://potatously.github.io/potato/html/projects.html</loc>
+    <loc>https://potatously.vercel.app/html/projects.html</loc>
     <lastmod>2025-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://potatously.github.io/potato/html/contact.html</loc>
+    <loc>https://potatously.vercel.app/html/contact.html</loc>
     <lastmod>2025-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

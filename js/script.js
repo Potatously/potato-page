@@ -372,7 +372,7 @@ console.log(`
 
     // Actualizar logo según el tema
     if (logoImage) {
-      logoImage.src = theme === "light-mode" ? "./images/papa-negra.png" : "./images/papa-blanca.png"
+      logoImage.src = theme === "light-mode" ? "./assets/images/papa-negra.png" : "./assets/images/papa-blanca.png"
     }
 
     // Update the theme toggle button text color based on theme
