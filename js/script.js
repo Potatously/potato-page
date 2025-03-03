@@ -169,7 +169,7 @@ console.log(`
   function setupHoverSounds() {
     // Seleccionar todos los elementos que necesitan efecto hover
     const hoverElements = document.querySelectorAll(
-      ".logo-text, #menu-text, .footer-link, .nav-links a, .social-link, .theme-toggle-button",
+      ".logo-text, #menu-text, .footer-link, .nav-links a, .social-link, .theme-toggle-button, .close-button, .close-second-button",
     )
 
     hoverElements.forEach((element) => {
