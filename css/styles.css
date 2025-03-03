@@ -397,6 +397,17 @@ header {
   transform-origin: top right;
 }
 
+/* Modificar el estilo del menú abierto para cambiar el color del borde según el tema */
+:root.dark-mode .nav-links {
+  border: 1px solid white;
+  box-shadow: none; /* Eliminar la sombra */
+}
+
+:root.light-mode .nav-links {
+  border: 1px solid black;
+  box-shadow: none; /* Eliminar la sombra */
+}
+
 .nav-main-links {
   display: flex;
   flex-direction: column;
@@ -985,4 +996,3 @@ textarea,
     padding: 0.75rem; /* Aumentar padding */
   }
 }
-
