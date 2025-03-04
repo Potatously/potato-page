@@ -49,18 +49,14 @@
       "status": 308
     },
     {
-      "src": "/(.*)",
+      "src": "/((?!css|js|assets|google|sitemap|robots|LICENSE|README|package).*)",
       "dest": "/html/$1.html",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": "text/html"
-        }
-      ]
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
     },
     {
-      "src": "/((?!html/|css/|js/|assets/|index\\.html$|google|sitemap|robots|LICENSE|README|package|about|project|contact|gallery).*)",
+      "src": "/(.*)",
       "dest": "/index.html",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate"
