@@ -60,7 +60,7 @@
       ]
     },
     {
-      "src": "/((?!html/|css/|js/|assets/|index\\.html$|google|sitemap|robots|LICENSE|README|package).*)",
+      "src": "/((?!html/|css/|js/|assets/|index\\.html$|google|sitemap|robots|LICENSE|README|package|about|project|contact|gallery).*)",
       "dest": "/index.html",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate"
