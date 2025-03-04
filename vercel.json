@@ -1,10 +1,55 @@
 {
-  "headers": [
+  "version": 2,
+  "public": false,
+  "routes": [
     {
-      "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "https://potatously.vercel.app, http://localhost:5500" }
+      "src": "/.*",
+      "headers": {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' data: blob: fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; report-uri https://potatously.report-uri.com/r/d/csp/enforce;",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=(), payment=(), fullscreen=(self)",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "continue": true
+    },
+    {
+      "src": "/(.*\\.(jpg|jpeg|png|gif|svg|webp|avif))",
+      "dest": "https://potatously.vercel.app/assets/images/blocked.png",
+      "has": [
+        {
+          "type": "header",
+          "key": "referer",
+          "value": "^https?://(?!potatously\\.vercel\\.app).*"
+        }
       ]
+    },
+    {
+      "src": "/old-path",
+      "dest": "/new-path",
+      "status": 308
+    },
+    {
+      "src": "/((?!api/|static/|assets/|index\\.html$).*)",
+      "dest": "/index.html",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/ssr-handler.js"
     }
-  ]
+  ],
+  "regions": ["gru1"]
 }

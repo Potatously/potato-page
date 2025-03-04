@@ -142,7 +142,7 @@ console.log(`
 
     // Clonar el audio para permitir múltiples reproducciones simultáneas
     const hoverSound = audioCache.hover.cloneNode()
-    hoverSound.volume = 0.7 // Asegurar volumen adecuado
+    hoverSound.volume = 1 // Asegurar volumen adecuado
 
     hoverSound
       .play()
