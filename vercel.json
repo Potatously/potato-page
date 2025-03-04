@@ -49,7 +49,18 @@
       "status": 308
     },
     {
-      "src": "/((?!html/|css/|js/|assets/|index\\.html$).*)",
+      "src": "/(.*)",
+      "dest": "/html/$1.html",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "text/html"
+        }
+      ]
+    },
+    {
+      "src": "/((?!html/|css/|js/|assets/|index\\.html$|google|sitemap|robots|LICENSE|README|package).*)",
       "dest": "/index.html",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate"
