@@ -5,7 +5,7 @@
     {
       "src": "/.*",
       "headers": {
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' data: blob: fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; report-uri https://potatously.report-uri.com/r/d/csp/enforce;",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' vercel.live; style-src 'self' 'unsafe-inline'; font-src 'self' data: blob: fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; report-uri https://potatously.report-uri.com/r/d/csp/enforce;",
         "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
@@ -17,8 +17,24 @@
       "continue": true
     },
     {
-      "src": "/(.*\\.(jpg|jpeg|png|gif|svg|webp|avif))",
-      "dest": "https://potatously.vercel.app/assets/images/blocked.png",
+      "src": "/css/(.*)",
+      "dest": "/css/$1",
+      "headers": {
+        "Content-Type": "text/css",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/js/$1",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/assets/images/(.*\\.(jpg|jpeg|png|gif|svg|webp|avif))",
+      "dest": "/assets/images/blocked.png",
       "has": [
         {
           "type": "header",
@@ -33,22 +49,11 @@
       "status": 308
     },
     {
-      "src": "/((?!api/|static/|assets/|index\\.html$).*)",
+      "src": "/((?!html/|css/|js/|assets/|index\\.html$).*)",
       "dest": "/index.html",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate"
       }
-    },
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/ssr-handler.js"
     }
   ],
   "regions": ["gru1"]
