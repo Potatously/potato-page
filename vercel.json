@@ -11,10 +11,16 @@
         "X-Frame-Options": "DENY",
         "X-XSS-Protection": "1; mode=block",
         "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Permissions-Policy": "geolocation=(), microphone=(), camera=(), payment=(), fullscreen=(self)",
-        "Cache-Control": "public, max-age=31536000, immutable"
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=(), payment=(), fullscreen=(self)"
       },
       "continue": true
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
     },
     {
       "src": "/css/(.*)",
@@ -33,34 +39,33 @@
       }
     },
     {
-      "src": "/assets/images/(.*\\.(jpg|jpeg|png|gif|svg|webp|avif))",
-      "dest": "/assets/images/blocked.png",
-      "has": [
-        {
-          "type": "header",
-          "key": "referer",
-          "value": "^https?://(?!potatously\\.vercel\\.app).*"
-        }
-      ]
-    },
-    {
       "src": "/old-path",
       "dest": "/new-path",
       "status": 308
     },
     {
-      "src": "/(about|projects|contact|gallery)",
-      "dest": "/html/$1.html",
-      "headers": {
-        "Cache-Control": "no-cache"
-      }
+      "src": "^/about$",
+      "dest": "/html/about.html"
+    },
+    {
+      "src": "^/projects$",
+      "dest": "/html/projects.html"
+    },
+    {
+      "src": "^/contact$",
+      "dest": "/html/contact.html"
+    },
+    {
+      "src": "^/gallery$",
+      "dest": "/html/gallery.html"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
       "dest": "/index.html",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
+      "status": 200
     }
   ],
   "regions": ["gru1"]
