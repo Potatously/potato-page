@@ -28,7 +28,7 @@ console.log(`
   @@@@@@@@@@@@@@@#*=-             -=*%@@@@@@@@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@%%###**###%@@@@@@@@@@@@@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        `)
+  `)
 
 // Consola Potato título
 console.log(`
@@ -42,24 +42,33 @@ console.log(`
 
 // IIFE para encapsular todo el código y evitar contaminación del ámbito global
 ;(() => {
-  // Inicialización de caché de audio para mejor rendimiento
+  /**
+   * Caché de archivos de audio para mejor rendimiento
+   * Precarga los archivos para evitar retrasos en la reproducción
+   */
   const audioCache = {
     puertazo: new Audio("./assets/audio/puertazo.mp3"),
     pichon: new Audio("./assets/audio/pichon.mp3"),
-    hover: new Audio("./assets/audio/bip.mp3"), // Nuevo audio para efecto hover
+    hover: new Audio("./assets/audio/bip.mp3"),
   }
 
-  // Función para precargar archivos de audio
+  /**
+   * Precarga archivos de audio para reproducción inmediata
+   * Configura volumen y otras propiedades
+   */
   function preloadAudio() {
     audioCache.puertazo.preload = "auto"
     audioCache.pichon.preload = "auto"
-    audioCache.hover.preload = "auto" // Precargar el audio de hover
+    audioCache.hover.preload = "auto"
 
     // Configurar volumen para el audio de hover
     audioCache.hover.volume = 1
   }
 
-  // Referencias a elementos DOM
+  /**
+   * Referencias a elementos DOM principales
+   * Almacenadas para evitar múltiples consultas al DOM
+   */
   const themeToggle = document.getElementById("theme-toggle")
   const logoImage = document.getElementById("logo-image")
   const eastereggOverlay = document.getElementById("eastereggOverlay")
@@ -73,7 +82,9 @@ console.log(`
   const navLinks = document.getElementById("nav-links")
   const logoText = document.querySelector(".logo-text")
 
-  // Configuración de animaciones para el logo
+  /**
+   * Configuración inicial de animaciones para el logo
+   */
   if (logoImage) {
     logoImage.classList.add("animate-in")
     logoImage.addEventListener("animationend", (e) => {
@@ -84,35 +95,44 @@ console.log(`
   // Precargar audio al inicio
   preloadAudio()
 
-  // Estado de la aplicación
+  /**
+   * Estado de la aplicación
+   * Centraliza variables de estado para mejor gestión
+   */
   const state = {
-    pPressCount: 0,
-    gPressCount: 0,
-    clickCount: 0,
-    isEastereggActive: false,
-    isSecondEastereggActive: false,
-    isGAudioPlaying: false,
-    gAudioCooldown: false,
-    gAudioTimer1: null,
-    gAudioTimer2: null,
-    MAX_COUNTER: 10,
-    menuOpen: false,
-    hoverAudioPlaying: false, // Estado para controlar reproducción de audio hover
-    hoverAudioCooldown: false, // Cooldown para evitar sobrecargar el audio
+    pPressCount: 0, // Contador para Easter egg con tecla P
+    gPressCount: 0, // Contador para Easter egg con tecla G
+    clickCount: 0, // Contador para Easter egg con clics
+    isEastereggActive: false, // Estado del primer Easter egg
+    isSecondEastereggActive: false, // Estado del segundo Easter egg
+    isGAudioPlaying: false, // Estado de reproducción de audio G
+    gAudioCooldown: false, // Cooldown para audio G
+    gAudioTimer1: null, // Temporizador 1 para audio G
+    gAudioTimer2: null, // Temporizador 2 para audio G
+    MAX_COUNTER: 10, // Límite máximo para contadores
+    menuOpen: false, // Estado del menú desplegable
+    hoverAudioPlaying: false, // Estado para audio de hover
+    hoverAudioCooldown: false, // Cooldown para audio de hover
   }
 
-  // Temporizadores para gestionar eventos
+  /**
+   * Temporizadores para gestionar eventos
+   * Agrupados para mejor organización
+   */
   const timers = {
-    pPress: null,
-    gPress: null,
-    click: null,
-    hoverAudio: null, // Nuevo temporizador para el audio de hover
+    pPress: null, // Temporizador para tecla P
+    gPress: null, // Temporizador para tecla G
+    click: null, // Temporizador para clics
+    hoverAudio: null, // Temporizador para audio de hover
   }
 
   // Bandera para detectar si el usuario ha interactuado con la página
   let userInteracted = false
 
-  // Manejador de errores de audio
+  /**
+   * Manejador de errores de audio
+   * Registra detalles del error para depuración
+   */
   function handleAudioError(e) {
     const error = e.target.error
     console.error("Error de audio:", {
@@ -122,7 +142,10 @@ console.log(`
     })
   }
 
-  // Habilitar audio después de la primera interacción del usuario
+  /**
+   * Habilita audio después de la primera interacción del usuario
+   * Soluciona restricciones de autoplay en navegadores
+   */
   document.addEventListener("click", () => {
     if (!userInteracted) {
       userInteracted = true
@@ -133,7 +156,10 @@ console.log(`
     }
   })
 
-  // Función para reproducir el sonido de hover
+  /**
+   * Reproduce sonido al pasar el cursor sobre elementos interactivos
+   * Incluye protección contra reproducciones múltiples
+   */
   function playHoverSound() {
     if (!userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return
 
@@ -142,7 +168,7 @@ console.log(`
 
     // Clonar el audio para permitir múltiples reproducciones simultáneas
     const hoverSound = audioCache.hover.cloneNode()
-    hoverSound.volume = 1 // Asegurar volumen adecuado
+    hoverSound.volume = 1
 
     hoverSound
       .play()
@@ -165,7 +191,10 @@ console.log(`
       })
   }
 
-  // Añadir efecto de sonido a elementos hover
+  /**
+   * Configura efectos de sonido para elementos interactivos
+   * Aplica a todos los elementos que necesitan feedback auditivo
+   */
   function setupHoverSounds() {
     // Seleccionar todos los elementos que necesitan efecto hover
     const hoverElements = document.querySelectorAll(
@@ -177,7 +206,10 @@ console.log(`
     })
   }
 
-  // Manejador de eventos de teclado para Easter Eggs
+  /**
+   * Manejador de eventos de teclado para Easter Eggs
+   * Detecta combinaciones específicas de teclas
+   */
   document.addEventListener("keydown", (e) => {
     // Ignorar eventos en campos de entrada
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return
@@ -192,7 +224,10 @@ console.log(`
     }
   })
 
-  // Función para manejar pulsaciones de teclas específicas
+  /**
+   * Gestiona pulsaciones de teclas específicas para Easter Eggs
+   * Controla contadores y temporizadores para activación
+   */
   function handleKeyPress(key) {
     const isP = key === "p"
     const countProperty = isP ? "pPressCount" : "gPressCount"
@@ -215,12 +250,18 @@ console.log(`
     }
   }
 
-  // Verificar si se pueden activar Easter Eggs
+  /**
+   * Verifica si se pueden activar Easter Eggs
+   * Previene activaciones simultáneas
+   */
   function canActivateEasterEgg() {
     return !state.isEastereggActive && !state.isSecondEastereggActive && !state.isGAudioPlaying
   }
 
-  // Activar Easter Egg de Homero
+  /**
+   * Activa el Easter Egg de Homero
+   * Secuencia coordinada de audio, animación y video
+   */
   function activateEasteregg() {
     if (!homeroVideo) return
 
@@ -246,7 +287,10 @@ console.log(`
     })
   }
 
-  // Easter Egg activado al hacer clic en el logo
+  /**
+   * Configura Easter Egg activado al hacer clic en el logo
+   * Requiere múltiples clics rápidos
+   */
   if (logoImage) {
     logoImage.addEventListener("click", () => {
       if (canActivateEasterEgg()) {
@@ -270,7 +314,10 @@ console.log(`
     })
   }
 
-  // Activar segundo Easter Egg
+  /**
+   * Activa el segundo Easter Egg
+   * Muestra video con animación de entrada
+   */
   function activateSecondEasteregg() {
     state.isSecondEastereggActive = true
     secondEastereggOverlay.style.display = "flex"
@@ -283,7 +330,10 @@ console.log(`
     })
   }
 
-  // Función para reproducir audio de forma segura
+  /**
+   * Reproduce audio de forma segura
+   * Incluye validaciones y manejo de errores
+   */
   async function playAudio(src) {
     // Validación de seguridad
     if (!src || !src.startsWith("./assets/audio/")) {
@@ -320,7 +370,10 @@ console.log(`
     }
   }
 
-  // Función para reproducir video de forma segura
+  /**
+   * Reproduce video de forma segura
+   * Maneja estados de mute según interacción del usuario
+   */
   async function playVideo(video) {
     if (!video) {
       console.error("Elemento video no encontrado")
@@ -341,7 +394,10 @@ console.log(`
     }
   }
 
-  // Manejador para cerrar el primer Easter Egg
+  /**
+   * Configura el cierre del primer Easter Egg
+   * Restablece todos los estados y elementos
+   */
   if (closeButton && closeButton instanceof HTMLElement) {
     closeButton.addEventListener("click", () => {
       discoBall.style.removeProperty("animation")
@@ -363,7 +419,10 @@ console.log(`
     })
   }
 
-  // Manejador para cerrar el segundo Easter Egg
+  /**
+   * Configura el cierre del segundo Easter Egg
+   * Restablece estados y detiene reproducción
+   */
   if (closeSecondButton instanceof HTMLElement) {
     closeSecondButton.addEventListener("click", () => {
       state.isSecondEastereggActive = false
@@ -374,7 +433,10 @@ console.log(`
     })
   }
 
-  // Activar Easter Egg de audio con la tecla "g"
+  /**
+   * Activa Easter Egg de audio con la tecla "g"
+   * Reproduce sonido con sistema de cooldown
+   */
   function activateGAudio() {
     // Limpiar temporizadores previos
     if (state.gAudioTimer1) clearTimeout(state.gAudioTimer1)
@@ -403,7 +465,10 @@ console.log(`
       })
   }
 
-  // Inicialización del tema
+  /**
+   * Inicializa el tema de la aplicación
+   * Recupera preferencia guardada o usa valor predeterminado
+   */
   function initializeTheme() {
     console.log("Initializing theme...")
     const savedTheme = localStorage.getItem("theme")
@@ -417,7 +482,10 @@ console.log(`
     updateTheme(theme)
   }
 
-  // Actualizar elementos visuales según el tema
+  /**
+   * Actualiza elementos visuales según el tema seleccionado
+   * Modifica colores, imágenes y metadatos
+   */
   function updateTheme(theme) {
     // Actualizar color del tema en meta tag
     const themeColorMeta = document.querySelector('meta[name="theme-color"]')
@@ -430,15 +498,17 @@ console.log(`
       logoImage.src = theme === "light-mode" ? "./assets/images/papa-negra.png" : "./assets/images/papa-blanca.png"
     }
 
-    // Update the theme toggle button text color based on theme
+    // Actualizar color del texto del botón de tema
     const themeToggleButton = document.querySelector(".theme-toggle-button")
     if (themeToggleButton) {
-      // Remove background color change and only update text color
       themeToggleButton.style.color = theme === "dark-mode" ? "#ffffff" : "#000000"
     }
   }
 
-  // Configurar cambio de tema al hacer clic en el botón
+  /**
+   * Configura el cambio de tema al hacer clic en el botón
+   * Alterna entre modos claro y oscuro
+   */
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       const root = document.documentElement
@@ -451,7 +521,10 @@ console.log(`
     })
   }
 
-  // Configurar menú desplegable
+  /**
+   * Configura el menú desplegable
+   * Maneja apertura, cierre y animaciones
+   */
   if (menuButton && navLinks) {
     const menuText = document.getElementById("menu-text")
 
@@ -501,7 +574,10 @@ console.log(`
     })
   }
 
-  // Configurar comportamiento del logo-text
+  /**
+   * Configura comportamiento del texto del logo
+   * Gestiona navegación a página principal
+   */
   if (logoText) {
     logoText.addEventListener("click", (e) => {
       // Verificar si estamos en la página principal
@@ -522,10 +598,16 @@ console.log(`
     })
   }
 
-  // Prevenir selección de texto
+  /**
+   * Previene selección de texto en elementos no editables
+   * Mejora experiencia en dispositivos táctiles
+   */
   document.addEventListener("selectstart", (e) => e.preventDefault())
 
-  // Inicializar la página al cargar
+  /**
+   * Inicializa la página al cargar
+   * Configura tema, efectos y optimizaciones
+   */
   window.addEventListener("load", () => {
     // Inicializar tema
     initializeTheme()
