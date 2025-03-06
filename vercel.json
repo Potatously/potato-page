@@ -44,8 +44,8 @@
       "status": 308
     },
     {
-      "src": "^/wasa$",
-      "dest": "/html/wasa.html"
+      "src": "^/me$",
+      "dest": "/html/me.html"
     },
     {
       "src": "^/projects$",
