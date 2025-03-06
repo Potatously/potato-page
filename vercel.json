@@ -68,5 +68,5 @@
       "status": 200
     }
   ],
-  "regions": ["gru1"]
+  "regions": ["gru1", "sfo1"]
 }
