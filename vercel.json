@@ -44,8 +44,8 @@
       "status": 308
     },
     {
-      "src": "^/about$",
-      "dest": "/html/about.html"
+      "src": "^/wasa$",
+      "dest": "/html/wasa.html"
     },
     {
       "src": "^/projects$",
@@ -67,5 +67,6 @@
       "dest": "/index.html",
       "status": 200
     }
-  ]
+  ],
+  "regions": ["gru1"]
 }
