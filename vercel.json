@@ -67,6 +67,5 @@
       "dest": "/index.html",
       "status": 200
     }
-  ],
-  "regions": ["gru1", "sfo1"]
+  ]
 }
