@@ -1,5 +1,16 @@
 // Terminal Welcome Screen Script
+// Eliminar todo el contenido anterior y reemplazarlo con este código:
+
+// Ocultar el contenido principal inmediatamente
 document.addEventListener("DOMContentLoaded", () => {
+    // No usamos sessionStorage para que siempre aparezca la terminal
+  
+    // Crear y mostrar la terminal
+    showTerminal()
+  })
+  
+  // Función para mostrar la terminal
+  function showTerminal() {
     // Create terminal overlay
     const terminalOverlay = document.createElement("div")
     terminalOverlay.className = "terminal-overlay"
@@ -93,13 +104,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1000)
       }
     })
-  
-    // Store terminal state in session storage to avoid showing it again on page refresh
-    if (!sessionStorage.getItem("terminalShown")) {
-      sessionStorage.setItem("terminalShown", "true")
-    } else {
-      // If already shown in this session, remove immediately
-      document.body.removeChild(terminalOverlay)
-      document.body.style.overflow = ""
-    }
-  })  
+  }  

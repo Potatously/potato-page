@@ -120,4 +120,18 @@
     .terminal-click {
       font-size: 14px;
     }
+  }
+  
+  /* Ocultar el contenido principal hasta que se complete la animación */
+  body {
+    visibility: hidden;
+  }
+  
+  body.terminal-ready {
+    visibility: visible;
+  }
+  
+  /* Asegurar que la terminal siempre sea visible */
+  .terminal-overlay {
+    visibility: visible !important;
   }  

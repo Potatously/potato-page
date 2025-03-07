@@ -13,6 +13,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="theme-color" content="#0a0a0b"/>
     
+    <!-- Script de precarga para ocultar el contenido principal inmediatamente -->
+    <script src="./js/terminal-preload.js?v=1.0.0"></script>
+    
+    <!-- Terminal styles -->
+    <link rel="stylesheet" href="./css/terminal.css?v=1.0.0">
+    
     <!-- Metadatos para redes sociales -->
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://potatously.vercel.app"/>
@@ -42,7 +48,7 @@
     <link rel="manifest" href="./assets/images/site.webmanifest"/>
 
     <!-- Hoja de estilos principal -->
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/styles.css?v=1.0.0">
 
     <!-- Datos estructurados Schema.org -->
     <script type="application/ld+json">
@@ -78,10 +84,7 @@
     </script>
 
     <!-- Script de análisis (cargado de forma diferida) -->
-    <script src="./js/analytics.js" defer></script>
-    
-    <!-- Add terminal styles -->
-    <link rel="stylesheet" href="./css/terminal.css">
+    <script src="./js/analytics.js?v=1.0.0" defer></script>
 </head>
 <body>
     <header>
@@ -147,9 +150,35 @@
         </video>
     </div>
 
-    <!-- Add terminal script before your main script -->
-    <script src="./js/terminal.js"></script>
-    <script type="module" src="./js/script.js"></script>
+    <!-- Terminal script debe cargarse antes que el script principal -->
+    <script src="./js/terminal.js?v=1.0.0"></script>
+    <script type="module" src="./js/script.js?v=1.0.0"></script>
+    
+    <!-- Script para mostrar el contenido principal después de que la terminal se cierre -->
+    <script>
+        // Este script se ejecuta después de que la terminal se cierre
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observar cambios en el DOM para detectar cuando se elimina la terminal
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.removedNodes.length > 0) {
+                        // Verificar si la terminal fue eliminada
+                        const terminalRemoved = Array.from(mutation.removedNodes).some(
+                            node => node.classList && node.classList.contains('terminal-overlay')
+                        );
+                        
+                        if (terminalRemoved) {
+                            // Mostrar el contenido principal
+                            document.documentElement.style.visibility = 'visible';
+                            document.body.classList.add('terminal-ready');
+                        }
+                    }
+                });
+            });
+            
+            // Configurar el observador
+            observer.observe(document.body, { childList: true });
+        });
+    </script>
 </body>
 </html>
-

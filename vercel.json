@@ -31,12 +31,34 @@
       }
     },
     {
+      "src": "/html/(.*)",
+      "dest": "/html/$1",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
       "src": "/js/(.*)",
       "dest": "/js/$1",
       "headers": {
         "Content-Type": "application/javascript",
         "Cache-Control": "no-cache, no-store, must-revalidate"
       }
+    },
+    {
+      "src": "^/$",
+      "dest": "/index.html",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
+      "src": "/index.html",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      },
+      "continue": true
     },
     {
       "src": "/old-path",
