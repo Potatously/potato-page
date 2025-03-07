@@ -2,7 +2,7 @@
 console.log(`
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#####%@@@@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#####%@@@@@@@@@@@@@@@@@  
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%+-       -+%@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@*             *@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@=               *@@@@@@@@@@@@
@@ -86,7 +86,8 @@ console.log(`
    * Configuración inicial de animaciones para el logo
    */
   if (logoImage) {
-    logoImage.classList.add("animate-in")
+    // Remove this line:
+    // logoImage.classList.add("animate-in")
     logoImage.addEventListener("animationend", (e) => {
       logoImage.classList.remove(e.animationName === "fadeInUp" ? "animate-in" : "shake")
     })
@@ -640,4 +641,3 @@ console.log(`
     }
   })
 })()
-

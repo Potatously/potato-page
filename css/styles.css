@@ -105,30 +105,8 @@
   /* =========================================
      ANIMACIONES
      ========================================= */
-  /* Animación de aparición con desplazamiento hacia arriba */
-  @-webkit-keyframes fadeInUp {
-    from {
-      opacity: 0;
-      -webkit-transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Animación de sacudida */
+     
+  /* Animación de sacudida */  
   @keyframes shake {
     10%,
     90% {
@@ -262,11 +240,6 @@
   }
   
   /* Clases de utilidad para animaciones */
-  .animate-in {
-    -webkit-animation: fadeInUp 0.6s ease forwards;
-    animation: fadeInUp 0.6s ease forwards;
-  }
-  
   .shake {
     -webkit-animation: shake 0.5s both !important;
     animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
@@ -323,8 +296,7 @@
     font-weight: bold;
     text-decoration: none;
     color: inherit;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.4s;
+    opacity: 1;
     text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
       var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
   }
@@ -376,8 +348,7 @@
     font-weight: bold;
     cursor: pointer;
     padding: 0.5rem 1rem;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.4s;
+    opacity: 1;
     text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
       var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
     position: relative;
@@ -561,16 +532,6 @@
     align-items: center;
   }
   
-  /* Separador visual en la navegación */
-  .separator {
-    height: 28px;
-    width: 2px;
-    background-color: var(--primary-text);
-    margin-left: 18px;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.2s;
-  }
-  
   /* Efecto hover para enlaces */
   .hoverable {
     position: relative;
@@ -627,8 +588,7 @@
     width: 100%;
     text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
       var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards 0.8s;
+    opacity: 1;
   }
   
   /* Clase para ocultar elementos visualmente pero mantenerlos accesibles */
@@ -658,8 +618,7 @@
     margin-top: auto;
     bottom: 0;
     left: 0;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease forwards 1.2s;
+    opacity: 1;
     z-index: 1;
     text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
       var(--primary-text-transparent);
@@ -816,10 +775,6 @@
       max-width: 90vw;
     }
   
-    .separator {
-      display: none;
-    }
-  
     main {
       padding: var(--main-padding-mobile);
       margin-top: 1rem;
@@ -929,6 +884,10 @@
     .nav-links {
       width: 180px;
     }
+  
+    .nav-links a {
+      font-size: 16px;
+    }
   }
   
   /* Orientación landscape en móviles */
@@ -1035,5 +994,3 @@
       padding: 0.75rem;
     }
   }
-  
-  
