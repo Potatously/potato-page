@@ -704,9 +704,29 @@ main {
 .second-video {
   position: relative;
   z-index: 1001;
-  width: 60%;
+  width: 100%;
+  height: auto;
   max-width: 800px;
-  opacity: 0;
+}
+
+.homero-video video,
+.second-video video {
+    width: 100%;
+    height: auto;
+    max-width: 800px;
+    display: block;
+}
+
+/* Asegurar que los contenedores de video mantengan las dimensiones correctas */
+#homeroVideoContainer,
+#secondVideoContainer {
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* =========================================
