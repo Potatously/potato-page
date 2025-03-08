@@ -16,37 +16,10 @@
       "continue": true
     },
     {
-      "src": "/assets/images/(.*)\\.avif$",
-      "dest": "/assets/images/$1.avif",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Content-Type": "image/avif",
-        "Accept-Encoding": "br, gzip"
-      }
-    },
-    {
-      "src": "/assets/images/(.*)\\.webp$",
-      "dest": "/assets/images/$1.webp",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Content-Type": "image/webp",
-        "Accept-Encoding": "br, gzip"
-      }
-    },
-    {
-      "src": "/assets/video/(.*)\\.webm$",
-      "dest": "/assets/video/$1.webm",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Content-Type": "video/webm",
-        "Accept-Encoding": "br, gzip"
-      }
-    },
-    {
       "src": "/assets/images/(.*)",
       "dest": "/assets/images/$1",
       "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
         "Accept-Encoding": "br, gzip"
       }
     },
@@ -54,7 +27,7 @@
       "src": "/assets/video/(.*)",
       "dest": "/assets/video/$1",
       "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
         "Accept-Encoding": "br, gzip"
       }
     },
@@ -62,7 +35,7 @@
       "src": "/assets/audio/(.*)",
       "dest": "/assets/audio/$1",
       "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
         "Accept-Encoding": "br, gzip"
       }
     },
@@ -70,7 +43,7 @@
       "src": "/assets/(.*)",
       "dest": "/assets/$1",
       "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
+        "Cache-Control": "no-cache, no-store, must-revalidate"
       }
     },
     {
