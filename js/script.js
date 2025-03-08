@@ -53,6 +53,15 @@ console.log(`
   }
 
   /**
+   * Caché de videos para mejor rendimiento
+   * Los videos se cargarán bajo demanda cuando se activen los Easter eggs
+   */
+  const videoCache = {
+    homero: null,
+    dracukeo: null
+  }
+
+  /**
    * Precarga archivos de audio para reproducción inmediata
    * Configura volumen y otras propiedades
    */
@@ -73,8 +82,8 @@ console.log(`
   const logoImage = document.getElementById("logo-image")
   const eastereggOverlay = document.getElementById("eastereggOverlay")
   const secondEastereggOverlay = document.getElementById("secondEastereggOverlay")
-  const homeroVideo = document.getElementById("homeroVideo")
-  const secondVideo = document.getElementById("secondVideo")
+  const homeroVideoContainer = document.getElementById("homeroVideoContainer")
+  const secondVideoContainer = document.getElementById("secondVideoContainer")
   const discoBall = document.getElementById("discoBall")
   const closeButton = document.getElementById("closeButton")
   const closeSecondButton = document.getElementById("closeSecondButton")
@@ -114,6 +123,10 @@ console.log(`
     menuOpen: false, // Estado del menú desplegable
     hoverAudioPlaying: false, // Estado para audio de hover
     hoverAudioCooldown: false, // Cooldown para audio de hover
+    videosLoaded: {
+      homero: false,
+      dracukeo: false
+    } // Estado de carga de videos
   }
 
   /**
@@ -260,15 +273,75 @@ console.log(`
   }
 
   /**
+   * Crea y configura un elemento de video para Easter Eggs
+   * Implementa carga diferida para mejorar rendimiento
+   * @param {string} videoId - ID del video (homero o dracukeo)
+   * @returns {HTMLVideoElement} - Elemento de video configurado
+   */
+  function createVideoElement(videoId) {
+    // Si ya existe en caché, devolverlo
+    if (videoCache[videoId]) {
+      return videoCache[videoId];
+    }
+
+    // Crear nuevo elemento de video
+    const video = document.createElement('video');
+    video.id = videoId + 'Video';
+    video.className = videoId + '-video';
+    video.loop = true;
+    
+    // Determinar el formato preferido según la compatibilidad del navegador
+    const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? 'webm' : 'mp4';
+    const fallbackFormat = preferredFormat === 'webm' ? 'mp4' : 'webm';
+    
+    // Crear fuentes de video
+    const sourcePreferred = document.createElement('source');
+    sourcePreferred.src = `./assets/video/${videoId}.${preferredFormat}`;
+    sourcePreferred.type = `video/${preferredFormat}`;
+    
+    const sourceFallback = document.createElement('source');
+    sourceFallback.src = `./assets/video/${videoId}.${fallbackFormat}`;
+    sourceFallback.type = `video/${fallbackFormat}`;
+    
+    // Añadir texto alternativo
+    const fallbackText = document.createTextNode('Tu navegador no soporta el elemento de video.');
+    
+    // Ensamblar el elemento de video
+    video.appendChild(sourcePreferred);
+    video.appendChild(sourceFallback);
+    video.appendChild(fallbackText);
+    
+    // Guardar en caché para futuras referencias
+    videoCache[videoId] = video;
+    
+    // Marcar como cargado
+    state.videosLoaded[videoId] = true;
+    
+    return video;
+  }
+
+  /**
    * Activa el Easter Egg de Homero
    * Secuencia coordinada de audio, animación y video
    */
   function activateEasteregg() {
-    if (!homeroVideo) return
+    if (!homeroVideoContainer) return
 
     state.isEastereggActive = true
     eastereggOverlay.style.display = "flex"
-    homeroVideo.pause() // Pausar inicialmente el video
+    
+    // Crear y añadir el video solo cuando se activa el Easter egg
+    if (!state.videosLoaded.homero) {
+      const homeroVideo = createVideoElement('homero');
+      homeroVideoContainer.appendChild(homeroVideo);
+    }
+    
+    // Obtener referencia al video (ya sea recién creado o existente)
+    const homeroVideo = document.getElementById('homeroVideo');
+    
+    if (homeroVideo) {
+      homeroVideo.pause(); // Pausar inicialmente el video
+    }
 
     // Secuencia de activación:
     // 1. Reproducir audio
@@ -280,9 +353,11 @@ console.log(`
         }
         // 3. Iniciar video con retraso
         setTimeout(() => {
-          homeroVideo.style.animation = "fadeIn 2s forwards"
-          homeroVideo.muted = !userInteracted
-          homeroVideo.play().catch((err) => console.error(err))
+          if (homeroVideo) {
+            homeroVideo.style.animation = "fadeIn 2s forwards"
+            homeroVideo.muted = !userInteracted
+            homeroVideo.play().catch((err) => console.error(err))
+          }
         }, 800)
       })
     })
@@ -322,13 +397,25 @@ console.log(`
   function activateSecondEasteregg() {
     state.isSecondEastereggActive = true
     secondEastereggOverlay.style.display = "flex"
-    secondVideo.muted = !userInteracted
-    secondVideo.currentTime = 0
+    
+    // Crear y añadir el video solo cuando se activa el Easter egg
+    if (!state.videosLoaded.dracukeo) {
+      const dracukeoVideo = createVideoElement('dracukeo');
+      secondVideoContainer.appendChild(dracukeoVideo);
+    }
+    
+    // Obtener referencia al video (ya sea recién creado o existente)
+    const secondVideo = document.getElementById('dracukeoVideo');
+    
+    if (secondVideo) {
+      secondVideo.muted = !userInteracted
+      secondVideo.currentTime = 0
 
-    requestAnimationFrame(() => {
-      secondVideo.style.animation = "fadeIn 2s forwards"
-      playVideo(secondVideo)
-    })
+      requestAnimationFrame(() => {
+        secondVideo.style.animation = "fadeIn 2s forwards"
+        playVideo(secondVideo)
+      })
+    }
   }
 
   /**
@@ -406,11 +493,12 @@ console.log(`
       state.isEastereggActive = false
       eastereggOverlay.style.display = "none"
       discoBall.style.animation = ""
-      homeroVideo.style.animation = ""
-      homeroVideo.pause()
-      homeroVideo.muted = true
-
+      
+      const homeroVideo = document.getElementById('homeroVideo');
       if (homeroVideo) {
+        homeroVideo.style.animation = ""
+        homeroVideo.pause()
+        homeroVideo.muted = true
         homeroVideo.currentTime = 0
       }
 
@@ -428,9 +516,13 @@ console.log(`
     closeSecondButton.addEventListener("click", () => {
       state.isSecondEastereggActive = false
       secondEastereggOverlay.style.display = "none"
-      secondVideo.style.animation = ""
-      secondVideo.pause()
-      secondVideo.currentTime = 0
+      
+      const secondVideo = document.getElementById('dracukeoVideo');
+      if (secondVideo) {
+        secondVideo.style.animation = ""
+        secondVideo.pause()
+        secondVideo.currentTime = 0
+      }
     })
   }
 
@@ -484,6 +576,31 @@ console.log(`
   }
 
   /**
+   * Actualiza las fuentes de imágenes y videos según el tema actual
+   * Se llama cuando cambia el tema
+   */
+  function updateMediaSourcesForTheme(theme) {
+    // Actualizar logo según el tema
+    if (logoImage) {
+      const isDark = theme === "dark-mode";
+      
+      // Usar el formato óptimo según la compatibilidad del navegador
+      if (window.formatSupport) {
+        if (window.formatSupport.avif) {
+          logoImage.src = isDark ? "./assets/images/patata-blanca.avif" : "./assets/images/patata-negra.avif";
+        } else if (window.formatSupport.webp) {
+          logoImage.src = isDark ? "./assets/images/patata-blanca.webp" : "./assets/images/patata-negra.webp";
+        } else {
+          logoImage.src = isDark ? "./assets/images/patata-blanca.png" : "./assets/images/patata-negra.png";
+        }
+      } else {
+        // Fallback si el detector de formatos no está disponible
+        logoImage.src = isDark ? "./assets/images/patata-blanca.png" : "./assets/images/patata-negra.png";
+      }
+    }
+  }
+
+  /**
    * Actualiza elementos visuales según el tema seleccionado
    * Modifica colores, imágenes y metadatos
    */
@@ -495,9 +612,7 @@ console.log(`
     }
 
     // Actualizar logo según el tema
-    if (logoImage) {
-      logoImage.src = theme === "light-mode" ? "./assets/images/papa-negra.png" : "./assets/images/papa-blanca.png"
-    }
+    updateMediaSourcesForTheme(theme);
 
     // Actualizar color del texto del botón de tema
     const themeToggleButton = document.querySelector(".theme-toggle-button")

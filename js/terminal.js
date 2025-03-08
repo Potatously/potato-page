@@ -1,5 +1,4 @@
 // Terminal Welcome Screen Script
-// Eliminar todo el contenido anterior y reemplazarlo con este código:
 
 // Ocultar el contenido principal inmediatamente
 document.addEventListener("DOMContentLoaded", () => {
