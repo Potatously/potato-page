@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 Allow: /assets/og/open-graph.jpg
-Allow: /assets/og/open-graph.webp
 Disallow: /assets/images/
 Disallow: /assets/video/
 Disallow: /assets/audio/

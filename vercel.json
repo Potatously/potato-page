@@ -16,15 +16,7 @@
       "continue": true
     },
     {
-      "src": "/assets/images/open-graph.jpg",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Pragma": "no-cache",
-        "Expires": "0"
-      }
-    },
-    {
-      "src": "/assets/images/open-graph.webp",
+      "src": "/assets/og/open-graph.jpg",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "Pragma": "no-cache",
