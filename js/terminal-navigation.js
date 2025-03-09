@@ -1,4 +1,4 @@
-v// Este script maneja la lógica de navegación para la terminal
+// Este script maneja la lógica de navegación para la terminal
 // y determina cuándo debe mostrarse la terminal
 
 // Función para detectar si la página está siendo recargada o es una visita inicial
