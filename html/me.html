@@ -1,6 +1,59 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Una</h1>
-  </body>
+<html lang="es">
+<head>
+  <!-- Metadatos básicos -->
+  <title>Sobre mí | Potato</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+  <meta name="description" content="Contacta con Potato - Editor de video profesional, jugador de ajedrez y pensador estoico."/>
+  <!-- Resto de metadatos... -->
+  
+  <!-- Script de precarga para ocultar el contenido principal inmediatamente -->
+  <script src="../js/terminal-preload.js?v=1.0.0"></script>
+  
+  <!-- Terminal styles -->
+  <link rel="stylesheet" href="../css/terminal.css?v=1.0.0">
+  
+  <!-- Hoja de estilos principal -->
+  <link rel="stylesheet" href="../css/styles.css?v=1.0.2">
+
+  <!-- Script de detección de formatos multimedia -->
+  <script src="../js/format-detector.js?v=1.0.2"></script>
+</head>
+<body>
+  <h1>Una</h1>
+  <!-- Script de navegación de terminal (NUEVO) -->
+  <script src="../js/terminal-navigation.js?v=1.0.0"></script>
+  
+  <!-- Terminal script debe cargarse antes que el script principal -->
+  <script src="../js/terminal.js?v=1.0.0"></script>
+  <script type="module" src="../js/script.js?v=1.0.2"></script>
+  
+  <!-- Script para mostrar el contenido principal después de que la terminal se cierre -->
+  <script>
+      // Este script se ejecuta después de que la terminal se cierre
+      document.addEventListener('DOMContentLoaded', () => {
+          // Observar cambios en el DOM para detectar cuando se elimina la terminal
+          const observer = new MutationObserver((mutations) => {
+              mutations.forEach((mutation) => {
+                  if (mutation.removedNodes.length > 0) {
+                      // Verificar si la terminal fue eliminada
+                      const terminalRemoved = Array.from(mutation.removedNodes).some(
+                          node => node.classList && node.classList.contains('terminal-overlay')
+                      );
+                      
+                      if (terminalRemoved) {
+                          // Mostrar el contenido principal
+                          document.documentElement.style.visibility = 'visible';
+                          document.body.classList.add('terminal-ready');
+                      }
+                  }
+              });
+          });
+          
+          // Configurar el observador
+          observer.observe(document.body, { childList: true });
+      });
+  </script>
+</body>
 </html>
