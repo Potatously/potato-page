@@ -1,10 +1,22 @@
 User-agent: *
 Allow: /
 Allow: /assets/og/open-graph.jpg
+Allow: /api/og/*
 Disallow: /assets/images/
 Disallow: /assets/video/
 Disallow: /assets/audio/
 Disallow: /css/
 Disallow: /js/
+
+# Permitir a los rastreadores de redes sociales acceder a las imágenes OG
+User-agent: Twitterbot
+Allow: /assets/og/
+Allow: /assets/images/patata-blanca.png
+Allow: /assets/images/patata-negra.png
+
+User-agent: facebookexternalhit
+Allow: /assets/og/
+Allow: /assets/images/patata-blanca.png
+Allow: /assets/images/patata-negra.png
 
 Sitemap: https://potatously.vercel.app/sitemap.xml

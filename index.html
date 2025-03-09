@@ -2,16 +2,19 @@
 <html lang="es">
 <head>
   <!-- Metadatos básicos -->
-  <title>Potato</title>
+  <title>Potato | Visionario</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
-  <meta name="description" content="Portfolio de Potato - Emprendedor, editor de video, jugador experimentado de ajedrez y pensador de la filosofía estoica. Explora mis proyectos personales, filosofía de trabajo y servicios."/>
+  <meta name="description" content="Portfolio de Potato - Emprendedor, editor de video profesional, jugador experimentado de ajedrez y pensador de la filosofía estoica. Explora mis proyectos personales, filosofía de trabajo y servicios."/>
   <meta name="keywords" content="Potato, editor de video profesional, edición creativa, jugador de ajedrez profesional, filosofía estoica, mentoría de ajedrez, content creator, video editing expert, chess coaching, stoic philosophy, portfolio digital, edición audiovisual, creative content"/>
   <meta name="author" content="Potato"/>
-  <meta name="robots" content="index, follow"/>
+  <meta name="robots" content="index, follow, max-image-preview:large"/>
   <meta name="googlebot" content="index, follow"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="theme-color" content="#0a0a0b"/>
+  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)"/>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="color-scheme" content="dark light"/>
   
   <!-- Script de precarga para ocultar el contenido principal inmediatamente -->
   <script src="./js/terminal-preload.js?v=1.0.0"></script>
@@ -19,27 +22,34 @@
   <!-- Terminal styles -->
   <link rel="stylesheet" href="./css/terminal.css?v=1.0.0">
   
-  <!-- Metadatos para redes sociales -->
+  <!-- Metadatos para redes sociales (Open Graph) -->
   <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://potatously.vercel.app"/>
+  <meta property="og:url" content="https://potatously.vercel.app/"/>
   <meta property="og:title" content="Potato | Visionario"/>
   <meta property="og:description" content="Portfolio de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Explora mis proyectos personales."/>
   <meta property="og:image" content="https://potatously.vercel.app/assets/og/open-graph.jpg?v=1.0.3"/>
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:image:alt" content="Portfolio de Potato - Editor de video y jugador de ajedrez"/>
   <meta property="og:locale" content="es_ES"/>
   <meta property="og:site_name" content="Portfolio de Potato"/>
-  <meta property="og:logo" content="http://potatously.vercel.app/assets/images/patata-blanca.png" />
+  <meta property="og:logo" content="https://potatously.vercel.app/assets/images/patata-blanca.png"/>
+  <meta property="og:updated_time" content="2025-03-09T16:11:54+00:00"/>
 
   <!-- Metadatos para Twitter -->
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:url" content="https://potatously.vercel.app"/>
+  <meta name="twitter:url" content="https://potatously.vercel.app/"/>
   <meta name="twitter:title" content="Potato | Visionario"/>
-  <meta name="twitter:description" content="Portfolio de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Explota mis proyectos personales."/>
+  <meta name="twitter:description" content="Portfolio de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Explora mis proyectos personales."/>
   <meta name="twitter:image" content="https://potatously.vercel.app/assets/og/open-graph.jpg?v=1.0.3"/>
+  <meta name="twitter:image:alt" content="Portfolio de Potato - Editor de video y jugador de ajedrez"/>
+  <meta name="twitter:creator" content="@potatously"/>
+  
+  <!-- Facebook Open Graph adicionales -->
+  <meta property="fb:app_id" content="tu-app-id-de-facebook"/>
   
   <!-- Enlaces y recursos externos -->
-  <link rel="canonical" href="https://potatously.vercel.app"/>
+  <link rel="canonical" href="https://potatously.vercel.app/"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet"/>
@@ -49,6 +59,9 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png"/>
   <link rel="manifest" href="./assets/images/site.webmanifest"/>
+  <link rel="mask-icon" href="./assets/images/safari-pinned-tab.svg" color="#0a0a0b"/>
+  <meta name="msapplication-TileColor" content="#0a0a0b"/>
+  <meta name="msapplication-config" content="./assets/images/browserconfig.xml"/>
 
   <!-- Hoja de estilos principal -->
   <link rel="stylesheet" href="./css/styles.css?v=1.0.2">
@@ -87,6 +100,21 @@
             "@id": "https://potatously.vercel.app"
           }
         }
+  </script>
+
+  <!-- Datos estructurados adicionales para la página web -->
+  <script type="application/ld+json">
+      {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Portfolio de Potato",
+          "url": "https://potatously.vercel.app",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://potatously.vercel.app/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+      }
   </script>
 
   <!-- Script de análisis (cargado de forma diferida) -->
@@ -142,7 +170,7 @@
 
   <footer class="footer">
       <h4 class="visually-hidden">Información de Copyright</h4>
-      <span class="copyright-text">© Potato, 2025.</span> <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" target="_blank" class="footer-link">CC BY-NC 4.0</a>
+      <span class="copyright-text">© Potato, 2025.</span> <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" target="_blank" rel="noopener" class="footer-link">CC BY-NC 4.0</a>
   </footer>
 
   <!-- Contenedor para Easter Egg de Homero -->
