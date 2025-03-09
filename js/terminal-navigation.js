@@ -1,26 +1,58 @@
-// Este script maneja la lógica de navegación para la terminal
+v// Este script maneja la lógica de navegación para la terminal
 // y determina cuándo debe mostrarse la terminal
 
-// Función para obtener la URL actual sin parámetros
-function getCurrentPath() {
-    return window.location.pathname;
+// Función para detectar si la página está siendo recargada o es una visita inicial
+function shouldShowTerminal() {
+    // Obtener el timestamp de la última vez que se mostró la terminal
+    const lastTerminalTimestamp = sessionStorage.getItem('lastTerminalTimestamp');
+    
+    // Obtener el tipo de navegación
+    const navigationType = getNavigationType();
+    
+    // Mostrar la terminal si:
+    // 1. Es una recarga de página (navigationType es 'reload')
+    // 2. Es una entrada directa (navigationType es 'navigate' y no hay timestamp previo)
+    const shouldShow = 
+      navigationType === 'reload' || 
+      (navigationType === 'navigate' && !lastTerminalTimestamp);
+    
+    // Si vamos a mostrar la terminal, actualizar el timestamp
+    if (shouldShow) {
+      sessionStorage.setItem('lastTerminalTimestamp', Date.now());
+    }
+    
+    return shouldShow;
   }
   
-  // Función para verificar si debemos mostrar la terminal
-  function shouldShowTerminal() {
-    // Obtener la última página visitada de sessionStorage
-    const lastPage = sessionStorage.getItem('lastPage');
-    const currentPath = getCurrentPath();
-    
-    // Si no hay última página o si la última página es diferente a la actual,
-    // significa que es una navegación directa o un refresh
-    const isDirectNavigation = !lastPage || lastPage !== currentPath;
-    
-    // Actualizar la última página visitada
-    sessionStorage.setItem('lastPage', currentPath);
-    
-    // Si es una navegación directa (recarga o entrada directa), mostrar terminal
-    return isDirectNavigation;
+  // Función para determinar el tipo de navegación
+  function getNavigationType() {
+    // Usar la API de Navigation Timing si está disponible
+    if (window.performance && window.performance.navigation) {
+      const navType = window.performance.navigation.type;
+      
+      // 0 es navegación directa, 1 es recarga, 2 es navegación atrás/adelante
+      if (navType === 0) return 'navigate';
+      if (navType === 1) return 'reload';
+      if (navType === 2) return 'back_forward';
+      return 'unknown';
+    } 
+    // Usar la API más moderna si está disponible
+    else if (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation').length) {
+      return window.performance.getEntriesByType('navigation')[0].type;
+    }
+    // Fallback: usar un enfoque basado en referrer
+    else {
+      // Si no hay referrer o el referrer es de otro dominio, considerarlo como navegación directa
+      const referrer = document.referrer;
+      const currentHost = window.location.hostname;
+      
+      if (!referrer || !referrer.includes(currentHost)) {
+        return 'navigate';
+      }
+      
+      // Si el referrer es del mismo dominio, considerarlo como navegación interna
+      return 'back_forward';
+    }
   }
   
   // Exportar la función para que pueda ser usada por terminal.js
