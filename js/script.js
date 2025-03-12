@@ -1,7 +1,7 @@
 console.log(`
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#####%@@@@@@@@@@@@@@@@@  
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#####%@@@@@@@@@@@@@@@@@    
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%+-       -+%@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@*             *@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@=               *@@@@@@@@@@@@
@@ -125,7 +125,11 @@ console.log(`
   })
 
   function playHoverSound() {
-    if (!userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return
+    // Detectar si es un dispositivo móvil
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // No reproducir sonido en dispositivos móviles
+    if (isMobile || !userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return;
 
     state.hoverAudioPlaying = true
     state.hoverAudioCooldown = true
@@ -198,6 +202,14 @@ console.log(`
   }
 
   function canActivateEasterEgg() {
+    // Verificar si la terminal está activa
+    const terminalActive = document.querySelector('.terminal-overlay') !== null;
+    
+    // No permitir activar easter eggs si la terminal está activa
+    if (terminalActive) {
+      return false;
+    }
+    
     return !state.isEastereggActive && !state.isSecondEastereggActive && !state.isGAudioPlaying
   }
 
@@ -209,8 +221,8 @@ console.log(`
     const video = document.createElement("video")
     video.id = videoId + "Video"
     video.className = videoId + "-video"
-    // Removed opacity: 0 to make videos visible
-    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001;"
+    // Modificado: Inicialmente oculto para evitar el primer frame estático
+    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001; display: none;"
     video.loop = true
 
     const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? "webm" : "mp4"
@@ -251,6 +263,8 @@ console.log(`
 
     if (homeroVideo) {
       homeroVideo.pause()
+      homeroVideo.currentTime = 0
+      homeroVideo.style.display = "none" // Asegurarse de que esté oculto inicialmente
     }
 
     playAudio("./assets/audio/puertazo.mp3").then(() => {
@@ -260,7 +274,8 @@ console.log(`
         }
         setTimeout(() => {
           if (homeroVideo) {
-            homeroVideo.style.animation = "fadeIn 2s forwards"
+            homeroVideo.style.display = "block" // Mostrar el video justo antes de iniciar la animación
+            homeroVideo.style.animation = "fadeIn 1s forwards"
             homeroVideo.muted = !userInteracted
             homeroVideo.play().catch((err) => console.error(err))
           }
@@ -304,8 +319,10 @@ console.log(`
     if (secondVideo) {
       secondVideo.muted = !userInteracted
       secondVideo.currentTime = 0
+      secondVideo.style.display = "none" // Ocultar inicialmente
 
       requestAnimationFrame(() => {
+        secondVideo.style.display = "block" // Mostrar justo antes de la animación
         secondVideo.style.animation = "fadeIn 2s forwards"
         playVideo(secondVideo)
       })
@@ -379,6 +396,7 @@ console.log(`
         homeroVideo.pause()
         homeroVideo.muted = true
         homeroVideo.currentTime = 0
+        homeroVideo.style.display = "none" // Ocultar al cerrar
       }
 
       if (state.gAudioTimer1) clearTimeout(state.gAudioTimer1)
@@ -396,6 +414,7 @@ console.log(`
         secondVideo.style.animation = ""
         secondVideo.pause()
         secondVideo.currentTime = 0
+        secondVideo.style.display = "none" // Ocultar al cerrar
       }
     })
   }
@@ -438,21 +457,57 @@ console.log(`
     updateTheme(theme)
   }
 
+  // Función mejorada para actualizar las fuentes de medios según el tema
   function updateMediaSourcesForTheme(theme) {
     if (logoImage) {
       const isDark = theme === "dark-mode"
+      console.log("Actualizando logo para tema:", theme);
 
-      if (window.formatSupport) {
-        if (window.formatSupport.avif) {
-          logoImage.src = isDark ? "./assets/images/patata-blanca.avif" : "./assets/images/patata-negra.avif"
-        } else if (window.formatSupport.webp) {
-          logoImage.src = isDark ? "./assets/images/patata-blanca.webp" : "./assets/images/patata-negra.webp"
+      // Definir las rutas de las imágenes
+      let logoSrc = "";
+      
+      if (isDark) {
+        if (window.formatSupport && window.formatSupport.avif) {
+          logoSrc = "./assets/images/patata-blanca.avif";
+        } else if (window.formatSupport && window.formatSupport.webp) {
+          logoSrc = "./assets/images/patata-blanca.webp";
         } else {
-          logoImage.src = isDark ? "./assets/images/patata-blanca.png" : "./assets/images/patata-negra.png"
+          logoSrc = "./assets/images/patata-blanca.png";
         }
       } else {
-        logoImage.src = isDark ? "./assets/images/patata-blanca.png" : "./assets/images/patata-negra.png"
+        // Modo claro - usar patata negra
+        if (window.formatSupport && window.formatSupport.avif) {
+          logoSrc = "./assets/images/patata-negra.avif";
+        } else if (window.formatSupport && window.formatSupport.webp) {
+          logoSrc = "./assets/images/patata-negra.webp";
+        } else {
+          logoSrc = "./assets/images/patata-negra.png";
+        }
       }
+      
+      console.log("Asignando logo desde script.js:", logoSrc);
+      
+      // Verificar que la imagen existe antes de asignarla
+      const tempImg = new Image();
+      tempImg.onload = function() {
+        // La imagen existe, asignarla al logo
+        logoImage.src = logoSrc;
+        // Forzar recarga de la imagen
+        logoImage.style.display = "none";
+        setTimeout(() => {
+          logoImage.style.display = "";
+        }, 10);
+      };
+      
+      tempImg.onerror = function() {
+        // La imagen no existe, usar una imagen de respaldo
+        console.error("Error al cargar la imagen:", logoSrc);
+        logoImage.src = isDark 
+          ? "./assets/images/patata-blanca.png" 
+          : "./assets/images/patata-negra.png";
+      };
+      
+      tempImg.src = logoSrc;
     }
   }
 
@@ -570,6 +625,56 @@ console.log(`
     if (isMobile) {
       document.body.classList.add("mobile-device")
     }
+    
+    // Verificar el logo después de que todo esté cargado
+    setTimeout(() => {
+      if (logoImage) {
+        const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const hasLightClass = document.documentElement.classList.contains("light-mode");
+        const hasDarkClass = document.documentElement.classList.contains("dark-mode");
+        
+        let theme = hasDarkClass ? "dark-mode" : hasLightClass ? "light-mode" : isDarkMode ? "dark-mode" : "light-mode";
+        
+        console.log("Verificando logo después de carga completa. Tema actual:", theme);
+        updateMediaSourcesForTheme(theme);
+      }
+    }, 500);
   })
+  
+  // Agregar un listener para el evento de cambio de tema del sistema
+  const systemThemeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  systemThemeMediaQuery.addEventListener("change", (e) => {
+    // Solo actualizar si no hay un tema explícito establecido
+    if (!document.documentElement.classList.contains("light-mode") && 
+        !document.documentElement.classList.contains("dark-mode")) {
+      const newTheme = e.matches ? "dark-mode" : "light-mode";
+      console.log("Cambio en preferencia de tema del sistema detectado:", newTheme);
+      updateTheme(newTheme);
+    }
+  });
+  
+  // Agregar un listener para cuando la terminal se cierre
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.removedNodes.length > 0) {
+          const terminalRemoved = Array.from(mutation.removedNodes).some(
+            node => node.classList && node.classList.contains('terminal-overlay')
+          );
+          
+          if (terminalRemoved) {
+            console.log("Terminal cerrada, actualizando logo...");
+            setTimeout(() => {
+              const currentTheme = document.documentElement.classList.contains("light-mode") 
+                ? "light-mode" 
+                : "dark-mode";
+              updateMediaSourcesForTheme(currentTheme);
+            }, 200);
+          }
+        }
+      });
+    });
+    
+    observer.observe(document.body, { childList: true });
+  });
 })()
-

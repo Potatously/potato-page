@@ -290,6 +290,32 @@ header {
   cursor: pointer;
 }
 
+/* Añadir estos estilos para asegurar que el logo sea visible en ambos modos */
+.logo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Asegurar que el logo tenga un contraste adecuado en modo claro */
+.light-mode .logo img {
+  filter: none; /* Eliminar cualquier filtro que pueda estar afectando la visibilidad */
+}
+
+/* Asegurar que el logo tenga un contraste adecuado en modo oscuro */
+.dark-mode .logo img {
+  filter: none; /* Eliminar cualquier filtro que pueda estar afectando la visibilidad */
+}
+
+/* Añadir un fondo temporal durante la carga del logo para evitar parpadeos */
+.brand-header {
+  position: relative;
+}
+
+.brand-header img {
+  transition: opacity 0.2s ease;
+}
+
 .logo-text {
   font-size: 1.5rem;
   font-weight: bold;
@@ -715,6 +741,15 @@ main {
     height: auto;
     max-width: 800px;
     display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Asegurar que los contenedores de video mantengan las dimensiones correctas */

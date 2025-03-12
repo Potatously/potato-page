@@ -1,155 +1,135 @@
-/**
- * Detector de Formatos Multimedia
- * Este script detecta la compatibilidad del navegador con diferentes formatos
- * y actualiza dinámicamente las fuentes de los recursos multimedia.
- * v1.0.1 - Incluye soporte para lazy loading de videos
- */
-
-;(() => {
-  const formatSupport = {
-    avif: false,
-    webp: false,
-    webm: false,
-  }
-
-  function checkAvifSupport() {
+document.addEventListener("DOMContentLoaded", () => {
+  // Function to detect AVIF and WebP support
+  function detectImageSupport() {
     return new Promise((resolve) => {
-      const img = new Image()
-      img.onload = () => {
-        resolve(img.height === 1)
+      const support = {
+        avif: false,
+        webp: false,
       }
-      img.onerror = () => {
-        resolve(false)
+
+      // Detect AVIF support
+      const avif = new Image()
+      avif.onload = () => {
+        support.avif = true
+        checkWebpSupport()
       }
-      img.src =
-        "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A="
+      avif.onerror = () => {
+        checkWebpSupport()
+      }
+      avif.src =
+        "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAG1pZjEAAABhbWV0YQAAAAhhaXZwYgEAAAAAogcAAAAAAHBtZHVyYXhwAAAAAAIAAAIAAAAUaGlsYwAAABwAAAAKAAAAAAFraW5mAAAAAAIAAAAVAAAAAA5tZGlhdgAgABAAAAAOcGlsbAAAAABJAAAAKAAAACNjb2xybmNseXAAAAAAChAAAAAAYXhwcnAAAABoAAAAIChjb2xybmNseXAIAAAAABAAAAAAeGlwcnAAAAAoAAAAgChjb2xybmNseWkAAAAABAAAAAAoaXNlbmMAAAABAAAAgYm1vdmUAAAAAAABtbWRhdAoAAAAAAAAAAAAAA"
+
+      // Función checkWebpSupport
+      function checkWebpSupport() {
+        return new Promise((resolve) => {
+          const img = new Image()
+          img.onload = () => {
+            resolve(true)
+          }
+          img.onerror = () => {
+            resolve(false)
+          }
+          // Usar una cadena base64 válida y completa para WebP
+          img.src = "data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA=="
+        })
+      }
     })
   }
 
-  function checkWebpSupport() {
-    return new Promise((resolve) => {
-      const img = new Image()
-      img.onload = () => {
-        resolve(img.height === 1)
-      }
-      img.onerror = () => {
-        resolve(false)
-      }
-      img.src = "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA="
-    })
-  }
-
-  function checkWebmSupport() {
-    const video = document.createElement("video")
-    return Promise.resolve(!!video.canPlayType('video/webm; codecs="vp8, vorbis"'))
-  }
-
-  function updateImageSources(support) {
-    updateLogoSources(support)
-
-    if (support.webp) {
-      const discoBall = document.getElementById("discoBall")
-      if (discoBall) {
-        const webpSource = discoBall.parentElement.querySelector('source[type="image/webp"]')
-        if (webpSource && webpSource.srcset) {
-          discoBall.setAttribute("data-original-src", discoBall.src)
-        }
-      }
-    }
-  }
-
-  function updateVideoSources(support) {
-    setupLazyVideoContainers(support)
-  }
-
-  function setupLazyVideoContainers(support) {
-    window.videoFormatSupport = {
-      webm: support.webm,
-      preferredFormat: support.webm ? "webm" : "mp4",
-    }
-
-    console.log(
-      "Configuración de videos diferidos completada. Formato preferido:",
-      window.videoFormatSupport.preferredFormat,
-    )
-  }
-
+  // Function to update the logo source based on detected support and theme
   function updateLogoSources(support) {
     const logoImage = document.getElementById("logo-image")
     if (!logoImage) return
 
+    // Determinar el tema actual de manera más robusta
     const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-    const theme = document.documentElement.classList.contains("light-mode")
-      ? "light"
-      : document.documentElement.classList.contains("dark-mode")
-        ? "dark"
-        : isDarkMode
-          ? "dark"
-          : "light"
+    const hasLightClass = document.documentElement.classList.contains("light-mode")
+    const hasDarkClass = document.documentElement.classList.contains("dark-mode")
 
+    // Lógica más explícita para determinar el tema
+    let theme = "dark" // valor por defecto
+
+    if (hasLightClass) {
+      theme = "light"
+    } else if (hasDarkClass) {
+      theme = "dark"
+    } else if (!isDarkMode) {
+      theme = "light"
+    }
+
+    console.log("Tema actual detectado:", theme)
+
+    // Definir las rutas de las imágenes
+    let logoSrc = ""
+
+    // CORRECCIÓN: Invertir la lógica para asignar correctamente los logos
     if (theme === "dark") {
+      // Modo oscuro - usar patata blanca
       if (support.avif) {
-        logoImage.src = "./assets/images/patata-blanca.avif"
+        logoSrc = "./assets/images/patata-blanca.avif"
       } else if (support.webp) {
-        logoImage.src = "./assets/images/patata-blanca.webp"
+        logoSrc = "./assets/images/patata-blanca.webp"
       } else {
-        logoImage.src = "./assets/images/patata-blanca.png"
+        logoSrc = "./assets/images/patata-blanca.png"
       }
     } else {
+      // Modo claro - usar patata negra
       if (support.avif) {
-        logoImage.src = "./assets/images/patata-negra.avif"
+        logoSrc = "./assets/images/patata-negra.avif"
       } else if (support.webp) {
-        logoImage.src = "./assets/images/patata-negra.webp"
+        logoSrc = "./assets/images/patata-negra.webp"
       } else {
-        logoImage.src = "./assets/images/patata-negra.png"
+        logoSrc = "./assets/images/patata-negra.png"
       }
     }
 
+    console.log("Asignando logo:", logoSrc)
+
+    // Verificar que la imagen existe antes de asignarla
+    const tempImg = new Image()
+    tempImg.onload = () => {
+      // La imagen existe, asignarla al logo
+      logoImage.src = logoSrc
+      // Forzar recarga de la imagen
+      logoImage.style.display = "none"
+      setTimeout(() => {
+        logoImage.style.display = ""
+      }, 10)
+    }
+
+    tempImg.onerror = () => {
+      // La imagen no existe, usar una imagen de respaldo
+      console.error("Error al cargar la imagen:", logoSrc)
+      logoImage.src = theme === "dark" ? "./assets/images/patata-blanca.png" : "./assets/images/patata-negra.png"
+    }
+
+    tempImg.src = logoSrc
+
+    // Configurar listener para el botón de cambio de tema
     const themeToggle = document.getElementById("theme-toggle")
     if (themeToggle) {
       themeToggle.addEventListener("click", () => {
-        setTimeout(() => updateLogoSources(support), 50)
+        // Usar un tiempo más largo para asegurar que el tema se haya aplicado
+        setTimeout(() => updateLogoSources(support), 100)
       })
     }
 
+    // Configurar listener para cambios en el esquema de colores del sistema
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
     mediaQuery.addEventListener("change", () => {
+      // Verificar si no hay clases de tema explícitas
       if (
         !document.documentElement.classList.contains("light-mode") &&
         !document.documentElement.classList.contains("dark-mode")
       ) {
-        setTimeout(() => updateLogoSources(support), 50)
+        setTimeout(() => updateLogoSources(support), 100)
       }
     })
   }
 
-  async function init() {
-    try {
-      const [avifSupport, webpSupport, webmSupport] = await Promise.all([
-        checkAvifSupport(),
-        checkWebpSupport(),
-        checkWebmSupport(),
-      ])
-
-      formatSupport.avif = avifSupport
-      formatSupport.webp = webpSupport
-      formatSupport.webm = webmSupport
-
-      console.log("Compatibilidad de formatos detectada:", formatSupport)
-
-      updateImageSources(formatSupport)
-      updateVideoSources(formatSupport)
-
-      window.formatSupport = formatSupport
-    } catch (error) {
-      console.error("Error al detectar la compatibilidad de formatos:", error)
-    }
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init)
-  } else {
-    init()
-  }
-})()
+  // Detect support and update logo
+  detectImageSupport().then((support) => {
+    updateLogoSources(support)
+  })
+})
 

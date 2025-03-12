@@ -123,16 +123,17 @@
 </head>
 <body>
   <header>
+      <!-- Modificar la sección del logo para incluir un fallback más robusto -->
       <div class="logo">
           <h3 class="brand-header">
               <picture>
-                <source id="logo-avif" type="image/avif" srcset="./assets/images/patata-blanca.avif" media="(prefers-color-scheme: dark)">
-                <source id="logo-webp" type="image/webp" srcset="./assets/images/patata-blanca.webp" media="(prefers-color-scheme: dark)">
+                <source id="logo-avif-dark" type="image/avif" srcset="./assets/images/patata-blanca.avif" media="(prefers-color-scheme: dark)">
+                <source id="logo-webp-dark" type="image/webp" srcset="./assets/images/patata-blanca.webp" media="(prefers-color-scheme: dark)">
                 <source id="logo-png-dark" type="image/png" srcset="./assets/images/patata-blanca.png" media="(prefers-color-scheme: dark)">
                 <source id="logo-avif-light" type="image/avif" srcset="./assets/images/patata-negra.avif" media="(prefers-color-scheme: light)">
                 <source id="logo-webp-light" type="image/webp" srcset="./assets/images/patata-negra.webp" media="(prefers-color-scheme: light)">
                 <source id="logo-png-light" type="image/png" srcset="./assets/images/patata-negra.png" media="(prefers-color-scheme: light)">
-                <img id="logo-image" src="./assets/images/patata-blanca.png" alt="Logo de Potato - Patata estilizada en blanco"/>
+                <img id="logo-image" src="./assets/images/patata-blanca.png" alt="Logo de Potato - Patata estilizada" loading="eager" onerror="this.onerror=null; this.src='./assets/images/patata-blanca.png';" />
               </picture>
               <a class="logo-text hoverable" href="https://potatously.vercel.app">Potato</a>
           </h3>
@@ -225,5 +226,48 @@
           observer.observe(document.body, { childList: true });
       });
   </script>
+    <script>
+        // Asegurar que el logo se cargue correctamente
+        document.addEventListener('DOMContentLoaded', function() {
+        const logoImage = document.getElementById('logo-image');
+        if (logoImage) {
+            // Verificar el tema actual
+            const isDarkMode = document.documentElement.classList.contains('dark-mode') || 
+                            (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 
+                                !document.documentElement.classList.contains('light-mode'));
+            
+            // Asignar la imagen correcta
+            logoImage.src = isDarkMode ? 
+            './assets/images/patata-blanca.png' : 
+            './assets/images/patata-negra.png';
+        }
+        });
+        
+        // También verificar después de que la terminal se cierre
+        const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.removedNodes.length > 0) {
+            const terminalRemoved = Array.from(mutation.removedNodes).some(
+                node => node.classList && node.classList.contains('terminal-overlay')
+            );
+            
+            if (terminalRemoved) {
+                const logoImage = document.getElementById('logo-image');
+                if (logoImage) {
+                const isDarkMode = document.documentElement.classList.contains('dark-mode') || 
+                                    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 
+                                    !document.documentElement.classList.contains('light-mode'));
+                
+                logoImage.src = isDarkMode ? 
+                    './assets/images/patata-blanca.png' : 
+                    './assets/images/patata-negra.png';
+                }
+            }
+            }
+        });
+        });
+        
+        observer.observe(document.body, { childList: true });
+    </script>
 </body>
 </html>
