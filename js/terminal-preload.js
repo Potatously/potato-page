@@ -1,4 +1,3 @@
-// Función para asegurar que el logo se cargue correctamente después de la terminal
 function ensureLogoVisibility() {
   // Esperar a que el DOM esté listo
   document.addEventListener("DOMContentLoaded", () => {
@@ -14,32 +13,24 @@ function ensureLogoVisibility() {
           if (terminalRemoved) {
             // Recargar el logo después de que la terminal se cierre
             setTimeout(() => {
-              const logoImage = document.getElementById("logo-image")
-              if (logoImage) {
+              // Si existe la función global de actualización del logo, usarla
+              if (window.updateLogoSources) {
+                console.log("Actualizando logo después de cerrar terminal")
+                window.updateLogoSources()
+              } else if (window.formatSupport) {
                 // Determinar el tema actual
-                const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-                const hasLightClass = document.documentElement.classList.contains("light-mode")
-                const hasDarkClass = document.documentElement.classList.contains("dark-mode")
+                const isDarkMode =
+                  document.documentElement.classList.contains("dark-mode") ||
+                  (window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches &&
+                    !document.documentElement.classList.contains("light-mode"))
 
-                let theme = "dark" // valor por defecto
+                const theme = isDarkMode ? "dark-mode" : "light-mode"
 
-                if (hasLightClass) {
-                  theme = "light"
-                } else if (hasDarkClass) {
-                  theme = "dark"
-                } else if (!isDarkMode) {
-                  theme = "light"
+                // Si existe la función de actualización en script.js, usarla
+                if (window.updateMediaSourcesForTheme) {
+                  window.updateMediaSourcesForTheme(theme)
                 }
-
-                // Asignar la imagen correcta según el tema
-                logoImage.src =
-                  theme === "light" ? "./assets/images/patata-negra.png" : "./assets/images/patata-blanca.png"
-
-                // Forzar recarga de la imagen
-                logoImage.style.display = "none"
-                setTimeout(() => {
-                  logoImage.style.display = ""
-                }, 10)
               }
             }, 200)
           }
@@ -52,5 +43,3 @@ function ensureLogoVisibility() {
   })
 }
 
-// Ejecutar la función
-ensureLogoVisibility()

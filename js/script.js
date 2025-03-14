@@ -457,59 +457,76 @@ console.log(`
     updateTheme(theme)
   }
 
-  // Función mejorada para actualizar las fuentes de medios según el tema
+  // Función updateMediaSourcesForTheme en script.js
   function updateMediaSourcesForTheme(theme) {
     if (logoImage) {
       const isDark = theme === "dark-mode"
-      console.log("Actualizando logo para tema:", theme);
-
+      console.log("Actualizando logo para tema:", theme)
+  
       // Definir las rutas de las imágenes
-      let logoSrc = "";
-      
+      let logoSrc = ""
+  
       if (isDark) {
+        // Modo oscuro - usar patata blanca
         if (window.formatSupport && window.formatSupport.avif) {
-          logoSrc = "./assets/images/patata-blanca.avif";
+          logoSrc = "./assets/images/patata-blanca.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
-          logoSrc = "./assets/images/patata-blanca.webp";
+          logoSrc = "./assets/images/patata-blanca.webp"
         } else {
-          logoSrc = "./assets/images/patata-blanca.png";
+          logoSrc = "./assets/images/patata-blanca.png"
         }
       } else {
         // Modo claro - usar patata negra
         if (window.formatSupport && window.formatSupport.avif) {
-          logoSrc = "./assets/images/patata-negra.avif";
+          logoSrc = "./assets/images/papa-negra.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
-          logoSrc = "./assets/images/patata-negra.webp";
+          logoSrc = "./assets/images/papa-negra.webp"
         } else {
-          logoSrc = "./assets/images/patata-negra.png";
+          logoSrc = "./assets/images/papa-negra.png"
         }
       }
-      
-      console.log("Asignando logo desde script.js:", logoSrc);
-      
+  
+      console.log("Asignando logo desde script.js:", logoSrc)
+  
       // Verificar que la imagen existe antes de asignarla
-      const tempImg = new Image();
-      tempImg.onload = function() {
+      const tempImg = new Image()
+      tempImg.onload = () => {
         // La imagen existe, asignarla al logo
-        logoImage.src = logoSrc;
+        logoImage.src = logoSrc
         // Forzar recarga de la imagen
-        logoImage.style.display = "none";
+        logoImage.style.display = "none"
         setTimeout(() => {
-          logoImage.style.display = "";
-        }, 10);
-      };
-      
-      tempImg.onerror = function() {
+          logoImage.style.display = ""
+        }, 10)
+      }
+  
+      tempImg.onerror = () => {
         // La imagen no existe, usar una imagen de respaldo
-        console.error("Error al cargar la imagen:", logoSrc);
-        logoImage.src = isDark 
-          ? "./assets/images/patata-blanca.png" 
-          : "./assets/images/patata-negra.png";
-      };
-      
-      tempImg.src = logoSrc;
+        console.error("Error al cargar la imagen:", logoSrc)
+        logoImage.src = isDark ? "./assets/images/patata-blanca.png" : "./assets/images/papa-negra.png"
+      }
+  
+      tempImg.src = logoSrc
     }
   }
+  
+  // Agregar un listener específico para el cambio de tema
+  document.addEventListener("DOMContentLoaded", () => {
+    // Verificar el tema inicial y actualizar el logo
+    setTimeout(() => {
+      const isDarkMode =
+        document.documentElement.classList.contains("dark-mode") ||
+        (window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches &&
+          !document.documentElement.classList.contains("light-mode"))
+  
+      const theme = isDarkMode ? "dark-mode" : "light-mode"
+      console.log("Tema inicial detectado:", theme)
+      updateMediaSourcesForTheme(theme)
+    }, 100)
+  })
+  
+  
 
   function updateTheme(theme) {
     const themeColorMeta = document.querySelector('meta[name="theme-color"]')

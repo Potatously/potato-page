@@ -21,17 +21,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Función checkWebpSupport
       function checkWebpSupport() {
-        return new Promise((resolve) => {
-          const img = new Image()
-          img.onload = () => {
-            resolve(true)
-          }
-          img.onerror = () => {
-            resolve(false)
-          }
-          // Usar una cadena base64 válida y completa para WebP
-          img.src = "data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA=="
-        })
+        const webp = new Image()
+        webp.onload = () => {
+          support.webp = true
+          // Guardar el soporte detectado en window para uso global
+          window.formatSupport = support
+          resolve(support)
+        }
+        webp.onerror = () => {
+          // Guardar el soporte detectado en window para uso global
+          window.formatSupport = support
+          resolve(support)
+        }
+        // Usar una cadena base64 válida y completa para WebP
+        webp.src = "data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA=="
       }
     })
   }
@@ -40,29 +43,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateLogoSources(support) {
     const logoImage = document.getElementById("logo-image")
     if (!logoImage) return
-
+  
     // Determinar el tema actual de manera más robusta
-    const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-    const hasLightClass = document.documentElement.classList.contains("light-mode")
-    const hasDarkClass = document.documentElement.classList.contains("dark-mode")
-
-    // Lógica más explícita para determinar el tema
-    let theme = "dark" // valor por defecto
-
-    if (hasLightClass) {
-      theme = "light"
-    } else if (hasDarkClass) {
-      theme = "dark"
-    } else if (!isDarkMode) {
-      theme = "light"
-    }
-
+    const isDarkMode =
+      document.documentElement.classList.contains("dark-mode") ||
+      (window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches &&
+        !document.documentElement.classList.contains("light-mode"))
+  
+    // Definir el tema basado en las clases y preferencias del sistema
+    const theme = isDarkMode ? "dark" : "light"
+  
     console.log("Tema actual detectado:", theme)
-
+  
     // Definir las rutas de las imágenes
     let logoSrc = ""
-
-    // CORRECCIÓN: Invertir la lógica para asignar correctamente los logos
+  
+    // Asignar la imagen correcta según el tema
     if (theme === "dark") {
       // Modo oscuro - usar patata blanca
       if (support.avif) {
@@ -75,16 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // Modo claro - usar patata negra
       if (support.avif) {
-        logoSrc = "./assets/images/patata-negra.avif"
+        logoSrc = "./assets/images/papa-negra.avif"
       } else if (support.webp) {
-        logoSrc = "./assets/images/patata-negra.webp"
+        logoSrc = "./assets/images/papa-negra.webp"
       } else {
-        logoSrc = "./assets/images/patata-negra.png"
+        logoSrc = "./assets/images/papa-negra.png"
       }
     }
-
+  
     console.log("Asignando logo:", logoSrc)
-
+  
     // Verificar que la imagen existe antes de asignarla
     const tempImg = new Image()
     tempImg.onload = () => {
@@ -96,14 +93,21 @@ document.addEventListener("DOMContentLoaded", () => {
         logoImage.style.display = ""
       }, 10)
     }
-
+  
     tempImg.onerror = () => {
       // La imagen no existe, usar una imagen de respaldo
       console.error("Error al cargar la imagen:", logoSrc)
-      logoImage.src = theme === "dark" ? "./assets/images/patata-blanca.png" : "./assets/images/patata-negra.png"
+      logoImage.src = theme === "dark" ? "./assets/images/patata-blanca.png" : "./assets/images/papa-negra.png"
     }
-
+  
     tempImg.src = logoSrc
+  }
+  
+  
+
+  // Detect support and update logo
+  detectImageSupport().then((support) => {
+    updateLogoSources(support)
 
     // Configurar listener para el botón de cambio de tema
     const themeToggle = document.getElementById("theme-toggle")
@@ -125,11 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => updateLogoSources(support), 100)
       }
     })
-  }
 
-  // Detect support and update logo
-  detectImageSupport().then((support) => {
-    updateLogoSources(support)
+    // Exponer la función para que otros scripts puedan usarla
+    window.updateLogoSources = () => updateLogoSources(support)
   })
 })
 
