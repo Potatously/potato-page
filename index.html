@@ -129,10 +129,7 @@
             <img id="logo-image" 
             src="./assets/images/patata-blanca.png" 
             alt="Logo de Potato" 
-            loading="eager"
-            onerror="this.src=document.documentElement.classList.contains('dark-mode') 
-            ? './assets/images/fallback-logo-dark.png' 
-            : './assets/images/fallback-logo-light.png';"/>
+            loading="eager"/>
             <a class="logo-text hoverable" href="https://potatously.vercel.app">Potato</a>
         </h3>
     </div>
@@ -186,7 +183,7 @@
 
 <!-- Contenedor para Easter Egg secundario -->
 <div id="secondEastereggOverlay" class="easteregg-overlay">
-    <button id="closeSecondButton" class="close-button" aria-label="Cerrar">×</button>
+    <button id="closeSecondButton" class="close-button" aria-label="Cerrar">×</button>    
     <!-- Videos cargados dinámicamente por JavaScript para mejorar rendimiento -->
     <div id="secondVideoContainer" class="second-video"></div>
 </div>

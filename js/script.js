@@ -225,7 +225,7 @@ console.log(`
     video.id = videoId + "Video"
     video.className = videoId + "-video"
     // Modificado: Inicialmente oculto para evitar el primer frame estático
-    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001; visibility: hidden; opactiy: 0;";    
+    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001; visibility: hidden; opacity: 0;";    
     video.loop = true
 
     const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? "webm" : "mp4"
@@ -334,7 +334,15 @@ console.log(`
 
   async function playAudio(src) {
     if (!src || !src.startsWith("./assets/audio/")) {
-      throw new Error("Ruta de audio inválida")
+      throw new Error("Ruta de audio inválida");
+    }
+
+    if (
+        (src.includes("puertazo.mp3") && audioCache.puertazo.readyState < 3) ||
+        (src.includes("pichon.mp3") && audioCache.pichon.readyState < 3) ||
+        (src.includes("bip.mp3") && audioCache.hover.readyState < 3)
+    ) {
+        throw new Error("Audio no cargado completamente");
     }
 
     if (!userInteracted) {
@@ -450,13 +458,13 @@ console.log(`
 
   function initializeTheme() {
     console.log("Initializing theme...")
+    const root = document.documentElement;
     const savedTheme = localStorage.getItem("theme")
     const validThemes = ["light-mode", "dark-mode"]
     const theme = validThemes.includes(savedTheme) ? savedTheme : "dark-mode"
 
-    document.documentElement.classList.remove(...validThemes)
-    document.documentElement.classList.add(theme)
-
+    root.classList.remove(...validThemes);
+    root.classList.add(theme);
     updateTheme(theme)
   }
 
@@ -506,7 +514,7 @@ console.log(`
       tempImg.onerror = () => {
         // La imagen no existe, usar una imagen de respaldo
         console.error("Error al cargar la imagen:", logoSrc)
-        logoImage.src = isDark ? "./assets/images/patata-blanca.png" : "./assets/images/papa-negra.png"
+        logoImage.src = isDark ? "./assets/images/fallback-logo-dark.png" : "./assets/images/fallback-logo-light.png";
       }
   
       tempImg.src = logoSrc
