@@ -53,9 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Definir el tema basado en las clases y preferencias del sistema
     const theme = isDarkMode ? "dark" : "light"
-  
-    console.log("Tema actual detectado:", theme)
-  
+    
     // Definir las rutas de las imágenes
     let logoSrc = ""
   
@@ -79,9 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logoSrc = "./assets/images/papa-negra.png"
       }
     }
-  
-    console.log("Asignando logo:", logoSrc)
-  
+    
     // Verificar que la imagen existe antes de asignarla
     const tempImg = new Image()
     tempImg.onload = () => {

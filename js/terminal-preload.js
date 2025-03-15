@@ -15,7 +15,6 @@ function ensureLogoVisibility() {
             setTimeout(() => {
               // Si existe la función global de actualización del logo, usarla
               if (window.updateLogoSources) {
-                console.log("Actualizando logo después de cerrar terminal")
                 window.updateLogoSources()
               } else if (window.formatSupport) {
                 // Determinar el tema actual

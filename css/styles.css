@@ -729,10 +729,13 @@ main {
 
 .homero-video video,
 .second-video video {
+    animation: fadeIn 2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
     width: 100%;
     height: auto;
     max-width: 800px;
-    display: block;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 0;
 }
 
 @keyframes fadeIn {

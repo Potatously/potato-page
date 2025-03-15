@@ -110,12 +110,8 @@ console.log(`
   let userInteracted = false
 
   function handleAudioError(e) {
-    const error = e.target.error
-    console.error("Error de audio:", {
-      code: error.code,
-      message: error.message,
-      tipo: error instanceof MediaError ? "MediaError" : "Error general",
-    })
+    if (e.target.error.code === MediaError.MEDIA_ERR_ABORTED) return;
+    console.error("Error de audio:", e.target.error.message);
   }
 
   document.addEventListener("click", () => {
@@ -225,7 +221,10 @@ console.log(`
     video.id = videoId + "Video"
     video.className = videoId + "-video"
     // Modificado: Inicialmente oculto para evitar el primer frame estático
-    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001; visibility: hidden; opacity: 0;";    
+    video.style.cssText = "width:100%;height:auto;max-width:800px;position:relative;z-index:1001;opacity:1;visibility:visible;";
+    video.setAttribute('playsinline', ''); // Para iOS
+    video.autoplay = true;
+    video.muted = true;
     video.loop = true
 
     const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? "webm" : "mp4"
@@ -262,13 +261,7 @@ console.log(`
       homeroVideoContainer.appendChild(homeroVideo)
     }
 
-    const homeroVideo = document.getElementById("homeroVideo")
-
-    if (homeroVideo) {
-      homeroVideo.pause()
-      homeroVideo.currentTime = 0
-      homeroVideo.style.display = "none" // Asegurarse de que esté oculto inicialmente
-    }
+    const homeroVideo = videoCache.homero;
 
     playAudio("./assets/audio/puertazo.mp3").then(() => {
       requestAnimationFrame(() => {
@@ -277,10 +270,15 @@ console.log(`
         }
         setTimeout(() => {
           if (homeroVideo) {
-            homeroVideo.style.display = "block" // Mostrar el video justo antes de iniciar la animación
-            homeroVideo.style.animation = "fadeIn 1s forwards"
-            homeroVideo.muted = !userInteracted
-            homeroVideo.play().catch((err) => console.error(err))
+            homeroVideo.style.animation = 'none';
+            homeroVideo.offsetHeight; /* Trigger reflow */
+            homeroVideo.style.animation = 'fadeIn 2s forwards';            
+            homeroVideo.muted = !userInteracted;
+            homeroVideo.play().catch(err => {
+              console.error('Error al reproducir:', err);            
+              homeroVideo.muted = true;
+              homeroVideo.play();
+          });
           }
         }, 800)
       })
@@ -298,7 +296,7 @@ console.log(`
         state.clickCount++
         if (state.clickCount === 1) {
           clearTimeout(timers.click)
-          timers.click = setTimeout(() => (state.clickCount = 0), 1000)
+          timers.click = setTimeout(() => (state.clickCount = 0), 2000)
         } else if (state.clickCount >= 8) {
           clearTimeout(timers.click)
           state.clickCount = 0
@@ -322,7 +320,9 @@ console.log(`
     if (secondVideo) {
       secondVideo.muted = !userInteracted
       secondVideo.currentTime = 0
-      secondVideo.style.display = "none" // Ocultar inicialmente
+      secondVideo.style.visibility = "visible";
+      secondVideo.style.opacity = "1";
+      secondVideo.removeAttribute('hidden');
 
       requestAnimationFrame(() => {
         secondVideo.style.display = "block" // Mostrar justo antes de la animación
@@ -401,7 +401,7 @@ console.log(`
       eastereggOverlay.style.display = "none"
       discoBall.style.animation = ""
 
-      const homeroVideo = document.getElementById("homeroVideo")
+      const homeroVideo = videoCache.homero;
       if (homeroVideo) {
         homeroVideo.style.animation = ""
         homeroVideo.pause()
@@ -457,7 +457,6 @@ console.log(`
   }
 
   function initializeTheme() {
-    console.log("Initializing theme...")
     const root = document.documentElement;
     const savedTheme = localStorage.getItem("theme")
     const validThemes = ["light-mode", "dark-mode"]
@@ -472,14 +471,13 @@ console.log(`
   function updateMediaSourcesForTheme(theme) {
     if (logoImage) {
       const isDark = theme === "dark-mode"
-      console.log("Actualizando logo para tema:", theme)
   
       // Definir las rutas de las imágenes
       let logoSrc = ""
   
       if (isDark) {
         // Modo oscuro - usar patata blanca
-        if (window.formatSupport && window.formatSupport.avif) {
+        if (typeof window.formatSupport !== 'undefined' && window.formatSupport.avif) {
           logoSrc = "./assets/images/patata-blanca.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
           logoSrc = "./assets/images/patata-blanca.webp"
@@ -488,7 +486,7 @@ console.log(`
         }
       } else {
         // Modo claro - usar patata negra
-        if (window.formatSupport && window.formatSupport.avif) {
+        if (typeof window.formatSupport !== 'undefined' && window.formatSupport.avif) {
           logoSrc = "./assets/images/papa-negra.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
           logoSrc = "./assets/images/papa-negra.webp"
@@ -496,9 +494,7 @@ console.log(`
           logoSrc = "./assets/images/papa-negra.png"
         }
       }
-  
-      console.log("Asignando logo desde script.js:", logoSrc)
-  
+    
       // Verificar que la imagen existe antes de asignarla
       const tempImg = new Image()
       tempImg.onload = () => {
@@ -532,7 +528,6 @@ console.log(`
           !document.documentElement.classList.contains("light-mode"))
   
       const theme = isDarkMode ? "dark-mode" : "light-mode"
-      console.log("Tema inicial detectado:", theme)
       updateMediaSourcesForTheme(theme)
     }, 100)
   })
@@ -663,7 +658,6 @@ console.log(`
         
         let theme = hasDarkClass ? "dark-mode" : hasLightClass ? "light-mode" : isDarkMode ? "dark-mode" : "light-mode";
         
-        console.log("Verificando logo después de carga completa. Tema actual:", theme);
         updateMediaSourcesForTheme(theme);
       }
     }, 500);
@@ -676,7 +670,6 @@ console.log(`
     if (!document.documentElement.classList.contains("light-mode") && 
         !document.documentElement.classList.contains("dark-mode")) {
       const newTheme = e.matches ? "dark-mode" : "light-mode";
-      console.log("Cambio en preferencia de tema del sistema detectado:", newTheme);
       updateTheme(newTheme);
     }
   });
@@ -691,7 +684,6 @@ console.log(`
           );
           
           if (terminalRemoved) {
-            console.log("Terminal cerrada, actualizando logo...");
             setTimeout(() => {
               const currentTheme = document.documentElement.classList.contains("light-mode") 
                 ? "light-mode" 
