@@ -83,11 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tempImg.onload = () => {
       // La imagen existe, asignarla al logo
       logoImage.src = logoSrc
-      // Forzar recarga de la imagen
-      logoImage.style.display = "none"
-      setTimeout(() => {
-        logoImage.style.display = ""
-      }, 10)
     }
   
     tempImg.onerror = () => {
