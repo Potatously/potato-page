@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tempImg.onerror = () => {
       // La imagen no existe, usar una imagen de respaldo
       console.error("Error al cargar la imagen:", logoSrc)
-      logoImage.src = theme === "dark" ? "./assets/images/patata-blanca.png" : "./assets/images/papa-negra.png"
+      logoImage.src = theme === "dark" ? "./assets/images/fallback-logo-dark.png" : "./assets/images/fallback-logo-light.png"
     }
   
     tempImg.src = logoSrc
