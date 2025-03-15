@@ -53,6 +53,9 @@ console.log(`
     audioCache.puertazo.preload = "auto"
     audioCache.pichon.preload = "auto"
     audioCache.hover.preload = "auto"
+    audioCache.puertazo.onerror = handleAudioError;
+    audioCache.pichon.onerror = handleAudioError;
+    audioCache.hover.onerror = handleAudioError;
     audioCache.hover.volume = 1
   }
 
@@ -126,7 +129,7 @@ console.log(`
 
   function playHoverSound() {
     // Detectar si es un dispositivo móvil
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
     
     // No reproducir sonido en dispositivos móviles
     if (isMobile || !userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return;
@@ -222,7 +225,7 @@ console.log(`
     video.id = videoId + "Video"
     video.className = videoId + "-video"
     // Modificado: Inicialmente oculto para evitar el primer frame estático
-    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001; display: none;"
+    video.style.cssText = "width: 100%; height: auto; max-width: 800px; position: relative; z-index: 1001; visibility: hidden; opactiy: 0;";    
     video.loop = true
 
     const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? "webm" : "mp4"
@@ -638,7 +641,7 @@ console.log(`
       socialLink.style.setProperty("--animation-progress", `${currentTime}s`)
     }
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
     if (isMobile) {
       document.body.classList.add("mobile-device")
     }

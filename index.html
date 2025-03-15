@@ -126,15 +126,13 @@
     <!-- Modificar la sección del logo para incluir un fallback más robusto -->
     <div class="logo">
         <h3 class="brand-header">
-            <picture>
-              <source id="logo-avif-dark" type="image/avif" srcset="./assets/images/patata-blanca.avif" media="(prefers-color-scheme: dark)">
-              <source id="logo-webp-dark" type="image/webp" srcset="./assets/images/patata-blanca.webp" media="(prefers-color-scheme: dark)">
-              <source id="logo-png-dark" type="image/png" srcset="./assets/images/patata-blanca.png" media="(prefers-color-scheme: dark)">
-              <source id="logo-avif-light" type="image/avif" srcset="./assets/images/papa-negra.avif" media="(prefers-color-scheme: light)">
-              <source id="logo-webp-light" type="image/webp" srcset="./assets/images/papa-negra.webp" media="(prefers-color-scheme: light)">
-              <source id="logo-png-light" type="image/png" srcset="./assets/images/papa-negra.png" media="(prefers-color-scheme: light)">
-              <img id="logo-image" src="./assets/images/patata-blanca.png" alt="Logo de Potato - Patata estilizada" loading="eager" onerror="this.onerror=null; this.src='./assets/images/patata-blanca.png';" />
-            </picture>
+            <img id="logo-image" 
+            src="./assets/images/patata-blanca.png" 
+            alt="Logo de Potato" 
+            loading="eager"
+            onerror="this.src=document.documentElement.classList.contains('dark-mode') 
+            ? './assets/images/fallback-logo-dark.png' 
+            : './assets/images/fallback-logo-light.png';"/>
             <a class="logo-text hoverable" href="https://potatously.vercel.app">Potato</a>
         </h3>
     </div>

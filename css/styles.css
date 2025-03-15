@@ -8,6 +8,8 @@
   --transition-speed: 0.3s;
   --primary-text-transparent: rgba(255, 255, 255, 0.2);
   --separator-margin: 15px;
+  --theme-button-bg: #0a0a0b; 
+  --theme-button-text: #ffffff;
 
   /* Configuración responsiva */
   --header-height-mobile: 60px;
@@ -136,16 +138,6 @@ body::before {
   }
 }
 
-/* Animación de aparición gradual */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 /* Animación de deslizamiento hacia abajo */
 @keyframes slideDown {
   from {
@@ -241,7 +233,7 @@ body::before {
 /* Clases de utilidad para animaciones */
 .shake {
   -webkit-animation: shake 0.5s both !important;
-  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /* =========================================
