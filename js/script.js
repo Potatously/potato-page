@@ -1,3 +1,8 @@
+/**
+ * script.js - Script principal del sitio web
+ * Versión: 2.0.0
+ */
+
 console.log(`
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -37,49 +42,23 @@ console.log(`
     ██║     ╚██████╔╝   ██║   ██║  ██║   ██║   ╚██████╔╝   | No
     ╚═╝      ╚═════╝    ╚═╝   ╚═╝  ╚═╝   ╚═╝    ╚═════╝    | Mienta
   `)
+
+// IIFE para encapsular todo el código y evitar contaminación del ámbito global
 ;(() => {
+  // Cache para recursos de audio
   const audioCache = {
     puertazo: new Audio("./assets/audio/puertazo.mp3"),
     pichon: new Audio("./assets/audio/pichon.mp3"),
     hover: new Audio("./assets/audio/bip.mp3"),
   }
 
+  // Cache para recursos de video
   const videoCache = {
     homero: null,
     dracukeo: null,
   }
 
-  function preloadAudio() {
-    audioCache.puertazo.preload = "auto"
-    audioCache.pichon.preload = "auto"
-    audioCache.hover.preload = "auto"
-    audioCache.puertazo.onerror = handleAudioError;
-    audioCache.pichon.onerror = handleAudioError;
-    audioCache.hover.onerror = handleAudioError;
-    audioCache.hover.volume = 1
-  }
-
-  const themeToggle = document.getElementById("theme-toggle")
-  const logoImage = document.getElementById("logo-image")
-  const eastereggOverlay = document.getElementById("eastereggOverlay")
-  const secondEastereggOverlay = document.getElementById("secondEastereggOverlay")
-  const homeroVideoContainer = document.getElementById("homeroVideoContainer")
-  const secondVideoContainer = document.getElementById("secondVideoContainer")
-  const discoBall = document.getElementById("discoBall")
-  const closeButton = document.getElementById("closeButton")
-  const closeSecondButton = document.getElementById("closeSecondButton")
-  const menuButton = document.getElementById("menu-button")
-  const navLinks = document.getElementById("nav-links")
-  const logoText = document.querySelector(".logo-text")
-
-  if (logoImage) {
-    logoImage.addEventListener("animationend", (e) => {
-      logoImage.classList.remove(e.animationName === "fadeInUp" ? "animate-in" : "shake")
-    })
-  }
-
-  preloadAudio()
-
+  // Estado de la aplicación
   const state = {
     pPressCount: 0,
     gPressCount: 0,
@@ -98,8 +77,10 @@ console.log(`
       homero: false,
       dracukeo: false,
     },
+    userInteracted: false,
   }
 
+  // Temporizadores
   const timers = {
     pPress: null,
     gPress: null,
@@ -107,28 +88,67 @@ console.log(`
     hoverAudio: null,
   }
 
-  let userInteracted = false
-
-  function handleAudioError(e) {
-    if (e.target.error.code === MediaError.MEDIA_ERR_ABORTED) return;
-    console.error("Error de audio:", e.target.error.message);
+  // Referencias a elementos del DOM
+  const elements = {
+    themeToggle: document.getElementById("theme-toggle"),
+    logoImage: document.getElementById("logo-image"),
+    eastereggOverlay: document.getElementById("eastereggOverlay"),
+    secondEastereggOverlay: document.getElementById("secondEastereggOverlay"),
+    homeroVideoContainer: document.getElementById("homeroVideoContainer"),
+    secondVideoContainer: document.getElementById("secondVideoContainer"),
+    discoBall: document.getElementById("discoBall"),
+    closeButton: document.getElementById("closeButton"),
+    closeSecondButton: document.getElementById("closeSecondButton"),
+    menuButton: document.getElementById("menu-button"),
+    navLinks: document.getElementById("nav-links"),
+    logoText: document.querySelector(".logo-text"),
+    menuText: document.getElementById("menu-text"),
   }
 
+  // Función para precargar audio
+  function preloadAudio() {
+    audioCache.puertazo.preload = "auto"
+    audioCache.pichon.preload = "auto"
+    audioCache.hover.preload = "auto"
+    audioCache.puertazo.onerror = handleAudioError
+    audioCache.pichon.onerror = handleAudioError
+    audioCache.hover.onerror = handleAudioError
+    audioCache.hover.volume = 1
+  }
+
+  // Función para manejar errores de audio
+  function handleAudioError(e) {
+    if (e.target.error.code === MediaError.MEDIA_ERR_ABORTED) return
+    console.error("Error de audio:", e.target.error.message)
+  }
+
+  // Inicializar audio
+  preloadAudio()
+
+  // Configurar animación del logo
+  if (elements.logoImage) {
+    elements.logoImage.addEventListener("animationend", (e) => {
+      elements.logoImage.classList.remove(e.animationName === "fadeInUp" ? "animate-in" : "shake")
+    })
+  }
+
+  // Registrar interacción del usuario
   document.addEventListener("click", () => {
-    if (!userInteracted) {
-      userInteracted = true
+    if (!state.userInteracted) {
+      state.userInteracted = true
       document.querySelectorAll("video").forEach((video) => {
         video.muted = false
       })
     }
   })
 
+  // Función para reproducir sonido al pasar el ratón
   function playHoverSound() {
     // Detectar si es un dispositivo móvil
-    const isMobile = window.matchMedia("(pointer: coarse)").matches;
-    
+    const isMobile = window.matchMedia("(pointer: coarse)").matches
+
     // No reproducir sonido en dispositivos móviles
-    if (isMobile || !userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return;
+    if (isMobile || !state.userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return
 
     state.hoverAudioPlaying = true
     state.hoverAudioCooldown = true
@@ -155,6 +175,7 @@ console.log(`
       })
   }
 
+  // Configurar sonidos al pasar el ratón
   function setupHoverSounds() {
     const hoverElements = document.querySelectorAll(
       ".logo-text, #menu-text, .footer-link, .nav-links a, .social-link, .theme-toggle-button, .close-button, .close-second-button",
@@ -165,6 +186,7 @@ console.log(`
     })
   }
 
+  // Manejar pulsaciones de teclas para Easter eggs
   document.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return
 
@@ -180,6 +202,7 @@ console.log(`
     }
   })
 
+  // Función para manejar pulsaciones de teclas
   function handleKeyPress(key) {
     const isP = key === "p"
     const countProperty = isP ? "pPressCount" : "gPressCount"
@@ -200,18 +223,20 @@ console.log(`
     }
   }
 
+  // Verificar si se puede activar un Easter egg
   function canActivateEasterEgg() {
     // Verificar si la terminal está activa
-    const terminalActive = document.querySelector('.terminal-overlay') !== null;
-    
+    const terminalActive = document.querySelector(".terminal-overlay") !== null
+
     // No permitir activar easter eggs si la terminal está activa
     if (terminalActive) {
-      return false;
+      return false
     }
-    
+
     return !state.isEastereggActive && !state.isSecondEastereggActive && !state.isGAudioPlaying
   }
 
+  // Crear elemento de video para Easter eggs
   function createVideoElement(videoId) {
     if (videoCache[videoId]) {
       return videoCache[videoId]
@@ -220,22 +245,24 @@ console.log(`
     const video = document.createElement("video")
     video.id = videoId + "Video"
     video.className = videoId + "-video"
-    // Modificado: Inicialmente oculto para evitar el primer frame estático
-    video.style.cssText = "width:100%;height:auto;max-width:800px;position:relative;z-index:1001;opacity:1;visibility:visible;";
-    video.setAttribute('playsinline', ''); // Para iOS
-    video.autoplay = true;
-    video.muted = true;
+    // Inicialmente oculto para evitar el primer frame estático
+    video.style.cssText =
+      "width:100%;height:auto;max-width:800px;position:relative;z-index:1001;opacity:1;visibility:visible;"
+    video.setAttribute("playsinline", "") // Para iOS
+    video.setAttribute("data-src", "lazy") // Marcar para carga diferida
+    video.autoplay = false // Cambiar a false para carga diferida
+    video.muted = true
     video.loop = true
 
     const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? "webm" : "mp4"
     const fallbackFormat = preferredFormat === "webm" ? "mp4" : "webm"
 
     const sourcePreferred = document.createElement("source")
-    sourcePreferred.src = `./assets/video/${videoId}.${preferredFormat}`
+    sourcePreferred.dataset.src = `./assets/video/${videoId}.${preferredFormat}` // Usar data-src en lugar de src
     sourcePreferred.type = `video/${preferredFormat}`
 
     const sourceFallback = document.createElement("source")
-    sourceFallback.src = `./assets/video/${videoId}.${fallbackFormat}`
+    sourceFallback.dataset.src = `./assets/video/${videoId}.${fallbackFormat}` // Usar data-src en lugar de src
     sourceFallback.type = `video/${fallbackFormat}`
 
     const fallbackText = document.createTextNode("Tu navegador no soporta el elemento de video.")
@@ -250,47 +277,70 @@ console.log(`
     return video
   }
 
+  // Activar Easter egg principal
   function activateEasteregg() {
-    if (!homeroVideoContainer) return
+    if (!elements.homeroVideoContainer) return
 
     state.isEastereggActive = true
-    eastereggOverlay.style.display = "flex"
+    elements.eastereggOverlay.style.display = "flex"
 
     if (!state.videosLoaded.homero) {
       const homeroVideo = createVideoElement("homero")
-      homeroVideoContainer.appendChild(homeroVideo)
+      elements.homeroVideoContainer.appendChild(homeroVideo)
     }
 
-    const homeroVideo = videoCache.homero;
+    const homeroVideo = videoCache.homero
+
+    // Cargar el video si está marcado como diferido
+    if (homeroVideo.hasAttribute("data-src")) {
+      const sources = homeroVideo.querySelectorAll("source")
+      sources.forEach((source) => {
+        if (source.dataset.src) {
+          source.src = source.dataset.src
+          source.removeAttribute("data-src")
+        }
+      })
+      homeroVideo.removeAttribute("data-src")
+      homeroVideo.load()
+    }
 
     playAudio("./assets/audio/puertazo.mp3").then(() => {
       requestAnimationFrame(() => {
-        if (discoBall) {
-          discoBall.style.animation = "dropDiscoBall 1s forwards"
+        if (elements.discoBall) {
+          elements.discoBall.style.animation = "dropDiscoBall 1s forwards"
         }
         setTimeout(() => {
           if (homeroVideo) {
-            homeroVideo.style.animation = 'none';
-            homeroVideo.offsetHeight; /* Trigger reflow */
-            homeroVideo.style.animation = 'fadeIn 2s forwards';            
-            homeroVideo.muted = !userInteracted;
-            homeroVideo.play().catch(err => {
-              console.error('Error al reproducir:', err);            
-              homeroVideo.muted = true;
-              homeroVideo.play();
-          });
+            homeroVideo.style.animation = "none"
+            homeroVideo.offsetHeight /* Trigger reflow */
+            homeroVideo.style.animation = "fadeIn 2s forwards"
+            homeroVideo.muted = !state.userInteracted
+            homeroVideo.play().catch((err) => {
+              console.error("Error al reproducir:", err)
+              homeroVideo.muted = true
+              homeroVideo.play()
+            })
+
+            // Registrar interacción si existe el monitor de rendimiento
+            if (window.performanceMonitor) {
+              window.performanceMonitor.recordInteraction("easterEggActivated", {
+                type: "homero",
+                timestamp: new Date().toISOString(),
+              })
+            }
           }
         }, 800)
       })
     })
   }
 
-  if (logoImage) {
-    logoImage.addEventListener("click", () => {
+  // Configurar evento de clic en el logo para Easter egg secundario
+  if (elements.logoImage) {
+    elements.logoImage.addEventListener("click", () => {
       if (canActivateEasterEgg()) {
-        logoImage.classList.remove("shake")
+        elements.logoImage.classList.remove("shake")
         setTimeout(() => {
-          logoImage.classList.add("shake")
+          elements.logoImage.classList.add("shake")
         }, 10)
 
         state.clickCount++
@@ -306,46 +356,69 @@ console.log(`
     })
   }
 
+  // Activar Easter egg secundario
   function activateSecondEasteregg() {
     state.isSecondEastereggActive = true
-    secondEastereggOverlay.style.display = "flex"
+    elements.secondEastereggOverlay.style.display = "flex"
 
     if (!state.videosLoaded.dracukeo) {
       const dracukeoVideo = createVideoElement("dracukeo")
-      secondVideoContainer.appendChild(dracukeoVideo)
+      elements.secondVideoContainer.appendChild(dracukeoVideo)
     }
 
     const secondVideo = document.getElementById("dracukeoVideo")
 
+    // Cargar el video si está marcado como diferido
+    if (secondVideo.hasAttribute("data-src")) {
+      const sources = secondVideo.querySelectorAll("source")
+      sources.forEach((source) => {
+        if (source.dataset.src) {
+          source.src = source.dataset.src
+          source.removeAttribute("data-src")
+        }
+      })
+      secondVideo.removeAttribute("data-src")
+      secondVideo.load()
+    }
+
     if (secondVideo) {
-      secondVideo.muted = !userInteracted
+      secondVideo.muted = !state.userInteracted
       secondVideo.currentTime = 0
-      secondVideo.style.visibility = "visible";
-      secondVideo.style.opacity = "1";
-      secondVideo.removeAttribute('hidden');
+      secondVideo.style.visibility = "visible"
+      secondVideo.style.opacity = "1"
+      secondVideo.removeAttribute("hidden")
 
       requestAnimationFrame(() => {
         secondVideo.style.display = "block" // Mostrar justo antes de la animación
         secondVideo.style.animation = "fadeIn 2s forwards"
         playVideo(secondVideo)
+
+        // Registrar interacción si existe el monitor de rendimiento
+        if (window.performanceMonitor) {
+          window.performanceMonitor.recordInteraction("easterEggActivated", {
+            type: "dracukeo",
+            timestamp: new Date().toISOString(),
+          })
+        }
       })
     }
   }
 
+  // Reproducir audio con manejo de errores
   async function playAudio(src) {
     if (!src || !src.startsWith("./assets/audio/")) {
-      throw new Error("Ruta de audio inválida");
+      throw new Error("Ruta de audio inválida")
     }
 
     if (
-        (src.includes("puertazo.mp3") && audioCache.puertazo.readyState < 3) ||
-        (src.includes("pichon.mp3") && audioCache.pichon.readyState < 3) ||
-        (src.includes("bip.mp3") && audioCache.hover.readyState < 3)
+      (src.includes("puertazo.mp3") && audioCache.puertazo.readyState < 3) ||
+      (src.includes("pichon.mp3") && audioCache.pichon.readyState < 3) ||
+      (src.includes("bip.mp3") && audioCache.hover.readyState < 3)
     ) {
-        throw new Error("Audio no cargado completamente");
+      throw new Error("Audio no cargado completamente")
     }
 
-    if (!userInteracted) {
+    if (!state.userInteracted) {
       console.warn("Reproducción bloqueada: el usuario no ha interactuado")
       return
     }
@@ -368,24 +441,25 @@ console.log(`
     } catch (err) {
       console.error("Error al activar Easter egg:", err)
       state.isEastereggActive = false
-      eastereggOverlay.style.display = "none"
+      elements.eastereggOverlay.style.display = "none"
       throw err
     }
   }
 
+  // Reproducir video con manejo de errores
   async function playVideo(video) {
     if (!video) {
       console.error("Elemento video no encontrado")
       return
     }
 
-    if (!userInteracted) {
+    if (!state.userInteracted) {
       console.warn("Reproducción bloqueada: el usuario no ha interactuado")
       return
     }
 
     try {
-      video.muted = !userInteracted
+      video.muted = !state.userInteracted
       await video.play()
     } catch (err) {
       console.error("Error:", err)
@@ -393,15 +467,16 @@ console.log(`
     }
   }
 
-  if (closeButton && closeButton instanceof HTMLElement) {
-    closeButton.addEventListener("click", () => {
-      discoBall.style.removeProperty("animation")
-      discoBall.style.top = "-100px"
+  // Configurar botón de cierre para Easter egg principal
+  if (elements.closeButton && elements.closeButton instanceof HTMLElement) {
+    elements.closeButton.addEventListener("click", () => {
+      elements.discoBall.style.removeProperty("animation")
+      elements.discoBall.style.top = "-100px"
       state.isEastereggActive = false
-      eastereggOverlay.style.display = "none"
-      discoBall.style.animation = ""
+      elements.eastereggOverlay.style.display = "none"
+      elements.discoBall.style.animation = ""
 
-      const homeroVideo = videoCache.homero;
+      const homeroVideo = videoCache.homero
       if (homeroVideo) {
         homeroVideo.style.animation = ""
         homeroVideo.pause()
@@ -415,21 +490,23 @@ console.log(`
     })
   }
 
-  if (closeSecondButton instanceof HTMLElement) {
-    closeSecondButton.addEventListener("click", () => {
+  // Configurar botón de cierre para Easter egg secundario
+  if (elements.closeSecondButton instanceof HTMLElement) {
+    elements.closeSecondButton.addEventListener("click", () => {
       state.isSecondEastereggActive = false
-      secondEastereggOverlay.style.display = "none"
+      elements.secondEastereggOverlay.style.display = "none"
 
-      const secondVideo = document.getElementById("dracukeoVideo")
-      if (secondVideo) {
-        secondVideo.style.animation = ""
-        secondVideo.pause()
-        secondVideo.currentTime = 0
-        secondVideo.style.display = "none" // Ocultar al cerrar
+      const secondVideoElement = document.getElementById("dracukeoVideo")
+      if (secondVideoElement) {
+        secondVideoElement.style.animation = ""
+        secondVideoElement.pause()
+        secondVideoElement.currentTime = 0
+        secondVideoElement.style.display = "none" // Ocultar al cerrar
       }
     })
   }
 
+  // Activar audio para Easter egg "G"
   function activateGAudio() {
     if (state.gAudioTimer1) clearTimeout(state.gAudioTimer1)
     if (state.gAudioTimer2) clearTimeout(state.gAudioTimer2)
@@ -456,28 +533,29 @@ console.log(`
       })
   }
 
+  // Inicializar tema
   function initializeTheme() {
-    const root = document.documentElement;
+    const root = document.documentElement
     const savedTheme = localStorage.getItem("theme")
     const validThemes = ["light-mode", "dark-mode"]
     const theme = validThemes.includes(savedTheme) ? savedTheme : "dark-mode"
 
-    root.classList.remove(...validThemes);
-    root.classList.add(theme);
+    root.classList.remove(...validThemes)
+    root.classList.add(theme)
     updateTheme(theme)
   }
 
-  // Función updateMediaSourcesForTheme en script.js
+  // Actualizar fuentes de medios según el tema
   function updateMediaSourcesForTheme(theme) {
-    if (logoImage) {
+    if (elements.logoImage) {
       const isDark = theme === "dark-mode"
-  
+
       // Definir las rutas de las imágenes
       let logoSrc = ""
-  
+
       if (isDark) {
         // Modo oscuro - usar patata blanca
-        if (typeof window.formatSupport !== 'undefined' && window.formatSupport.avif) {
+        if (typeof window.formatSupport !== "undefined" && window.formatSupport.avif) {
           logoSrc = "./assets/images/patata-blanca.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
           logoSrc = "./assets/images/patata-blanca.webp"
@@ -486,7 +564,7 @@ console.log(`
         }
       } else {
         // Modo claro - usar patata negra
-        if (typeof window.formatSupport !== 'undefined' && window.formatSupport.avif) {
+        if (typeof window.formatSupport !== "undefined" && window.formatSupport.avif) {
           logoSrc = "./assets/images/papa-negra.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
           logoSrc = "./assets/images/papa-negra.webp"
@@ -494,46 +572,32 @@ console.log(`
           logoSrc = "./assets/images/papa-negra.png"
         }
       }
-    
+
       // Verificar que la imagen existe antes de asignarla
       const tempImg = new Image()
       tempImg.onload = () => {
         // La imagen existe, asignarla al logo
-        logoImage.src = logoSrc
+        elements.logoImage.src = logoSrc
         // Forzar recarga de la imagen
-        logoImage.style.display = "none"
+        elements.logoImage.style.display = "none"
         setTimeout(() => {
-          logoImage.style.display = ""
+          elements.logoImage.style.display = ""
         }, 10)
       }
-  
+
       tempImg.onerror = () => {
         // La imagen no existe, usar una imagen de respaldo
         console.error("Error al cargar la imagen:", logoSrc)
-        logoImage.src = isDark ? "./assets/images/fallback-logo-dark.png" : "./assets/images/fallback-logo-light.png";
+        elements.logoImage.src = isDark
+          ? "./assets/images/fallback-logo-dark.png"
+          : "./assets/images/fallback-logo-light.png"
       }
-  
+
       tempImg.src = logoSrc
     }
   }
-  
-  // Agregar un listener específico para el cambio de tema
-  document.addEventListener("DOMContentLoaded", () => {
-    // Verificar el tema inicial y actualizar el logo
-    setTimeout(() => {
-      const isDarkMode =
-        document.documentElement.classList.contains("dark-mode") ||
-        (window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches &&
-          !document.documentElement.classList.contains("light-mode"))
-  
-      const theme = isDarkMode ? "dark-mode" : "light-mode"
-      updateMediaSourcesForTheme(theme)
-    }, 100)
-  })
-  
-  
 
+  // Actualizar tema
   function updateTheme(theme) {
     const themeColorMeta = document.querySelector('meta[name="theme-color"]')
     if (themeColorMeta) {
@@ -548,8 +612,9 @@ console.log(`
     }
   }
 
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
+  // Configurar botón de cambio de tema
+  if (elements.themeToggle) {
+    elements.themeToggle.addEventListener("click", () => {
       const root = document.documentElement
       const newTheme = root.classList.contains("light-mode") ? "dark-mode" : "light-mode"
 
@@ -560,41 +625,40 @@ console.log(`
     })
   }
 
-  if (menuButton && navLinks) {
-    const menuText = document.getElementById("menu-text")
-
+  // Configurar menú de navegación
+  if (elements.menuButton && elements.navLinks) {
     function toggleMenu(show) {
       state.menuOpen = show
-      menuButton.classList.toggle("menu-open", show)
+      elements.menuButton.classList.toggle("menu-open", show)
 
       if (show) {
-        navLinks.classList.remove("closing")
-        navLinks.classList.add("active")
-        menuText.classList.add("menu-text-fade")
+        elements.navLinks.classList.remove("closing")
+        elements.navLinks.classList.add("active")
+        elements.menuText.classList.add("menu-text-fade")
         setTimeout(() => {
-          menuText.textContent = "Cerrar"
-          menuText.classList.remove("menu-text-fade")
+          elements.menuText.textContent = "Cerrar"
+          elements.menuText.classList.remove("menu-text-fade")
         }, 150)
       } else {
-        navLinks.classList.add("closing")
-        menuText.classList.add("menu-text-fade")
+        elements.navLinks.classList.add("closing")
+        elements.menuText.classList.add("menu-text-fade")
         setTimeout(() => {
-          menuText.textContent = "Menú"
-          menuText.classList.remove("menu-text-fade")
+          elements.menuText.textContent = "Menú"
+          elements.menuText.classList.remove("menu-text-fade")
         }, 150)
 
         setTimeout(() => {
-          navLinks.classList.remove("active", "closing")
+          elements.navLinks.classList.remove("active", "closing")
         }, 500)
       }
     }
 
-    menuButton.addEventListener("click", () => {
+    elements.menuButton.addEventListener("click", () => {
       toggleMenu(!state.menuOpen)
     })
 
     document.addEventListener("click", (e) => {
-      if (state.menuOpen && !menuButton.contains(e.target) && !navLinks.contains(e.target)) {
+      if (state.menuOpen && !elements.menuButton.contains(e.target) && !elements.navLinks.contains(e.target)) {
         toggleMenu(false)
       }
     })
@@ -606,8 +670,9 @@ console.log(`
     })
   }
 
-  if (logoText) {
-    logoText.addEventListener("click", (e) => {
+  // Configurar comportamiento del logo
+  if (elements.logoText) {
+    elements.logoText.addEventListener("click", (e) => {
       const isHomePage =
         window.location.pathname === "/" ||
         window.location.pathname === "/index.html" ||
@@ -623,8 +688,10 @@ console.log(`
     })
   }
 
+  // Deshabilitar selección de texto
   document.addEventListener("selectstart", (e) => e.preventDefault())
 
+  // Inicializar al cargar la página
   window.addEventListener("load", () => {
     initializeTheme()
     setupHoverSounds()
@@ -644,57 +711,69 @@ console.log(`
       socialLink.style.setProperty("--animation-progress", `${currentTime}s`)
     }
 
-    const isMobile = window.matchMedia("(pointer: coarse)").matches;
+    const isMobile = window.matchMedia("(pointer: coarse)").matches
     if (isMobile) {
       document.body.classList.add("mobile-device")
     }
-    
+
     // Verificar el logo después de que todo esté cargado
     setTimeout(() => {
-      if (logoImage) {
-        const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const hasLightClass = document.documentElement.classList.contains("light-mode");
-        const hasDarkClass = document.documentElement.classList.contains("dark-mode");
-        
-        let theme = hasDarkClass ? "dark-mode" : hasLightClass ? "light-mode" : isDarkMode ? "dark-mode" : "light-mode";
-        
-        updateMediaSourcesForTheme(theme);
+      if (elements.logoImage) {
+        const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+        const hasLightClass = document.documentElement.classList.contains("light-mode")
+        const hasDarkClass = document.documentElement.classList.contains("dark-mode")
+
+        const theme = hasDarkClass
+          ? "dark-mode"
+          : hasLightClass
+            ? "light-mode"
+            : isDarkMode
+              ? "dark-mode"
+              : "light-mode"
+
+        updateMediaSourcesForTheme(theme)
       }
-    }, 500);
+    }, 500)
   })
-  
+
   // Agregar un listener para el evento de cambio de tema del sistema
-  const systemThemeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const systemThemeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
   systemThemeMediaQuery.addEventListener("change", (e) => {
     // Solo actualizar si no hay un tema explícito establecido
-    if (!document.documentElement.classList.contains("light-mode") && 
-        !document.documentElement.classList.contains("dark-mode")) {
-      const newTheme = e.matches ? "dark-mode" : "light-mode";
-      updateTheme(newTheme);
+    if (
+      !document.documentElement.classList.contains("light-mode") &&
+      !document.documentElement.classList.contains("dark-mode")
+    ) {
+      const newTheme = e.matches ? "dark-mode" : "light-mode"
+      updateTheme(newTheme)
     }
-  });
-  
+  })
+
   // Agregar un listener para cuando la terminal se cierre
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.removedNodes.length > 0) {
           const terminalRemoved = Array.from(mutation.removedNodes).some(
-            node => node.classList && node.classList.contains('terminal-overlay')
-          );
-          
+            (node) => node.classList && node.classList.contains("terminal-overlay"),
+          )
+
           if (terminalRemoved) {
             setTimeout(() => {
-              const currentTheme = document.documentElement.classList.contains("light-mode") 
-                ? "light-mode" 
-                : "dark-mode";
-              updateMediaSourcesForTheme(currentTheme);
-            }, 200);
+              const currentTheme = document.documentElement.classList.contains("light-mode")
+                ? "light-mode"
+                : "dark-mode"
+              updateMediaSourcesForTheme(currentTheme)
+            }, 200)
           }
         }
-      });
-    });
-    
-    observer.observe(document.body, { childList: true });
-  });
+      })
+    })
+
+    observer.observe(document.body, { childList: true })
+  })
+
+  // Exponer funciones globales necesarias
+  window.updateMediaSourcesForTheme = updateMediaSourcesForTheme
 })()
+

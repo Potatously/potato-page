@@ -1,3 +1,12 @@
+/**
+ * terminal-preload.js - Maneja la visibilidad inicial y asegura la carga correcta del logo
+ * Versión: 2.0.0
+ */
+
+// Ocultar el contenido principal inmediatamente
+document.documentElement.style.visibility = "hidden"
+
+// Función para asegurar la visibilidad del logo después de que la terminal se cierre
 function ensureLogoVisibility() {
   // Esperar a que el DOM esté listo
   document.addEventListener("DOMContentLoaded", () => {
@@ -41,4 +50,7 @@ function ensureLogoVisibility() {
     observer.observe(document.body, { childList: true })
   })
 }
+
+// Iniciar la función para asegurar la visibilidad del logo
+ensureLogoVisibility()
 
