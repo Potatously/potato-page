@@ -15,22 +15,26 @@ document.documentElement.style.visibility = "hidden"
 
   // Función para detectar si la página está siendo recargada o es una visita inicial
   function shouldShowTerminal() {
-    // Obtener el timestamp de la última vez que se mostró la terminal
-    const lastTerminalTimestamp = sessionStorage.getItem("lastTerminalTimestamp")
-
     // Obtener el tipo de navegación
     const navigationType = getNavigationType()
 
     // Obtener la URL anterior (referrer)
     const referrer = document.referrer
     const currentHost = window.location.hostname
-    const isInternalNavigation = referrer && referrer.includes(currentHost) && !isPageReload(navigationType)
 
-    // Mostrar la terminal si:
-    // 1. Es una recarga de página (navigationType es 'reload')
-    // 2. Es una entrada directa (navigationType es 'navigate' o 'direct' y no hay referrer del mismo dominio)
-    // 3. NO mostrar si es navegación interna (de una página a otra dentro del mismo sitio)
-    const shouldShow = navigationType === "reload" || !isInternalNavigation
+    // Determinar si es una navegación interna (de una página a otra dentro del mismo sitio)
+    const isInternalNavigation = referrer && referrer.includes(currentHost)
+
+    // Determinar si es una recarga de página
+    const isReload = navigationType === "reload"
+
+    // Determinar si es una entrada directa (sin referrer o desde otro dominio)
+    const isDirectEntry = !isInternalNavigation && (navigationType === "navigate" || navigationType === "direct")
+
+    // Mostrar la terminal SOLO si:
+    // 1. Es una recarga de página (F5 o Ctrl+R)
+    // 2. Es una entrada directa al sitio (URL directa o desde otro dominio)
+    const shouldShow = isReload || isDirectEntry
 
     // Si vamos a mostrar la terminal, actualizar el timestamp
     if (shouldShow) {
