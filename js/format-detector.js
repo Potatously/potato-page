@@ -192,11 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const tempImg = new Image()
       tempImg.onload = () => {
         logoImage.src = logoSrc
-        // Forzar recarga de la imagen
-        logoImage.style.display = "none"
-        setTimeout(() => {
-          logoImage.style.display = ""
-        }, 10)
       }
 
       tempImg.onerror = () => {
