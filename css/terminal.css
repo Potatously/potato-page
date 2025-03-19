@@ -1,4 +1,4 @@
-/* Terminal Welcome Screen Styles */
+/* Terminal Welcome Screen Styles - v3.0.0 */
 .terminal-overlay {
   position: fixed;
   top: 0;
@@ -15,6 +15,7 @@
   z-index: 9999;
   overflow: hidden;
   cursor: default;
+  will-change: opacity, visibility;
 }
 
 .terminal-container {
@@ -35,6 +36,7 @@
   position: absolute;
   top: 20px;
   left: 0;
+  will-change: opacity, transform;
 }
 
 .terminal-line.visible {
@@ -49,7 +51,8 @@
   text-align: center;
   margin-top: 40px;
   opacity: 0;
-  text-shadow: 0 0 10px rgba(240, 240, 240, 0.9); /* Cambiado de rgba(0, 255, 0, 0.9) */
+  text-shadow: 0 0 10px rgba(240, 240, 240, 0.9);
+  will-change: opacity;
 }
 
 .terminal-access.visible {
@@ -62,6 +65,7 @@
   text-align: center;
   margin-top: 20px;
   opacity: 0;
+  will-change: opacity;
 }
 
 .terminal-click.visible {
@@ -129,6 +133,16 @@ body {
 
 body.terminal-ready {
   visibility: visible;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Asegurar que la terminal siempre sea visible */
@@ -136,3 +150,7 @@ body.terminal-ready {
   visibility: visible !important;
 }
 
+/* Mejora de accesibilidad para lectores de pantalla */
+.terminal-overlay[aria-hidden="true"] {
+  display: none;
+}

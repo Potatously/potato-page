@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <!-- Metadatos básicos -->
-<title>Potato</title>
+<title>Potato | Portfolio Digital</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
 <meta name="description" content="Portfolio de Potato - Emprendedor, editor de video profesional, jugador experimentado de ajedrez y pensador de la filosofía estoica. Explora mis proyectos personales, filosofía de trabajo y servicios."/>
@@ -15,11 +15,17 @@
 <meta name="format-detection" content="telephone=no"/>
 <meta name="color-scheme" content="dark light"/>
 
-<!-- Script de terminal (incluye preload y navegación) -->
-<script src="./js/terminal.js?v=2.0.4"></script>
+<!-- Precargar recursos críticos -->
+<link rel="preload" href="./js/terminal.js?v=3.0.0" as="script"/>
+<link rel="preload" href="./css/terminal.css?v=3.0.0" as="style"/>
+<link rel="preload" href="./css/styles.css?v=3.0.0" as="style"/>
+<link rel="preload" href="./assets/images/patata-blanca.png" as="image" fetchpriority="high"/>
 
 <!-- Terminal styles -->
-<link rel="stylesheet" href="./css/terminal.css?v=2.0.0">
+<link rel="stylesheet" href="./css/terminal.css?v=3.0.0">
+
+<!-- Script de terminal (incluye preload y navegación) -->
+<script src="./js/terminal.js?v=3.0.0"></script>
 
 <!-- Metadatos para redes sociales (Open Graph) -->
 <meta property="og:type" content="website"/>
@@ -34,7 +40,7 @@
 <meta property="og:locale" content="es_ES"/>
 <meta property="og:site_name" content="Portfolio de Potato"/>
 <meta property="og:logo" content="https://potatously.vercel.app/assets/images/patata-blanca.png"/>
-<meta property="og:updated_time" content="2025-03-09T16:11:54+00:00"/>
+<meta property="og:updated_time" content="2025-03-17T16:11:54+00:00"/>
 
 <!-- Metadatos para Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
@@ -44,9 +50,6 @@
 <meta name="twitter:image" content="https://potatously.vercel.app/assets/og/open-graph.jpg?v=1.0.4"/>
 <meta name="twitter:image:alt" content="Portfolio de Potato - Editor de video y jugador de ajedrez"/>
 <meta name="twitter:creator" content="@potatously"/>
-
-<!-- Facebook Open Graph adicionales -->
-<meta property="fb:app_id" content=""/>
 
 <!-- Enlaces y recursos externos -->
 <link rel="canonical" href="https://potatously.vercel.app/"/>
@@ -58,80 +61,99 @@
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-touch-icon.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png"/>
-<link rel="manifest" href="./assets/images/site.webmanifest"/>
+<link rel="manifest" href="./site.webmanifest"/>
 <link rel="mask-icon" href="./assets/images/safari-pinned-tab.svg" color="#0a0a0b"/>
 <meta name="msapplication-TileColor" content="#0a0a0b"/>
-<meta name="msapplication-config" content="./assets/images/browserconfig.xml"/>
+<meta name="msapplication-config" content="./browserconfig.xml"/>
 
 <!-- Hoja de estilos principal -->
-<link rel="stylesheet" href="./css/styles.css?v=1.0.8">
+<link rel="stylesheet" href="./css/styles.css?v=3.0.0">
 
-<!-- Datos estructurados Schema.org -->
+<!-- Datos estructurados Schema.org mejorados -->
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Potato",
+  "url": "https://potatously.vercel.app",
+  "image": "https://potatously.vercel.app/assets/images/patata-blanca.png",
+  "sameAs": [
+    "https://linktr.ee/potatously"
+  ],
+  "jobTitle": "Editor de Video",
+  "description": "Editor de video profesional, jugador de ajedrez y pensador estoico",
+  "knowsAbout": ["Edición de Video", "Ajedrez", "Estoicismo", "Content Creation", "Video Editing"],
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Freelance"
+  },
+  "makesOffer": [
     {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Potato",
-        "url": "https://potatously.vercel.app",
-        "image": "https://potatously.vercel.app/assets/images/patata-blanca.png",
-        "sameAs": [
-          "https://linktr.ee/potatously"
-        ],
-        "jobTitle": "Editor de Video",
-        "description": "Editor de video profesional, jugador de ajedrez y pensador estoico",
-        "knowsAbout": ["Edición de Video", "Ajedrez", "Estoicismo", "Content Creation", "Video Editing"],
-        "worksFor": {
-          "@type": "Organization",
-          "name": "Freelance"
-        },
-        "makesOffer": {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Servicios de Edición de Video",
-            "description": "Edición profesional de video para contenido digital"
-          }
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://potatously.vercel.app"
-        }
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Servicios de Edición de Video",
+        "description": "Edición profesional de video para contenido digital"
       }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Mentoría de Ajedrez",
+        "description": "Clases y entrenamiento personalizado de ajedrez"
+      }
+    }
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://potatously.vercel.app"
+  }
+}
 </script>
 
 <!-- Datos estructurados adicionales para la página web -->
 <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Portfolio de Potato",
-        "url": "https://potatously.vercel.app",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://potatously.vercel.app/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-    }
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Portfolio de Potato",
+  "url": "https://potatously.vercel.app",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://potatously.vercel.app/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Potato"
+  },
+  "copyrightYear": "2025",
+  "license": "https://creativecommons.org/licenses/by-nc/4.0/deed.es"
+}
 </script>
 
 <!-- Script de análisis y rendimiento (cargado de forma diferida) -->
-<script src="./js/performance-analytics.js?v=2.0.0" defer></script>
+<script src="./js/performance-analytics.js?v=3.0.0" defer></script>
 </head>
 <body>
 <header>
-    <!-- Modificar la sección del logo para incluir un fallback más robusto -->
+    <!-- Logo con mejor accesibilidad y fallback -->
     <div class="logo">
         <h3 class="brand-header">
             <img id="logo-image" 
-            src="./assets/images/patata-blanca.png" 
-            alt="Logo de Potato" 
-            loading="eager"/>
-            <a class="logo-text hoverable" href="https://potatously.vercel.app">Potato</a>
+                 src="./assets/images/patata-blanca.png" 
+                 alt="Logo de Potato" 
+                 width="40" 
+                 height="40"
+                 loading="eager"
+                 fetchpriority="high"/>
+            <a class="logo-text hoverable" href="https://potatously.vercel.app" aria-label="Inicio">Potato</a>
         </h3>
     </div>
     <div class="nav-right">
         <div class="menu-container">
-            <button id="menu-button" class="menu-button">
+            <button id="menu-button" class="menu-button" aria-expanded="false" aria-controls="nav-links">
                 <span id="menu-text">Menú</span>
             </button>
             <nav class="nav-links" id="nav-links">
@@ -143,23 +165,24 @@
                     <a class="hoverable" href="/gallery">Galería</a>
                 </div>
                 <div class="nav-secondary">
-                    <a href="https://linktr.ee/potatously" target="_blank" rel="noopener noreferrer" class="social-link">Linktree</a>                    
-                    <button id="theme-toggle" class="theme-toggle-button">Cambiar tema</button>
+                    <a href="https://linktr.ee/potatously" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Mis enlaces en Linktree">Linktree</a>                    
+                    <button id="theme-toggle" class="theme-toggle-button" aria-label="Cambiar entre modo claro y oscuro">Cambiar tema</button>
                 </div>
             </nav>
         </div>
     </div>
 </header>
 
-<div class="top-separator"></div>
+<div class="top-separator" role="presentation"></div>
 
 <main>
     <section class="hero-section">
         <h1 class="main-title">POTATO</h1>
+        <p class="subtitle">Pensando en qué poner aquí… todavía.</p>
     </section>
 </main>
 
-<div class="bottom-separator"></div>
+<div class="bottom-separator" role="presentation"></div>
 
 <footer class="footer">
     <h4 class="visually-hidden">Información de Copyright</h4>
@@ -167,25 +190,25 @@
 </footer>
 
 <!-- Contenedor para Easter Egg de Homero -->
-<div id="eastereggOverlay" class="easteregg-overlay">
+<div id="eastereggOverlay" class="easteregg-overlay" aria-hidden="true">
     <button id="closeButton" class="close-button" aria-label="Cerrar">×</button>
     <picture>
       <source type="image/webp" srcset="./assets/images/bola-disco.webp">
-      <img id="discoBall" class="disco-ball" src="./assets/images/bola-disco.gif" alt="Disco Ball" loading="lazy"/>
+      <img id="discoBall" class="disco-ball" src="./assets/images/bola-disco.gif" alt="Bola de disco" loading="lazy"/>
     </picture>
     <!-- Videos cargados dinámicamente por JavaScript para mejorar rendimiento -->
     <div id="homeroVideoContainer" class="homero-video"></div>
 </div>
 
 <!-- Contenedor para Easter Egg secundario -->
-<div id="secondEastereggOverlay" class="easteregg-overlay">
+<div id="secondEastereggOverlay" class="easteregg-overlay" aria-hidden="true">
     <button id="closeSecondButton" class="close-button" aria-label="Cerrar">×</button>    
     <!-- Videos cargados dinámicamente por JavaScript para mejorar rendimiento -->
     <div id="secondVideoContainer" class="second-video"></div>
 </div>
 
 <!-- Script principal (incluye detección de formatos) -->
-<script type="module" src="./js/main.js?v=2.0.8"></script>
+<script type="module" src="./js/main.js?v=3.0.0"></script>
 
 <!-- Script para mostrar el contenido principal después de que la terminal se cierre -->
 <script>
@@ -215,4 +238,3 @@
 </script>
 </body>
 </html>
-
