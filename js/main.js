@@ -463,7 +463,7 @@ if (elements.logoImage) {
       if (state.clickCount === 1) {
         clearTimeout(timers.click);
         timers.click = setTimeout(() => (state.clickCount = 0), 2000);
-      } else if (state.clickCount >= 8) {
+      } else if (state.clickCount >= 10) {
         clearTimeout(timers.click);
         state.clickCount = 0;
         activateSecondEasteregg();
