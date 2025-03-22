@@ -10,20 +10,17 @@
   --transition-speed: 0.3s;
   --primary-text-transparent: rgba(255, 255, 255, 0.2);
   --separator-margin: 15px;
-  --theme-button-bg: #0a0a0b; 
+  --theme-button-bg: #0a0a0b;
   --theme-button-text: #ffffff;
 
   /* Configuración responsiva */
   --header-height-mobile: 60px;
   --nav-spacing-mobile: 0.75rem;
   --main-padding-mobile: 1rem;
-  
+
   /* Sombras y efectos */
-  --text-shadow: 0 0 4px var(--primary-text-transparent), 
-                 0 0 8px var(--primary-text-transparent), 
-                 0 0 12px var(--primary-text-transparent), 
-                 0 0 16px rgba(217, 217, 217, 0.18), 
-                 0 0 20px rgba(217, 217, 217, 0.18);
+  --text-shadow: 0 0 4px var(--primary-text-transparent), 0 0 8px var(--primary-text-transparent), 0 0 12px
+    var(--primary-text-transparent), 0 0 16px rgba(217, 217, 217, 0.18), 0 0 20px rgba(217, 217, 217, 0.18);
   --hover-transition: all var(--transition-speed) ease;
 }
 
@@ -85,7 +82,7 @@ body {
   position: relative;
   overflow-y: auto;
   font-size: 16px;
-  
+
   /* Transición suave entre temas */
   transition: background-color 0.5s ease, color 0.5s ease;
 }
@@ -545,7 +542,8 @@ header {
 .theme-toggle-button:hover {
   background-color: var(--primary-text) !important;
   color: var(--primary-bg) !important;
-  text-shadow: none;
+  /* Mantener el efecto neón al hacer hover */
+  text-shadow: var(--text-shadow);
 }
 
 /* Efecto hover para enlaces */
@@ -741,13 +739,13 @@ main {
 
 .homero-video video,
 .second-video video {
-    animation: fadeIn 2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-    width: 100%;
-    height: auto;
-    max-width: 800px;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 0;
+  animation: fadeIn 2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  width: 100%;
+  height: auto;
+  max-width: 800px;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 0;
 }
 
 @keyframes fadeIn {
@@ -762,13 +760,13 @@ main {
 /* Asegurar que los contenedores de video mantengan las dimensiones correctas */
 #homeroVideoContainer,
 #secondVideoContainer {
-    width: 100%;
-    max-width: 800px;
-    position: relative;
-    z-index: 1001;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* =========================================
@@ -844,7 +842,7 @@ main {
     width: 90%;
     max-width: 90vw;
   }
-  
+
   .subtitle {
     font-size: 1rem;
     padding: 0 1rem;
@@ -859,6 +857,17 @@ main {
 
   main {
     padding-bottom: 100px;
+    /* Ajustar la altura para evitar desplazamiento vertical */
+    height: calc(100vh - 60px - 50px); /* Altura de la ventana - header - footer */
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-section {
+    height: auto;
+    gap: 1rem;
   }
 
   .footer {
@@ -906,7 +915,7 @@ main {
     font-size: 16px;
     padding: 0.4rem;
   }
-  
+
   .subtitle {
     font-size: 0.9rem;
   }
@@ -1010,7 +1019,7 @@ textarea,
   .nav-links a {
     font-size: 20px;
   }
-  
+
   .subtitle {
     font-size: 1.5rem;
   }
@@ -1051,8 +1060,9 @@ textarea,
     font-size: 22px;
     padding: 0.75rem;
   }
-  
+
   .subtitle {
     font-size: 2rem;
   }
 }
+
