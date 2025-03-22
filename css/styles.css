@@ -606,15 +606,6 @@ main {
   letter-spacing: 0.05em;
 }
 
-/* Subtítulo */
-.subtitle {
-  font-size: clamp(1rem, 3vw, 1.5rem);
-  opacity: 0.9;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-shadow: var(--text-shadow);
-}
-
 /* Clase para ocultar elementos visualmente pero mantenerlos accesibles */
 .visually-hidden {
   position: absolute;
@@ -842,11 +833,6 @@ main {
     width: 90%;
     max-width: 90vw;
   }
-
-  .subtitle {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
 }
 
 /* Móviles (hasta 480px) */
@@ -914,10 +900,6 @@ main {
   .nav-links a {
     font-size: 16px;
     padding: 0.4rem;
-  }
-
-  .subtitle {
-    font-size: 0.9rem;
   }
 }
 
@@ -1019,10 +1001,6 @@ textarea,
   .nav-links a {
     font-size: 20px;
   }
-
-  .subtitle {
-    font-size: 1.5rem;
-  }
 }
 
 /* Pantallas extra grandes (2560px+) */
@@ -1059,10 +1037,6 @@ textarea,
   .nav-links a {
     font-size: 22px;
     padding: 0.75rem;
-  }
-
-  .subtitle {
-    font-size: 2rem;
   }
 }
 
