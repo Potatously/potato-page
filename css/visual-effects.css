@@ -1,0 +1,24 @@
+/**
+ * visual-effects.css - Estilos para efectos visuales
+ * Versión: 1.0.0
+ */
+
+/* Estilos para el canvas de la estela del cursor */
+.cursor-trail-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+  }
+  
+  /* Ajustes para dispositivos móviles */
+  @media (pointer: coarse) {
+    .cursor-trail-canvas {
+      display: none; /* Ocultar estela en dispositivos táctiles */
+    }
+  }
+  
+  
