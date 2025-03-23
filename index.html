@@ -16,16 +16,16 @@
 <meta name="color-scheme" content="dark light"/>
 
 <!-- Precargar recursos críticos -->
-<link rel="preload" href="./js/terminal.js?v=3.0.0" as="script"/>
-<link rel="preload" href="./css/terminal.css?v=3.0.0" as="style"/>
-<link rel="preload" href="./css/styles.css?v=3.0.0" as="style"/>
+<link rel="preload" href="./js/terminal.js?v=4.0.0" as="script"/>
+<link rel="preload" href="./css/terminal.css?v=4.0.0" as="style"/>
+<link rel="preload" href="./css/styles.css?v=4.0.0" as="style"/>
 <link rel="preload" href="./assets/images/patata-blanca.png" as="image" fetchpriority="high"/>
 
 <!-- Terminal styles -->
-<link rel="stylesheet" href="./css/terminal.css?v=3.0.0">
+<link rel="stylesheet" href="./css/terminal.css?v=4.0.0">
 
 <!-- Script de terminal (incluye preload y navegación) -->
-<script src="./js/terminal.js?v=3.0.0"></script>
+<script src="./js/terminal.js?v=4.0.0"></script>
 
 <!-- Metadatos para redes sociales (Open Graph) -->
 <meta property="og:type" content="website"/>
@@ -67,7 +67,7 @@
 <meta name="msapplication-config" content="./browserconfig.xml"/>
 
 <!-- Hoja de estilos principal -->
-<link rel="stylesheet" href="./css/styles.css?v=3.0.0">
+<link rel="stylesheet" href="./css/styles.css?v=4.0.0">
 
 <!-- Datos estructurados Schema.org mejorados -->
 <script type="application/ld+json">
@@ -134,7 +134,88 @@
 </script>
 
 <!-- Script de análisis y rendimiento (cargado de forma diferida) -->
-<script src="./js/performance-analytics.js?v=3.0.0" defer></script>
+<script src="./js/performance-analytics.js?v=4.0.0" defer></script>
+
+<!-- Estilos adicionales para el menú hamburguesa -->
+<style>
+  /* Estilos para el ícono de hamburguesa */
+  .hamburger-icon {
+    display: none; /* Por defecto oculto en escritorio */
+    width: 24px;
+    height: 18px;
+    position: relative;
+    margin-right: 8px;
+  }
+  
+  .hamburger-icon span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background-color: var(--primary-text);
+    border-radius: 0px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+    /* Efecto neón similar a otros elementos */
+    text-shadow: var(--text-shadow);
+    box-shadow: 0 0 4px var(--primary-text-transparent), 
+                0 0 8px var(--primary-text-transparent);
+  }
+  
+  .hamburger-icon span:nth-child(1) {
+    top: 0px;
+  }
+  
+  .hamburger-icon span:nth-child(2),
+  .hamburger-icon span:nth-child(3) {
+    top: 8px;
+  }
+  
+  .hamburger-icon span:nth-child(4) {
+    top: 16px;
+  }
+  
+  /* Animación para el ícono cuando el menú está abierto */
+  .menu-open .hamburger-icon span:nth-child(1) {
+    top: 8px;
+    width: 0%;
+    left: 50%;
+  }
+  
+  .menu-open .hamburger-icon span:nth-child(2) {
+    transform: rotate(45deg);
+  }
+  
+  .menu-open .hamburger-icon span:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+  
+  .menu-open .hamburger-icon span:nth-child(4) {
+    top: 8px;
+    width: 0%;
+    left: 50%;
+  }
+  
+  /* Ajustes para el botón de menú */
+  .menu-button {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Mostrar ícono solo en dispositivos móviles */
+  @media (max-width: 480px) {
+    .hamburger-icon {
+      display: inline-block;
+      margin-right: 0;
+    }
+    
+    #menu-text {
+      display: none;
+    }
+  }
+</style>
 </head>
 <body>
 <header>
@@ -154,6 +235,12 @@
     <div class="nav-right">
         <div class="menu-container">
             <button id="menu-button" class="menu-button" aria-expanded="false" aria-controls="nav-links">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <span id="menu-text">Menú</span>
             </button>
             <nav class="nav-links" id="nav-links">
@@ -207,7 +294,7 @@
 </div>
 
 <!-- Script principal (incluye detección de formatos) -->
-<script type="module" src="./js/main.js?v=3.0.0"></script>
+<script type="module" src="./js/main.js?v=4.0.0"></script>
 
 <!-- Script para mostrar el contenido principal después de que la terminal se cierre -->
 <script>
@@ -237,7 +324,8 @@
 </script>
 
 <!-- Scripts para efectos visuales -->
-<link rel="stylesheet" href="./css/visual-effects.css?v=1.0.0">
-<script src="./js/visual-effects.js?v=1.0.0"></script>
+<link rel="stylesheet" href="./css/visual-effects.css">
+<script src="./js/visual-effects.js"></script>
 </body>
 </html>
+

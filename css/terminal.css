@@ -1,4 +1,4 @@
-/* Terminal Welcome Screen Styles - v3.0.0 */
+/* Terminal Welcome Screen Styles - v3.1.0 */
 .terminal-overlay {
   position: fixed;
   top: 0;
@@ -73,6 +73,19 @@
   animation: blink 1.5s infinite;
 }
 
+.terminal-skip-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.terminal-skip-hint:hover {
+  opacity: 0.8;
+}
+
 @keyframes blink {
   0%,
   100% {
@@ -124,6 +137,12 @@
   .terminal-click {
     font-size: 14px;
   }
+
+  .terminal-skip-hint {
+    font-size: 10px;
+    bottom: 5px;
+    right: 5px;
+  }
 }
 
 /* Ocultar el contenido principal hasta que se complete la animación */
@@ -154,3 +173,4 @@ body.terminal-ready {
 .terminal-overlay[aria-hidden="true"] {
   display: none;
 }
+
