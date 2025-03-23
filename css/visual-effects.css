@@ -5,88 +5,101 @@
 
 /* Estilos para el canvas de la estela de partículas */
 .particle-trail-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9998;
-  }
-  
-  /* Ajustes para dispositivos móviles */
-  @media (pointer: coarse) {
-    .particle-trail-canvas {
-      display: none; /* Ocultar estela en dispositivos táctiles */
-    }
-  }
-  
-  /* Mejorar rendimiento de animaciones */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (pointer: coarse) {
   .particle-trail-canvas {
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
+    display: none; /* Ocultar estela en dispositivos táctiles */
   }
-  
-  /* Optimizaciones para elementos interactivos (efecto más sutil) */
-  a:hover,
-  button:hover,
-  [data-interactive]:hover {
-    cursor: pointer;
-    /* Aumentar ligereamente z-index para asegurar que las partículas interactúen correctamente */
-    position: relative;
-    z-index: 1;
+}
+
+/* Mejorar rendimiento de animaciones */
+.particle-trail-canvas {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimizaciones para elementos interactivos (efecto más sutil) */
+a:hover,
+button:hover,
+[data-interactive]:hover {
+  cursor: pointer;
+  /* Aumentar ligereamente z-index para asegurar que las partículas interactúen correctamente */
+  position: relative;
+  z-index: 1;
+}
+
+/* Efecto muy sutil en elementos interactivos */
+a,
+button,
+.card,
+.project,
+[data-interactive] {
+  transition: box-shadow 0.4s ease;
+}
+
+/* Mantener las animaciones definidas para otros usos, pero no aplicarlas en hover */
+@keyframes rainbow-shadow-light {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.15);
   }
-  
-  /* Efecto muy sutil en elementos interactivos */
-  a, button, .card, .project, [data-interactive] {
-    transition: box-shadow 0.4s ease;
+  14% {
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.15);
   }
-  
-    /* En tema claro */
-    :root:not(.dark-mode):not(.dark) a:hover,
-    :root:not(.dark-mode):not(.dark) button:hover,
-    :root:not(.dark-mode):not(.dark) .card:hover,
-    :root:not(.dark-mode):not(.dark) .project:hover,
-    :root:not(.dark-mode):not(.dark) [data-interactive]:hover {
-    animation: rainbow-shadow-light 4s linear infinite;
-    }
+  28% {
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.15);
+  }
+  42% {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.15);
+  }
+  57% {
+    box-shadow: 0 0 10px rgba(0, 127, 255, 0.15);
+  }
+  71% {
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.15);
+  }
+  85% {
+    box-shadow: 0 0 10px rgba(139, 0, 255, 0.15);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.15);
+  }
+}
 
-    /* En tema oscuro */
-    .dark-mode a:hover,
-    .dark-mode button:hover,
-    .dark-mode .card:hover,
-    .dark-mode .project:hover,
-    .dark-mode [data-interactive]:hover,
-    .dark a:hover,
-    .dark button:hover,
-    .dark .card:hover,
-    .dark .project:hover,
-    .dark [data-interactive]:hover {
-    animation: rainbow-shadow-dark 4s linear infinite;
-    }
+@keyframes rainbow-shadow-dark {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+  }
+  14% {
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+  }
+  28% {
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.2);
+  }
+  42% {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+  }
+  57% {
+    box-shadow: 0 0 10px rgba(0, 127, 255, 0.2);
+  }
+  71% {
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.2);
+  }
+  85% {
+    box-shadow: 0 0 10px rgba(139, 0, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+  }
+}
 
-    /* Animación para tema claro */
-    @keyframes rainbow-shadow-light {
-    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.15); }      /* Rojo */
-    14% { box-shadow: 0 0 10px rgba(255, 165, 0, 0.15); }   /* Naranja */
-    28% { box-shadow: 0 0 10px rgba(255, 255, 0, 0.15); }   /* Amarillo */
-    42% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.15); }     /* Verde */
-    57% { box-shadow: 0 0 10px rgba(0, 127, 255, 0.15); }   /* Azul celeste */
-    71% { box-shadow: 0 0 10px rgba(0, 0, 255, 0.15); }     /* Azul */
-    85% { box-shadow: 0 0 10px rgba(139, 0, 255, 0.15); }   /* Violeta */
-    100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.15); }    /* Vuelve a rojo */
-    }
-
-    /* Animación para tema oscuro (ligeramente más intensa) */
-    @keyframes rainbow-shadow-dark {
-    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }       /* Rojo */
-    14% { box-shadow: 0 0 10px rgba(255, 165, 0, 0.2); }    /* Naranja */
-    28% { box-shadow: 0 0 10px rgba(255, 255, 0, 0.2); }    /* Amarillo */
-    42% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); }      /* Verde */
-    57% { box-shadow: 0 0 10px rgba(0, 127, 255, 0.2); }    /* Azul celeste */
-    71% { box-shadow: 0 0 10px rgba(0, 0, 255, 0.2); }      /* Azul */
-    85% { box-shadow: 0 0 10px rgba(139, 0, 255, 0.2); }    /* Violeta */
-    100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }     /* Vuelve a rojo */
-    }
