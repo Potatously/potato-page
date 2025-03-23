@@ -7,8 +7,8 @@
 console.log(`
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#####%@@@@@@@@@@@@@@@@@    
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%+-       -+%@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#####%@@@@@@@@@@@@@@@@@@@    
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@%+-       -+%@@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@*             *@@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@@=               *@@@@@@@@@@@@
   @@@@@@@@@@@@@@@@@@@@@@@@@@@+                 %@@@@@@@@@@@
@@ -162,7 +162,10 @@ console.log(`
   const audioCache = {
     puertazo: new Audio("./assets/audio/puertazo.mp3"),
     pichon: new Audio("./assets/audio/pichon.mp3"),
-    hover: new Audio("./assets/audio/bip.mp3"),
+    hover: new Audio("./assets/audio/primero_bip.mp3"),
+    hover2: new Audio("./assets/audio/segundo_shine.mp3"),
+    hover3: new Audio("./assets/audio/tercero_coin.mp3"),
+    hover4: new Audio("./assets/audio/cuarto_meet.mp3"),
   }
 
   // Cache para recursos de video
@@ -224,10 +227,19 @@ console.log(`
     audioCache.puertazo.preload = "auto"
     audioCache.pichon.preload = "auto"
     audioCache.hover.preload = "auto"
+    audioCache.hover2.preload = "auto"
+    audioCache.hover3.preload = "auto"
+    audioCache.hover4.preload = "auto"
     audioCache.puertazo.onerror = handleAudioError
     audioCache.pichon.onerror = handleAudioError
     audioCache.hover.onerror = handleAudioError
+    audioCache.hover2.onerror = handleAudioError
+    audioCache.hover3.onerror = handleAudioError
+    audioCache.hover4.onerror = handleAudioError
     audioCache.hover.volume = 1
+    audioCache.hover2.volume = 1
+    audioCache.hover3.volume = 1
+    audioCache.hover4.volume = 1
   }
 
   // Función para manejar errores de audio
@@ -256,8 +268,36 @@ console.log(`
     }
   })
 
+  // Función para determinar qué sonido reproducir según el elemento
+  function getHoverSoundForElement(element) {
+    // Primero verificamos si es un social-link (mayor prioridad)
+    if (element.classList.contains("social-link") || element.closest(".social-link")) {
+      return audioCache.hover3
+    }
+
+    // Luego verificamos si es un theme-toggle-button
+    if (element.classList.contains("theme-toggle-button") || element.closest(".theme-toggle-button")) {
+      return audioCache.hover4
+    }
+
+    // Después verificamos si es un nav-links a, close-button, o close-second-button
+    if (
+      (element.closest(".nav-links a") &&
+        !element.classList.contains("social-link") &&
+        !element.closest(".social-link")) ||
+      element.classList.contains("close-button") ||
+      element === elements.closeButton ||
+      element === elements.closeSecondButton
+    ) {
+      return audioCache.hover2
+    }
+
+    // Sonido 1 (original) para todos los demás elementos
+    return audioCache.hover
+  }
+
   // Función para reproducir sonido al pasar el ratón
-  function playHoverSound() {
+  function playHoverSound(event) {
     // Detectar si es un dispositivo móvil
     const isMobile = window.matchMedia("(pointer: coarse)").matches
 
@@ -267,7 +307,8 @@ console.log(`
     state.hoverAudioPlaying = true
     state.hoverAudioCooldown = true
 
-    const hoverSound = audioCache.hover.cloneNode()
+    // Determinar qué sonido reproducir según el elemento
+    const hoverSound = getHoverSoundForElement(event.target).cloneNode()
     hoverSound.volume = 0.7 // Reducir volumen para mejor experiencia
 
     hoverSound
@@ -530,7 +571,10 @@ console.log(`
     if (
       (src.includes("puertazo.mp3") && audioCache.puertazo.readyState < 3) ||
       (src.includes("pichon.mp3") && audioCache.pichon.readyState < 3) ||
-      (src.includes("bip.mp3") && audioCache.hover.readyState < 3)
+      (src.includes("primero_bip.mp3") && audioCache.hover.readyState < 3) ||
+      (src.includes("segundo_shine.mp3") && audioCache.hover2.readyState < 3) ||
+      (src.includes("tercero_coin.mp3") && audioCache.hover3.readyState < 3) ||
+      (src.includes("cuarto_meet.mp3") && audioCache.hover4.readyState < 3)
     ) {
       throw new Error("Audio no cargado completamente")
     }
@@ -546,8 +590,14 @@ console.log(`
         audio = audioCache.puertazo.cloneNode()
       } else if (src.includes("pichon.mp3")) {
         audio = audioCache.pichon.cloneNode()
-      } else if (src.includes("bip.mp3")) {
+      } else if (src.includes("primero_bip.mp3")) {
         audio = audioCache.hover.cloneNode()
+      } else if (src.includes("segundo_shine.mp3")) {
+        audio = audioCache.hover2.cloneNode()
+      } else if (src.includes("tercero_coin.mp3")) {
+        audio = audioCache.hover3.cloneNode()
+      } else if (src.includes("cuarto_meet.mp3")) {
+        audio = audioCache.hover4.cloneNode()
       } else {
         throw new Error("Audio no precargado")
       }
