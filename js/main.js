@@ -158,16 +158,6 @@ console.log(`
   // SECCIÓN 2: FUNCIONALIDAD PRINCIPAL
   //
 
-  // Cache para recursos de audio
-  const audioCache = {
-    puertazo: new Audio("./assets/audio/puertazo.mp3"),
-    pichon: new Audio("./assets/audio/pichon.mp3"),
-    hover: new Audio("./assets/audio/primero_bip.mp3"),
-    hover2: new Audio("./assets/audio/segundo_shine.mp3"),
-    hover3: new Audio("./assets/audio/tercero_coin.mp3"),
-    hover4: new Audio("./assets/audio/cuarto_meet.mp3"),
-  }
-
   // Cache para recursos de video
   const videoCache = {
     homero: null,
@@ -187,8 +177,6 @@ console.log(`
     gAudioTimer2: null,
     MAX_COUNTER: 10,
     menuOpen: false,
-    hoverAudioPlaying: false,
-    hoverAudioCooldown: false,
     videosLoaded: {
       homero: false,
       dracukeo: false,
@@ -201,7 +189,6 @@ console.log(`
     pPress: null,
     gPress: null,
     click: null,
-    hoverAudio: null,
   }
 
   // Referencias a elementos del DOM
@@ -222,34 +209,11 @@ console.log(`
     hamburgerIcon: document.querySelector(".hamburger-icon"),
   }
 
-  // Función para precargar audio
-  function preloadAudio() {
-    audioCache.puertazo.preload = "auto"
-    audioCache.pichon.preload = "auto"
-    audioCache.hover.preload = "auto"
-    audioCache.hover2.preload = "auto"
-    audioCache.hover3.preload = "auto"
-    audioCache.hover4.preload = "auto"
-    audioCache.puertazo.onerror = handleAudioError
-    audioCache.pichon.onerror = handleAudioError
-    audioCache.hover.onerror = handleAudioError
-    audioCache.hover2.onerror = handleAudioError
-    audioCache.hover3.onerror = handleAudioError
-    audioCache.hover4.onerror = handleAudioError
-    audioCache.hover.volume = 1
-    audioCache.hover2.volume = 1
-    audioCache.hover3.volume = 1
-    audioCache.hover4.volume = 1
-  }
-
   // Función para manejar errores de audio
   function handleAudioError(e) {
     if (e.target.error && e.target.error.code === MediaError.MEDIA_ERR_ABORTED) return
     console.error("Error de audio:", e.target.error ? e.target.error.message : "Error desconocido")
   }
-
-  // Inicializar audio
-  preloadAudio()
 
   // Configurar animación del logo
   if (elements.logoImage) {
@@ -267,79 +231,6 @@ console.log(`
       })
     }
   })
-
-  // Función para determinar qué sonido reproducir según el elemento
-  function getHoverSoundForElement(element) {
-    // Primero verificamos si es un social-link (mayor prioridad)
-    if (element.classList.contains("social-link") || element.closest(".social-link")) {
-      return audioCache.hover3
-    }
-
-    // Luego verificamos si es un theme-toggle-button
-    if (element.classList.contains("theme-toggle-button") || element.closest(".theme-toggle-button")) {
-      return audioCache.hover4
-    }
-
-    // Después verificamos si es un nav-links a, close-button, o close-second-button
-    if (
-      (element.closest(".nav-links a") &&
-        !element.classList.contains("social-link") &&
-        !element.closest(".social-link")) ||
-      element.classList.contains("close-button") ||
-      element === elements.closeButton ||
-      element === elements.closeSecondButton
-    ) {
-      return audioCache.hover2
-    }
-
-    // Sonido 1 (original) para todos los demás elementos
-    return audioCache.hover
-  }
-
-  // Función para reproducir sonido al pasar el ratón
-  function playHoverSound(event) {
-    // Detectar si es un dispositivo móvil
-    const isMobile = window.matchMedia("(pointer: coarse)").matches
-
-    // No reproducir sonido en dispositivos móviles
-    if (isMobile || !state.userInteracted || state.hoverAudioPlaying || state.hoverAudioCooldown) return
-
-    state.hoverAudioPlaying = true
-    state.hoverAudioCooldown = true
-
-    // Determinar qué sonido reproducir según el elemento
-    const hoverSound = getHoverSoundForElement(event.target).cloneNode()
-    hoverSound.volume = 0.7 // Reducir volumen para mejor experiencia
-
-    hoverSound
-      .play()
-      .then(() => {
-        clearTimeout(timers.hoverAudio)
-        timers.hoverAudio = setTimeout(() => {
-          state.hoverAudioPlaying = false
-
-          setTimeout(() => {
-            state.hoverAudioCooldown = false
-          }, 50)
-        }, 100)
-      })
-      .catch((err) => {
-        console.error("Error al reproducir sonido hover:", err)
-        state.hoverAudioPlaying = false
-        state.hoverAudioCooldown = false
-      })
-  }
-
-  // Configurar sonidos al pasar el ratón
-  function setupHoverSounds() {
-    const hoverElements = document.querySelectorAll(
-      ".logo-text, #menu-text, .footer-link, .nav-links a, .social-link, .theme-toggle-button, .close-button, .close-second-button, .hamburger-icon",
-    )
-
-    hoverElements.forEach((element) => {
-      element.addEventListener("mouseenter", playHoverSound)
-    })
-  }
 
   // Manejar pulsaciones de teclas para Easter eggs
   document.addEventListener("keydown", (e) => {
@@ -527,7 +418,7 @@ console.log(`
     const secondVideo = document.getElementById("dracukeoVideo")
 
     // Cargar el video si está marcado como diferido
-    if (secondVideo.hasAttribute("data-src")) {
+    if (secondVideo.hasAttribute("data-hidden")) {
       const sources = secondVideo.querySelectorAll("source")
       sources.forEach((source) => {
         if (source.dataset.src) {
@@ -890,7 +781,6 @@ console.log(`
   // Inicializar al cargar la página
   window.addEventListener("load", () => {
     initializeTheme()
-    setupHoverSounds()
 
     requestAnimationFrame(() => {
       document.documentElement.style.overflow = "auto"
