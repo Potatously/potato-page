@@ -1,0 +1,26 @@
+.custom-cursor {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    mix-blend-mode: exclusion;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    transform-origin: center center;
+    filter: invert(1) hue-rotate(180deg) saturate(1.5);
+}
+
+.custom-cursor::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: inherit;
+    mix-blend-mode: exclusion;
+    filter: invert(1) hue-rotate(180deg) saturate(1.5);
+} 
