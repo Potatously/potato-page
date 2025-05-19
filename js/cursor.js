@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let cursorInPage = false; // Flag para saber si el cursor está sobre la página
 
     // Ajustes para la posición del cursor (restaurados como solicitado)
-    const cursorOffsetX = -8;
-    const cursorOffsetY = -8;
+    const cursorOffsetX = -12;
+    const cursorOffsetY = -12;
 
     // Seguimiento del cursor
     document.addEventListener('mousemove', (e) => {
