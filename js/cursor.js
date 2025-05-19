@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
+    cursor.className = 'custom-cursor inactive'; // Inicialmente inactivo
     document.body.appendChild(cursor);
 
     // Variables para el seguimiento del cursor
@@ -9,11 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let aimX = 0;
     let aimY = 0;
     let animationFrameId = null;
-    let isActive = true;
+    let isActive = false; // Inicialmente inactivo
+    let cursorInPage = false; // Flag para saber si el cursor está sobre la página
 
     // Ajustes para la posición del cursor (restaurados como solicitado)
-    const cursorOffsetX = -12;
-    const cursorOffsetY = -12;
+    const cursorOffsetX = -8;
+    const cursorOffsetY = -8;
 
     // Seguimiento del cursor
     document.addEventListener('mousemove', (e) => {
@@ -21,8 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
         aimX = e.clientX + cursorOffsetX;
         aimY = e.clientY + cursorOffsetY;
         
-        // Si el cursor estaba inactivo, lo activamos
-        if (!isActive) {
+        cursorInPage = true; // El cursor está sobre la página
+        
+        // Activamos el cursor solo si está sobre la página
+        if (!isActive && cursorInPage) {
             isActive = true;
             cursor.classList.remove('inactive');
         }
@@ -36,11 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Detectar cuando el cursor sale de la ventana
     document.addEventListener('mouseleave', () => {
         isActive = false;
+        cursorInPage = false; // El cursor ya no está sobre la página
         cursor.classList.add('inactive');
     });
 
     // Detectar cuando el cursor vuelve a entrar a la ventana
     document.addEventListener('mouseenter', () => {
+        cursorInPage = true; // El cursor está sobre la página
         isActive = true;
         cursor.classList.remove('inactive');
     });
@@ -53,8 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Detectar cuando la ventana recupera el foco
     window.addEventListener('focus', () => {
-        isActive = true;
-        cursor.classList.remove('inactive');
+        // No activamos el cursor automáticamente al recuperar el foco
+        // Se activará solo cuando el cursor se mueva sobre la página
+        // No hacemos nada aquí - el cursor permanece inactivo hasta que haya movimiento
     });
 
     // Función de animación para el movimiento suave
