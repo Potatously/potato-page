@@ -160,123 +160,107 @@ document.documentElement.style.visibility = "hidden"
     }, 1000)
   }
 
-  // Función para manejar atajos de teclado
-  function handleKeyDown(e) {
-    // Actualizar estado de teclas
-    if (e.key === "Alt") keyState.alt = true
-    if (e.key.toLowerCase() === "t") keyState.t = true
-
-    // Verificar si se presionó Alt+T
-    if (keyState.alt && keyState.t && terminalOverlayRef) {
-      e.preventDefault()
-      closeTerminal()
-    }
-  }
-
-  function handleKeyUp(e) {
-    // Actualizar estado de teclas
-    if (e.key === "Alt") keyState.alt = false
-    if (e.key.toLowerCase() === "t") keyState.t = false
-  }
-
-  // Función para mostrar la terminal
+  // Función optimizada para mostrar la terminal
   function showTerminal() {
-    // Create terminal overlay
-    const terminalOverlay = document.createElement("div")
-    terminalOverlay.className = "terminal-overlay"
-    terminalOverlay.setAttribute("role", "dialog")
-    terminalOverlay.setAttribute("aria-label", "Terminal de bienvenida")
+    // Crear elementos de la terminal
+    const terminalOverlay = document.createElement("div");
+    terminalOverlay.className = "terminal-overlay";
+    terminalOverlay.setAttribute("role", "dialog");
+    terminalOverlay.setAttribute("aria-label", "Terminal de bienvenida");
 
     // Guardar referencia global
-    terminalOverlayRef = terminalOverlay
+    terminalOverlayRef = terminalOverlay;
 
-    // Create terminal container
-    const terminalContainer = document.createElement("div")
-    terminalContainer.className = "terminal-container"
+    // Crear contenedor de la terminal
+    const terminalContainer = document.createElement("div");
+    terminalContainer.className = "terminal-container";
 
-    // Create terminal lines
-    const line1 = document.createElement("p")
-    line1.className = "terminal-line"
-    line1.textContent = "Inicializando sistema..."
+    // Crear líneas de la terminal
+    const lines = [
+        "Inicializando sistema...",
+        "Autenticando usuario...",
+        "Verificando acceso..."
+    ].map(text => {
+        const line = document.createElement("p");
+        line.className = "terminal-line";
+        line.textContent = text;
+        return line;
+    });
 
-    const line2 = document.createElement("p")
-    line2.className = "terminal-line"
-    line2.textContent = "Autenticando usuario..."
+    // Crear mensajes de acceso
+    const accessGranted = document.createElement("div");
+    accessGranted.className = "terminal-access";
+    accessGranted.textContent = "Acceso concedido.";
 
-    const line3 = document.createElement("p")
-    line3.className = "terminal-line"
-    line3.textContent = "Verificando acceso..."
+    const clickToEnter = document.createElement("div");
+    clickToEnter.className = "terminal-click";
+    clickToEnter.textContent = "[ Hacer clic para ingresar ]";
 
-    // Create access granted message
-    const accessGranted = document.createElement("div")
-    accessGranted.className = "terminal-access"
-    accessGranted.textContent = "Acceso concedido."
+    // Agregar elementos al contenedor
+    lines.forEach(line => terminalContainer.appendChild(line));
+    terminalContainer.appendChild(accessGranted);
+    terminalContainer.appendChild(clickToEnter);
 
-    // Create click to enter message
-    const clickToEnter = document.createElement("div")
-    clickToEnter.className = "terminal-click"
-    clickToEnter.textContent = "[ Hacer clic para ingresar ]"
+    // Agregar contenedor al overlay
+    terminalOverlay.appendChild(terminalContainer);
 
-    // Append elements to container
-    terminalContainer.appendChild(line1)
-    terminalContainer.appendChild(line2)
-    terminalContainer.appendChild(line3)
-    terminalContainer.appendChild(accessGranted)
-    terminalContainer.appendChild(clickToEnter)
+    // Agregar overlay al body
+    document.body.appendChild(terminalOverlay);
 
-    // Append container to overlay
-    terminalOverlay.appendChild(terminalContainer)
+    // Prevenir scroll mientras la terminal está activa
+    document.body.style.overflow = "hidden";
 
-    // Append overlay to body
-    document.body.appendChild(terminalOverlay)
+    // Configurar eventos de teclado
+    const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+            closeTerminal();
+        }
+    };
 
-    // Prevent scrolling while terminal is active
-    document.body.style.overflow = "hidden"
+    const handleKeyUp = (e) => {
+        if (e.key === "Escape") {
+            closeTerminal();
+        }
+    };
 
-    // Agregar event listeners para atajos de teclado
-    document.addEventListener("keydown", handleKeyDown)
-    document.addEventListener("keyup", handleKeyUp)
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
 
-    // Animation sequence
-    setTimeout(() => {
-      line1.classList.add("visible")
+    // Secuencia de animación optimizada
+    const animationSequence = [
+        { element: lines[0], delay: 500, duration: 1500 },
+        { element: lines[1], delay: 2300, duration: 1500 },
+        { element: lines[2], delay: 4100, duration: 1500 },
+        { element: accessGranted, delay: 5600, duration: 1000 },
+        { element: clickToEnter, delay: 6600, duration: 0 }
+    ];
 
-      setTimeout(() => {
-        line1.classList.remove("visible")
-
+    animationSequence.forEach(({ element, delay, duration }) => {
         setTimeout(() => {
-          line2.classList.add("visible")
-
-          setTimeout(() => {
-            line2.classList.remove("visible")
-
-            setTimeout(() => {
-              line3.classList.add("visible")
-
-              setTimeout(() => {
-                line3.classList.remove("visible")
-
+            element.classList.add("visible");
+            if (duration) {
                 setTimeout(() => {
-                  accessGranted.classList.add("visible")
+                    element.classList.remove("visible");
+                }, duration);
+            }
+        }, delay);
+    });
 
-                  setTimeout(() => {
-                    clickToEnter.classList.add("visible")
-                  }, 1000)
-                }, 500)
-              }, 1500)
-            }, 300)
-          }, 1500)
-        }, 300)
-      }, 1500)
-    }, 500)
+    // Manejar clic para ingresar
+    const handleClick = () => {
+        if (clickToEnter.classList.contains("visible")) {
+            closeTerminal();
+        }
+    };
 
-    // Handle click to enter
-    terminalOverlay.addEventListener("click", () => {
-      // Only proceed if the click to enter message is visible
-      if (clickToEnter.classList.contains("visible")) {
-        closeTerminal()
-      }
-    })
+    terminalOverlay.addEventListener("click", handleClick);
+
+    // Limpiar eventos cuando se cierre la terminal
+    return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("keyup", handleKeyUp);
+        terminalOverlay.removeEventListener("click", handleClick);
+    };
   }
 
   // Inicializar la terminal

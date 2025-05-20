@@ -107,20 +107,22 @@ console.log(`
     return support
   }
 
+  // Función centralizada para detectar el tema
+  function detectTheme() {
+    const isDarkMode =
+      document.documentElement.classList.contains("dark-mode") ||
+      (window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches &&
+        !document.documentElement.classList.contains("light-mode"));
+    return isDarkMode ? "dark" : "light";
+  }
+
   // Función para actualizar las fuentes del logo basado en el tema y soporte de formatos
   function updateLogoSources(support) {
     const logoImage = document.getElementById("logo-image")
     if (!logoImage) return
 
-    // Determinar el tema actual de manera más robusta
-    const isDarkMode =
-      document.documentElement.classList.contains("dark-mode") ||
-      (window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches &&
-        !document.documentElement.classList.contains("light-mode"))
-
-    // Definir el tema basado en las clases y preferencias del sistema
-    const theme = isDarkMode ? "dark" : "light"
+    const theme = detectTheme()
 
     // Precargar las imágenes para ambos temas
     const darkImage = new Image()
@@ -333,62 +335,93 @@ console.log(`
     return video
   }
 
-  // Activar Easter egg principal
-  function activateEasteregg() {
-    if (!elements.homeroVideoContainer) return
+  // Optimizar el manejo de eventos de video
+  function setupVideoEvents(video, videoId) {
+    if (!video) return;
 
-    state.isEastereggActive = true
-    elements.eastereggOverlay.style.display = "flex"
-    elements.eastereggOverlay.setAttribute("aria-hidden", "false")
+    const cleanup = () => {
+      video.pause();
+      video.currentTime = 0;
+      video.style.display = "none";
+      video.style.animation = "";
+    };
 
-    if (!state.videosLoaded.homero) {
-      const homeroVideo = createVideoElement("homero")
-      elements.homeroVideoContainer.appendChild(homeroVideo)
+    video.addEventListener("ended", cleanup);
+    video.addEventListener("error", (e) => {
+      console.error(`Error en video ${videoId}:`, e);
+      cleanup();
+    });
+
+    return cleanup;
+  }
+
+  // Optimizar la carga de recursos
+  const resourceLoader = {
+    loaded: new Set(),
+    
+    async loadVideo(videoId) {
+      if (this.loaded.has(videoId)) return videoCache[videoId];
+      
+      const video = createVideoElement(videoId);
+      setupVideoEvents(video, videoId);
+      this.loaded.add(videoId);
+      return video;
+    },
+    
+    async loadAudio(src) {
+      if (this.loaded.has(src)) return;
+      
+      const audio = new Audio(src);
+      audio.preload = "auto";
+      audio.addEventListener("error", handleAudioError);
+      await new Promise((resolve, reject) => {
+        audio.addEventListener("canplaythrough", resolve, { once: true });
+        audio.addEventListener("error", reject, { once: true });
+        audio.load();
+      });
+      this.loaded.add(src);
     }
+  };
 
-    const homeroVideo = videoCache.homero
+  // Actualizar la función activateEasteregg para usar el nuevo resourceLoader
+  async function activateEasteregg() {
+    if (!elements.homeroVideoContainer) return;
 
-    // Cargar el video si está marcado como diferido
-    if (homeroVideo.hasAttribute("data-src")) {
-      const sources = homeroVideo.querySelectorAll("source")
-      sources.forEach((source) => {
-        if (source.dataset.src) {
-          source.src = source.dataset.src
-          source.removeAttribute("data-src")
-        }
-      })
-      homeroVideo.removeAttribute("data-src")
-      homeroVideo.load()
-    }
+    state.isEastereggActive = true;
+    elements.eastereggOverlay.style.display = "flex";
+    elements.eastereggOverlay.setAttribute("aria-hidden", "false");
 
-    playAudio("./assets/audio/puertazo.mp3").then(() => {
+    try {
+      const homeroVideo = await resourceLoader.loadVideo("homero");
+      elements.homeroVideoContainer.appendChild(homeroVideo);
+
+      await playAudio("./assets/audio/puertazo.mp3");
+      
       requestAnimationFrame(() => {
         if (elements.discoBall) {
-          elements.discoBall.style.animation = "dropDiscoBall 1s forwards"
+          elements.discoBall.style.animation = "dropDiscoBall 1s forwards";
         }
+        
         setTimeout(() => {
           if (homeroVideo) {
-            homeroVideo.style.animation = "none"
-            homeroVideo.offsetHeight /* Trigger reflow */
-            homeroVideo.style.animation = "fadeIn 2s forwards"
-            homeroVideo.muted = !state.userInteracted
+            homeroVideo.style.animation = "none";
+            homeroVideo.offsetHeight; // Trigger reflow
+            homeroVideo.style.animation = "fadeIn 2s forwards";
+            homeroVideo.muted = !state.userInteracted;
             homeroVideo.play().catch((err) => {
-              console.error("Error al reproducir:", err)
-              homeroVideo.muted = true
-              homeroVideo.play()
-            })
-
-            // Registrar interacción si existe el monitor de rendimiento
-            if (window.performanceMonitor) {
-              window.performanceMonitor.recordInteraction("easterEggActivated", {
-                type: "homero",
-                timestamp: new Date().toISOString(),
-              })
-            }
+              console.error("Error al reproducir:", err);
+              homeroVideo.muted = true;
+              homeroVideo.play();
+            });
           }
-        }, 800)
-      })
-    })
+        }, 800);
+      });
+    } catch (err) {
+      console.error("Error al activar Easter egg:", err);
+      state.isEastereggActive = false;
+      elements.eastereggOverlay.style.display = "none";
+      elements.eastereggOverlay.setAttribute("aria-hidden", "true");
+    }
   }
 
   // Configurar evento de clic en el logo para Easter egg secundario
