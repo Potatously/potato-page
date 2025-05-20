@@ -134,14 +134,14 @@ console.log(`
 
     // Asignar las rutas según el soporte de formatos
     if (support && support.avif) {
-      darkImageSrc = "./assets/images/patata-blanca.avif"
-      lightImageSrc = "./assets/images/papa-negra.avif"
+      darkImageSrc = "../assets/images/patata-blanca.avif"
+      lightImageSrc = "../assets/images/papa-negra.avif"
     } else if (support && support.webp) {
-      darkImageSrc = "./assets/images/patata-blanca.webp"
-      lightImageSrc = "./assets/images/papa-negra.webp"
+      darkImageSrc = "../assets/images/patata-blanca.webp"
+      lightImageSrc = "../assets/images/papa-negra.webp"
     } else {
-      darkImageSrc = "./assets/images/patata-blanca.png"
-      lightImageSrc = "./assets/images/papa-negra.png"
+      darkImageSrc = "../assets/images/patata-blanca.png"
+      lightImageSrc = "../assets/images/papa-negra.png"
     }
 
     // Precargar ambas imágenes
@@ -316,11 +316,11 @@ console.log(`
     const fallbackFormat = preferredFormat === "webm" ? "mp4" : "webm"
 
     const sourcePreferred = document.createElement("source")
-    sourcePreferred.dataset.src = `./assets/video/${videoId}.${preferredFormat}` // Usar data-src en lugar de src
+    sourcePreferred.dataset.src = `../assets/video/${videoId}.${preferredFormat}` // Usar data-src en lugar de src
     sourcePreferred.type = `video/${preferredFormat}`
 
     const sourceFallback = document.createElement("source")
-    sourceFallback.dataset.src = `./assets/video/${videoId}.${fallbackFormat}` // Usar data-src en lugar de src
+    sourceFallback.dataset.src = `../assets/video/${videoId}.${fallbackFormat}` // Usar data-src en lugar de src
     sourceFallback.type = `video/${fallbackFormat}`
 
     const fallbackText = document.createTextNode("Tu navegador no soporta el elemento de video.")
@@ -395,7 +395,7 @@ console.log(`
       const homeroVideo = await resourceLoader.loadVideo("homero");
       elements.homeroVideoContainer.appendChild(homeroVideo);
 
-      await playAudio("./assets/audio/puertazo.mp3");
+      await playAudio("../assets/audio/puertazo.mp3");
       
       requestAnimationFrame(() => {
         if (elements.discoBall) {
@@ -497,7 +497,7 @@ console.log(`
 
   // Reproducir audio con manejo de errores
   async function playAudio(src) {
-    if (!src || !src.startsWith("./assets/audio/")) {
+    if (!src || !src.startsWith("../assets/audio/")) {
       throw new Error("Ruta de audio inválida")
     }
 
@@ -616,7 +616,7 @@ console.log(`
 
     state.isGAudioPlaying = true
 
-    playAudio("./assets/audio/pichon.mp3")
+    playAudio("../assets/audio/pichon.mp3")
       .then(() => {
         state.gAudioTimer1 = setTimeout(() => {
           state.isGAudioPlaying = false
@@ -659,20 +659,20 @@ console.log(`
       if (isDark) {
         // Modo oscuro - usar patata blanca
         if (typeof window.formatSupport !== "undefined" && window.formatSupport.avif) {
-          logoSrc = "./assets/images/patata-blanca.avif"
+          logoSrc = "../assets/images/patata-blanca.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
-          logoSrc = "./assets/images/patata-blanca.webp"
+          logoSrc = "../assets/images/patata-blanca.webp"
         } else {
-          logoSrc = "./assets/images/patata-blanca.png"
+          logoSrc = "../assets/images/patata-blanca.png"
         }
       } else {
         // Modo claro - usar patata negra
         if (typeof window.formatSupport !== "undefined" && window.formatSupport.avif) {
-          logoSrc = "./assets/images/papa-negra.avif"
+          logoSrc = "../assets/images/papa-negra.avif"
         } else if (window.formatSupport && window.formatSupport.webp) {
-          logoSrc = "./assets/images/papa-negra.webp"
+          logoSrc = "../assets/images/papa-negra.webp"
         } else {
-          logoSrc = "./assets/images/papa-negra.png"
+          logoSrc = "../assets/images/papa-negra.png"
         }
       }
 
@@ -691,8 +691,8 @@ console.log(`
         // La imagen no existe, usar una imagen de respaldo
         console.error("Error al cargar la imagen:", logoSrc)
         elements.logoImage.src = isDark
-          ? "./assets/images/fallback-logo-dark.png"
-          : "./assets/images/fallback-logo-light.png"
+          ? "../assets/images/fallback-logo-dark.png"
+          : "../assets/images/fallback-logo-light.png"
       }
 
       tempImg.src = logoSrc
