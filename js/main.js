@@ -291,15 +291,24 @@ console.log(`
     const video = document.createElement("video")
     video.id = videoId + "Video"
     video.className = videoId + "-video"
-    // Inicialmente oculto para evitar el primer frame estático
-    video.style.cssText =
-      "width:100%;height:auto;max-width:800px;position:relative;z-index:1001;opacity:1;visibility:visible;"
-    video.setAttribute("playsinline", "") // Para iOS
-    video.setAttribute("data-src", "lazy") // Marcar para carga diferida
-    video.autoplay = false // Cambiar a false para carga diferida
+    video.style.cssText = "width:100%;height:auto;max-width:800px;position:relative;z-index:1001;opacity:1;visibility:visible;"
+    video.setAttribute("playsinline", "")
+    video.setAttribute("data-src", "lazy")
+    video.autoplay = false
     video.muted = true
     video.loop = true
-    video.setAttribute("aria-hidden", "true") // Ocultar para lectores de pantalla
+    
+    // Agregar texto alternativo según el tipo de video
+    if (videoId === "homero") {
+      video.setAttribute("aria-label", "Video de Homero Simpson apareciendo en una escena cómica")
+    } else if (videoId === "dracukeo") {
+      video.setAttribute("aria-label", "Video de una escena de Dragon Ball con efectos especiales")
+    }
+    
+    // Solo ocultar para lectores de pantalla si es contenido decorativo
+    if (videoId === "homero" || videoId === "dracukeo") {
+      video.setAttribute("aria-hidden", "true")
+    }
 
     const preferredFormat = window.videoFormatSupport && window.videoFormatSupport.webm ? "webm" : "mp4"
     const fallbackFormat = preferredFormat === "webm" ? "mp4" : "webm"
