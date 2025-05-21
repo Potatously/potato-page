@@ -5,13 +5,14 @@
 <title>Potato</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
-<meta name="description" content="Portfolio de Potato - Emprendedor, editor de video profesional, jugador experimentado de ajedrez y pensador de la filosofía estoica. Explora mis proyectos personales, filosofía de trabajo y servicios."/>
-<meta name="keywords" content="Potato, editor de video profesional, edición creativa, jugador de ajedrez profesional, filosofía estoica, mentoría de ajedrez, content creator, video editing expert, chess coaching, stoic philosophy, portfolio digital, edición audiovisual, creative content"/>
+<meta name="description" content="Portfolio profesional de Potato - Editor de video experto, jugador de ajedrez y pensador estoico. Descubre mis proyectos, servicios de edición y mentoría de ajedrez."/>
+<meta name="keywords" content="Potato, editor de video profesional, edición creativa, jugador de ajedrez, filosofía estoica, mentoría de ajedrez, content creator, video editing expert, chess coaching, stoic philosophy, portfolio digital, edición audiovisual"/>
 <meta name="author" content="Potato"/>
-<meta name="robots" content="index, follow, max-image-preview:large"/>
-<meta name="googlebot" content="index, follow"/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="theme-color" content="#0a0a0b"/>
+<meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
 <meta name="format-detection" content="telephone=no"/>
 <meta name="color-scheme" content="dark light"/>
 
@@ -22,25 +23,25 @@
 <link rel="preload" href="./assets/images/patata-blanca.png" as="image" fetchpriority="high"/>
 
 <!-- Cursor circulo -->
-<link rel="stylesheet" href="./css/cursor.css?v=4.0.8" as="style">
-<script src="./js/cursor.js?v=4.0.8" as="script" defer></script>
+<link rel="stylesheet" href="./css/cursor.css?v=4.0.8"/>
+<script src="./js/cursor.js?v=4.0.8" defer></script>
 
 <!-- Terminal styles -->
-<link rel="stylesheet" href="./css/terminal.css?v=4.0.0">
+<link rel="stylesheet" href="./css/terminal.css?v=4.0.0"/>
 
-<!-- Script de terminal (incluye preload y navegación) -->
+<!-- Script de terminal -->
 <script src="./js/terminal.js?v=4.0.4"></script>
 
 <!-- Metadatos para redes sociales (Open Graph) -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://potatously.vercel.app/"/>
 <meta property="og:title" content="Potato | Visionario"/>
-<meta property="og:description" content="Portfolio de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Explora mis proyectos personales."/>
+<meta property="og:description" content="Portfolio profesional de Potato - Editor de video experto, jugador de ajedrez y pensador estoico. Descubre mis proyectos y servicios."/>
 <meta property="og:image" content="https://potatously.vercel.app/assets/og/open-graph.jpg?v=1.0.4"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:type" content="image/jpeg"/>
-<meta property="og:image:alt" content="Portfolio de Potato - Editor de video y jugador de ajedrez"/>
+<meta property="og:image:alt" content="Portfolio profesional de Potato - Editor de video y jugador de ajedrez"/>
 <meta property="og:locale" content="es_ES"/>
 <meta property="og:site_name" content="Portfolio de Potato"/>
 <meta property="og:logo" content="https://potatously.vercel.app/assets/images/patata-blanca.png"/>
@@ -50,16 +51,16 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:url" content="https://potatously.vercel.app/"/>
 <meta name="twitter:title" content="Potato | Visionario"/>
-<meta name="twitter:description" content="Portfolio de Potato - Emprendedor, especialista en edición de video, jugador de ajedrez y pensador estoico. Explora mis proyectos personales."/>
+<meta name="twitter:description" content="Portfolio profesional de Potato - Editor de video experto, jugador de ajedrez y pensador estoico. Descubre mis proyectos y servicios."/>
 <meta name="twitter:image" content="https://potatously.vercel.app/assets/og/open-graph.jpg?v=1.0.4"/>
-<meta name="twitter:image:alt" content="Portfolio de Potato - Editor de video y jugador de ajedrez"/>
+<meta name="twitter:image:alt" content="Portfolio profesional de Potato - Editor de video y jugador de ajedrez"/>
 <meta name="twitter:creator" content="@potatously"/>
 
 <!-- Enlaces y recursos externos -->
 <link rel="canonical" href="https://potatously.vercel.app/"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
 
 <!-- Favicons para diferentes dispositivos -->
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-touch-icon.png"/>
@@ -71,7 +72,7 @@
 <meta name="msapplication-config" content="./browserconfig.xml"/>
 
 <!-- Hoja de estilos principal -->
-<link rel="stylesheet" href="./css/styles.css?v=4.0.8">
+<link rel="stylesheet" href="./css/styles.css?v=4.0.8"/>
 
 <!-- Datos estructurados Schema.org mejorados -->
 <script type="application/ld+json">
@@ -84,12 +85,20 @@
   "sameAs": [
     "https://linktr.ee/potatously"
   ],
-  "jobTitle": "Editor de Video",
-  "description": "Editor de video profesional, jugador de ajedrez y pensador estoico",
-  "knowsAbout": ["Edición de Video", "Ajedrez", "Estoicismo", "Content Creation", "Video Editing"],
+  "jobTitle": "Editor de Video Profesional",
+  "description": "Editor de video profesional, jugador de ajedrez y pensador estoico. Especializado en edición creativa y mentoría de ajedrez.",
+  "knowsAbout": [
+    "Edición de Video",
+    "Ajedrez",
+    "Estoicismo",
+    "Content Creation",
+    "Video Editing",
+    "Mentoría"
+  ],
   "worksFor": {
     "@type": "Organization",
-    "name": "Freelance"
+    "name": "Freelance",
+    "url": "https://potatously.vercel.app"
   },
   "makesOffer": [
     {
@@ -97,21 +106,25 @@
       "itemOffered": {
         "@type": "Service",
         "name": "Servicios de Edición de Video",
-        "description": "Edición profesional de video para contenido digital"
-      }
+        "description": "Edición profesional de video para contenido digital, incluyendo edición creativa y post-producción"
+      },
+      "availability": "https://schema.org/InStock"
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
         "name": "Mentoría de Ajedrez",
-        "description": "Clases y entrenamiento personalizado de ajedrez"
-      }
+        "description": "Clases y entrenamiento personalizado de ajedrez para todos los niveles"
+      },
+      "availability": "https://schema.org/InStock"
     }
   ],
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://potatously.vercel.app"
+    "@id": "https://potatously.vercel.app",
+    "name": "Portfolio de Potato",
+    "description": "Portfolio profesional de Potato - Editor de video y jugador de ajedrez"
   }
 }
 </script>
@@ -130,19 +143,21 @@
   },
   "author": {
     "@type": "Person",
-    "name": "Potato"
+    "name": "Potato",
+    "url": "https://potatously.vercel.app"
   },
   "copyrightYear": "2025",
-  "license": "https://creativecommons.org/licenses/by-nc/4.0/deed.es"
+  "license": "https://creativecommons.org/licenses/by-nc/4.0/deed.es",
+  "inLanguage": "es-ES",
+  "isAccessibleForFree": true
 }
 </script>
 
-<!-- Script de análisis y rendimiento (cargado de forma diferida) -->
+<!-- Script de análisis y rendimiento -->
 <script src="./js/performance-analytics.js?v=4.0.0" defer></script>
 </head>
 <body>
 <header>
-    <!-- Logo con mejor accesibilidad y fallback -->
     <div class="logo">
         <h3 class="brand-header">
             <img id="logo-image" 
@@ -157,8 +172,8 @@
     </div>
     <div class="nav-right">
         <div class="menu-container">
-            <button id="menu-button" class="menu-button" aria-expanded="false" aria-controls="nav-links">
-                <div class="hamburger-icon">
+            <button id="menu-button" class="menu-button" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+                <div class="hamburger-icon" aria-hidden="true">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -166,16 +181,16 @@
                 </div>
                 <span id="menu-text">Menú</span>
             </button>
-            <nav class="nav-links" id="nav-links">
+            <nav class="nav-links" id="nav-links" aria-label="Navegación principal">
                 <h2 class="visually-hidden">Menú de navegación principal</h2>
                 <div class="nav-main-links">
-                    <a class="hoverable" href="/me">Sobre mí</a>
-                    <a class="hoverable" href="/projects">Proyectos</a>
-                    <a class="hoverable" href="/contact">Contacto</a>
-                    <a class="hoverable" href="/gallery">Galería</a>
+                    <a class="hoverable" href="/me" aria-label="Ir a la sección Sobre mí">Sobre mí</a>
+                    <a class="hoverable" href="/projects" aria-label="Ver mis proyectos">Proyectos</a>
+                    <a class="hoverable" href="/contact" aria-label="Ir a la sección de contacto">Contacto</a>
+                    <a class="hoverable" href="/gallery" aria-label="Ver galería de trabajos">Galería</a>
                 </div>
                 <div class="nav-secondary">
-                    <a href="https://linktr.ee/potatously" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Mis enlaces en Linktree">Linktree</a>                    
+                    <a href="https://linktr.ee/potatously" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Ver mis enlaces en Linktree">Linktree</a>                    
                     <button id="theme-toggle" class="theme-toggle-button" aria-label="Cambiar entre modo claro y oscuro">Cambiar tema</button>
                 </div>
             </nav>
@@ -183,7 +198,7 @@
     </div>
 </header>
 
-<div class="top-separator" role="presentation"></div>
+<div class="top-separator" role="presentation" aria-hidden="true"></div>
 
 <main>
     <section class="hero-section">
@@ -191,49 +206,43 @@
     </section>
 </main>
 
-<div class="bottom-separator" role="presentation"></div>
+<div class="bottom-separator" role="presentation" aria-hidden="true"></div>
 
 <footer class="footer">
     <h4 class="visually-hidden">Información de Copyright</h4>
-    <span class="copyright-text">© Potato, 2025.</span> <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" target="_blank" rel="noopener" class="footer-link">CC BY-NC 4.0</a>
+    <span class="copyright-text">© Potato, 2025.</span> <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" target="_blank" rel="noopener" class="footer-link" aria-label="Ver licencia Creative Commons">CC BY-NC 4.0</a>
 </footer>
 
 <!-- Contenedor para Easter Egg de Homero -->
 <div id="eastereggOverlay" class="easteregg-overlay" aria-hidden="true">
-    <button id="closeButton" class="close-button" aria-label="Cerrar">×</button>
+    <button id="closeButton" class="close-button" aria-label="Cerrar overlay">×</button>
     <picture>
       <source type="image/webp" srcset="./assets/images/bola-disco.webp">
-      <img id="discoBall" class="disco-ball" src="./assets/images/bola-disco.gif" alt="Bola de disco" loading="lazy"/>
+      <img id="discoBall" class="disco-ball" src="./assets/images/bola-disco.gif" alt="Bola de disco animada" loading="lazy"/>
     </picture>
-    <!-- Videos cargados dinámicamente por JavaScript para mejorar rendimiento -->
     <div id="homeroVideoContainer" class="homero-video" role="region" aria-label="Contenedor de video de Homero Simpson"></div>
 </div>
 
 <!-- Contenedor para Easter Egg secundario -->
 <div id="secondEastereggOverlay" class="easteregg-overlay" aria-hidden="true">
-    <button id="closeSecondButton" class="close-button" aria-label="Cerrar">×</button>    
-    <!-- Videos cargados dinámicamente por JavaScript para mejorar rendimiento -->
+    <button id="closeSecondButton" class="close-button" aria-label="Cerrar overlay">×</button>    
     <div id="secondVideoContainer" class="second-video" role="region" aria-label="Contenedor de video de Dragon Ball"></div>
 </div>
 
-<!-- Script principal (incluye detección de formatos) -->
+<!-- Script principal -->
 <script type="module" src="./js/main.js?v=4.0.8"></script>
 
 <!-- Script para mostrar el contenido principal después de que la terminal se cierre -->
 <script>
-    // Este script se ejecuta después de que la terminal se cierre
     document.addEventListener('DOMContentLoaded', () => {
-        // Observar cambios en el DOM para detectar cuando se elimina la terminal
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.removedNodes.length > 0) {
-                    // Verificar si la terminal fue eliminada
                     const terminalRemoved = Array.from(mutation.removedNodes).some(
                         node => node.classList && node.classList.contains('terminal-overlay')
                     );
                     
                     if (terminalRemoved) {
-                        // Mostrar el contenido principal
                         document.documentElement.style.visibility = 'visible';
                         document.body.classList.add('terminal-ready');
                     }
@@ -241,7 +250,6 @@
             });
         });
         
-        // Configurar el observador
         observer.observe(document.body, { childList: true });
     });
 </script>
